@@ -1,13 +1,26 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import HeroSection from "@/components/mapa-da-alma/HeroSection";
+import PainSection from "@/components/mapa-da-alma/PainSection";
+import SolutionSection from "@/components/mapa-da-alma/SolutionSection";
+import DeliverablesSection from "@/components/mapa-da-alma/DeliverablesSection";
+import AuthoritySection from "@/components/mapa-da-alma/AuthoritySection";
+import OfferSection from "@/components/mapa-da-alma/OfferSection";
+import FormSection from "@/components/mapa-da-alma/FormSection";
+import FAQSection from "@/components/mapa-da-alma/FAQSection";
+import Footer from "@/components/mapa-da-alma/Footer";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <main className="min-h-screen bg-background">
+      <HeroSection />
+      <PainSection />
+      <SolutionSection />
+      <DeliverablesSection />
+      <AuthoritySection />
+      <OfferSection />
+      <FormSection />
+      <FAQSection />
+      <Footer />
+    </main>
   );
 };
 
