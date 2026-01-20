@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Sparkles, Lock } from "lucide-react";
 
 const formSchema = z.object({
-  name: z.string().trim().min(2, "Nome deve ter pelo menos 2 caracteres").max(100, "Nome muito longo"),
+  name: z.string().trim().min(2, "Nome deve ter pelo menos 10 caracteres").max(100, "Nome muito longo"),
   email: z.string().trim().email("Email inválido").max(255, "Email muito longo"),
   phone: z.string().trim().min(10, "Telefone deve ter pelo menos 10 dígitos").max(20, "Telefone muito longo")
     .regex(/^[\d\s()+-]+$/, "Formato de telefone inválido"),
@@ -115,7 +115,7 @@ const FormSection = () => {
                     <FormControl>
                       <Input 
                         type="tel"
-                        placeholder="(00) 00000-0000" 
+                        placeholder="(+55) 90000-0000" 
                         className="bg-background/50 border-border focus:border-primary"
                         {...field} 
                       />

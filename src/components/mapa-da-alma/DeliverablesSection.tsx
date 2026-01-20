@@ -35,10 +35,12 @@ const DeliverablesSection = () => {
         {/* Section header */}
         <div className="text-center mb-16 space-y-4">
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground">
-            O Que Você <span className="text-primary">Recebe</span>
+            O Que Você <span className="text-primary">Recebe?</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Cada elemento foi cuidadosamente desenhado para revelar camadas profundas da sua história.
+          <br></br>
+          <p className="font-serif text-5xl md:text-4xl lg:text-3xl text-foreground">
+            <span className="text-primary font-semibold">+40 páginas</span> de análise profunda, escrita {" "} <br></br>
+            <span className="text-primary font-semibold">especialmente para você.</span>
           </p>
         </div>
 
@@ -90,6 +92,7 @@ const DeliverablesSection = () => {
           <p className="text-lg text-foreground">
             <span className="text-primary font-semibold">+40 páginas</span> de análise profunda,{" "}
             <span className="text-primary font-semibold">escrita à mão</span> especialmente para você.
+            Cada elemento foi cuidadosamente desenhado para revelar camadas profundas da sua história.
           </p>
         </div>
       </div>
