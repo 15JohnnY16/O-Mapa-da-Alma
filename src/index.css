@@ -10,8 +10,10 @@
 @layer base {
   :root {
     /* Core Colors - Navy/Gold/Cream Theme */
-    --background: 220 30% 6%; /* Deep Navy #0A192F */
-    --foreground: 40 33% 96%; /* Cream #F5F5F0 */
+    --background: 220 30% 6%;
+    /* Deep Navy #0A192F */
+    --foreground: 40 33% 96%;
+    /* Cream #F5F5F0 */
 
     --card: 220 25% 10%;
     --card-foreground: 40 33% 96%;
@@ -19,7 +21,8 @@
     --popover: 220 25% 10%;
     --popover-foreground: 40 33% 96%;
 
-    --primary: 43 56% 52%; /* Gold #D4AF37 */
+    --primary: 43 56% 52%;
+    /* Gold #D4AF37 */
     --primary-foreground: 220 30% 6%;
 
     --secondary: 220 20% 15%;
@@ -99,17 +102,18 @@
 }
 
 @layer utilities {
+
   /* Gold glow effect for buttons */
   .glow-gold {
     box-shadow: 0 0 20px hsl(43 56% 52% / 0.3),
-                0 0 40px hsl(43 56% 52% / 0.2),
-                0 0 60px hsl(43 56% 52% / 0.1);
+      0 0 40px hsl(43 56% 52% / 0.2),
+      0 0 60px hsl(43 56% 52% / 0.1);
   }
 
   .glow-gold-hover:hover {
     box-shadow: 0 0 25px hsl(43 56% 52% / 0.5),
-                0 0 50px hsl(43 56% 52% / 0.3),
-                0 0 75px hsl(43 56% 52% / 0.2);
+      0 0 50px hsl(43 56% 52% / 0.3),
+      0 0 75px hsl(43 56% 52% / 0.2);
   }
 
   /* Subtle text gradient */
@@ -122,7 +126,7 @@
 
   /* Constellation pattern overlay */
   .constellation-pattern {
-    background-image: 
+    background-image:
       radial-gradient(1px 1px at 20px 30px, hsl(43 56% 52% / 0.3), transparent),
       radial-gradient(1px 1px at 40px 70px, hsl(43 56% 52% / 0.2), transparent),
       radial-gradient(1px 1px at 50px 160px, hsl(43 56% 52% / 0.3), transparent),

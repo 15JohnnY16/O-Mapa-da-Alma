@@ -1,45 +1,48 @@
 import { Battery, Repeat, UserX } from "lucide-react";
-
-const painPoints = [
-  {
-    icon: Battery,
-    title: "Cansaço sem motivo",
-    description: "Você acorda exausta mesmo dormindo bem, carregando um peso que não sabe explicar.",
-  },
-  {
-    icon: Repeat,
-    title: "Padrões repetitivos",
-    description: "Os mesmos problemas voltam: relacionamentos, dinheiro, saúde... como se estivesse presa em um loop.",
-  },
-  {
-    icon: UserX,
-    title: "Sensação de não pertencimento",
-    description: "Sente que veio de outro lugar, que sua família não te entende, que você não se encaixa.",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const PainSection = () => {
+  const { t } = useLanguage();
+
+  const painPoints = [
+    {
+      icon: Battery,
+      title: t.pain.point1Title,
+      description: t.pain.point1Desc,
+    },
+    {
+      icon: Repeat,
+      title: t.pain.point2Title,
+      description: t.pain.point2Desc,
+    },
+    {
+      icon: UserX,
+      title: t.pain.point3Title,
+      description: t.pain.point3Desc,
+    },
+  ];
+
   return (
     <section className="py-20 md:py-28 bg-navy-light">
       <div className="container mx-auto px-4 max-w-5xl">
         {/* Section header */}
         <div className="text-center mb-16 space-y-4">
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground">
-            Você sente que está vivendo um{" "}
-            <span className="text-primary">roteiro que não escreveu?</span>
+            {t.pain.headlinePrefix}{" "}
+            <span className="text-primary">{t.pain.headlineHighlight}</span>
           </h2>
         </div>
 
         {/* Story content */}
         <div className="max-w-3xl mx-auto mb-16">
           <p className="text-lg text-muted-foreground leading-relaxed text-center">
-            Muitas mulheres sentem um peso invisível. Trabalham muito, mas o dinheiro não fica{" "}
-            <span className="text-foreground">(lealdade à escassez)</span>. 
-            Cuidam de todos, mas se sentem sozinhas{" "}
-            <span className="text-foreground">(lealdade à solidão)</span>. 
-            A Astrogenealogia revela que{" "}
-            <span className="text-primary font-medium">80% do que você chama de "destino"</span>{" "}
-            são, na verdade, memórias ancestrais buscando resolução através de você.
+            {t.pain.storyPrefix}{" "}
+            <span className="text-foreground">{t.pain.storyHighlight1}</span>
+            {t.pain.storyMiddle}{" "}
+            <span className="text-foreground">{t.pain.storyHighlight2}</span>
+            {t.pain.storySuffix}{" "}
+            <span className="text-primary font-medium">{t.pain.storyStat}</span>{" "}
+            {t.pain.storyEnd}
           </p>
         </div>
 
@@ -62,8 +65,8 @@ const PainSection = () => {
         {/* Highlight box */}
         <div className="mt-16 p-6 md:p-8 rounded-2xl border border-primary/20 bg-primary/5 text-center">
           <p className="text-lg md:text-xl text-foreground font-medium">
-            "E se você pudesse identificar exatamente <span className="text-primary">quais padrões herdou</span> e receber um 
-            <span className="text-primary"> roteiro prático</span> para transformá-los?"
+            {t.pain.highlightPrefix} <span className="text-primary">{t.pain.highlightHighlight1}</span> {t.pain.highlightMiddle}{" "}
+            <span className="text-primary"> {t.pain.highlightHighlight2}</span> {t.pain.highlightSuffix}
           </p>
         </div>
       </div>

@@ -82,7 +82,24 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.6s ease-out forwards",
+        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
+        "animatedchartlayer1": "rotation-oscillate 60s ease-in-out infinite",
+        "animatedchartlayer2": "rotation-counter-clockwise 180s linear infinite",
+        "animatedchartlayer3": "rotation-clockwise 240s linear infinite",
+      },
       keyframes: {
+        "rotation-clockwise": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+        "rotation-counter-clockwise": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(-360deg)" },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -96,19 +113,13 @@ export default {
           to: { opacity: "1", transform: "translateY(0)" },
         },
         "glow-pulse": {
-          "0%, 100%": { 
-            boxShadow: "0 0 20px hsl(43 56% 52% / 0.3), 0 0 40px hsl(43 56% 52% / 0.2)" 
+          "0%, 100%": {
+            boxShadow: "0 0 20px hsl(43 56% 52% / 0.3), 0 0 40px hsl(43 56% 52% / 0.2)"
           },
-          "50%": { 
-            boxShadow: "0 0 30px hsl(43 56% 52% / 0.5), 0 0 60px hsl(43 56% 52% / 0.3)" 
+          "50%": {
+            boxShadow: "0 0 30px hsl(43 56% 52% / 0.5), 0 0 60px hsl(43 56% 52% / 0.3)"
           },
         },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.6s ease-out forwards",
-        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
       },
     },
   },
