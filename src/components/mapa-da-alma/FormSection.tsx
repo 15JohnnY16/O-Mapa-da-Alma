@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, Lock, CalendarIcon, Clock, MapPin } from "lucide-react";
+import { Sparkles, Lock, CalendarIcon, Clock, MapPin, ShieldCheck, Zap } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translations } from "@/lib/i18n";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -21,6 +21,7 @@ import { PlacesAutocomplete } from "@/components/ui/places-autocomplete";
 const createFormSchema = (t: typeof translations["pt"]) => z.object({
   name: z.string().trim().min(10, t.errors.nameMin).max(100, t.errors.nameMax),
   email: z.string().trim().email(t.errors.emailInvalid).max(255, t.errors.emailMax),
+  gender: z.string({ required_error: (t.errors as any).genderInvalid }).min(1, (t.errors as any).genderInvalid),
   phone: z.string({ required_error: t.errors.phoneInvalid }).trim()
     .refine((val) => isValidPhoneNumber(val), t.errors.phoneInvalid),
   birthDate: z.date({ required_error: t.errors.birthDateInvalid }),
@@ -31,6 +32,7 @@ const createFormSchema = (t: typeof translations["pt"]) => z.object({
 type FormData = {
   name: string;
   email: string;
+  gender: string;
   phone: string;
   birthDate: Date;
   birthTime: string;
@@ -64,6 +66,7 @@ const FormSection = () => {
     defaultValues: {
       name: "",
       email: "",
+      gender: "",
       phone: "",
       birthTime: "",
       birthCity: "",
@@ -168,6 +171,29 @@ const FormSection = () => {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground">{(t as any).genderLabel}</FormLabel>
+                    <div className="relative">
+                      <select
+                        className="flex h-10 w-full rounded-md border border-border bg-background/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none text-foreground"
+                        value={field.value}
+                        onChange={field.onChange}
+                      >
+                        <option value="" disabled>{(t as any).genderPlaceholder}</option>
+                        <option value="female" className="bg-popover text-popover-foreground">{(t as any).genderFemale}</option>
+                        <option value="male" className="bg-popover text-popover-foreground">{(t as any).genderMale}</option>
+                        <option value="other" className="bg-popover text-popover-foreground">{(t as any).genderOther}</option>
+                      </select>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -439,6 +465,44 @@ const FormSection = () => {
           <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
             <Lock className="w-3 h-3" />
             <span>{t.footerSecurity}</span>
+          </div>
+
+          {/* Trust Badges */}
+          <div className="mt-8 pt-6 border-t border-border/50">
+            <div className="grid grid-cols-3 gap-4">
+              {/* Badge 1: Guarantee */}
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+                  <ShieldCheck className="w-4 h-4 text-green-500" />
+                </div>
+                <div className="text-center">
+                  <h4 className="text-[10px] md:text-xs text-green-500 font-semibold leading-tight">{(t.offer as any).badges?.badge1Title}</h4>
+                  <p className="text-[10px] text-muted-foreground hidden md:block">{(t.offer as any).badges?.badge1Sub}</p>
+                </div>
+              </div>
+
+              {/* Badge 2: Security */}
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                  <Lock className="w-4 h-4 text-blue-500" />
+                </div>
+                <div className="text-center">
+                  <h4 className="text-[10px] md:text-xs text-blue-500 font-semibold leading-tight">{(t.offer as any).badges?.badge2Title}</h4>
+                  <p className="text-[10px] text-muted-foreground hidden md:block">{(t.offer as any).badges?.badge2Sub}</p>
+                </div>
+              </div>
+
+              {/* Badge 3: Delivery */}
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-purple-500" />
+                </div>
+                <div className="text-center">
+                  <h4 className="text-[10px] md:text-xs text-purple-500 font-semibold leading-tight">{(t.offer as any).badges?.badge3Title}</h4>
+                  <p className="text-[10px] text-muted-foreground hidden md:block">{(t.offer as any).badges?.badge3Sub}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

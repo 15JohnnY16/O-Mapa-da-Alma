@@ -1,10 +1,20 @@
 import { Star, Quote } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { useEffect, useState } from "react";
 
 const AuthoritySection = () => {
   const { t } = useLanguage();
+  const [api, setApi] = useState<CarouselApi>();
 
-  const testimonials = [
+  // Use "as any" to access properties that might not exist in all language types yet
+  // or filter them out if they are undefined
+  const rawTestimonials = [
     {
       text: t.authority.testimonial1,
       author: t.authority.testimonial1Author,
@@ -23,7 +33,39 @@ const AuthoritySection = () => {
       role: t.authority.testimonial3Role,
       rating: 5,
     },
+    {
+      text: (t.authority as any).testimonial4,
+      author: (t.authority as any).testimonial4Author,
+      role: (t.authority as any).testimonial4Role,
+      rating: 5,
+    },
+    {
+      text: (t.authority as any).testimonial5,
+      author: (t.authority as any).testimonial5Author,
+      role: (t.authority as any).testimonial5Role,
+      rating: 5,
+    },
+    {
+      text: (t.authority as any).testimonial6,
+      author: (t.authority as any).testimonial6Author,
+      role: (t.authority as any).testimonial6Role,
+      rating: 5,
+    },
   ];
+
+  const testimonials = rawTestimonials.filter((item) => item.text);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [api]);
 
   return (
     <section className="py-20 md:py-28 relative overflow-hidden">
@@ -46,16 +88,26 @@ const AuthoritySection = () => {
             {/* Bio text */}
             <div className="md:col-span-2 text-center md:text-left space-y-4">
               <div className="space-y-1">
-                <h3 className="font-serif text-2xl text-foreground">{t.authority.bioName}</h3>
-                <p className="text-primary font-medium">{t.authority.bioTitle}</p>
+                <h3 className="font-serif text-2xl text-foreground">
+                  {t.authority.bioName}
+                </h3>
+                <p className="text-primary font-medium">
+                  {t.authority.bioTitle}
+                </p>
               </div>
               <p className="text-muted-foreground leading-relaxed">
                 {t.authority.bioDescription}
               </p>
               <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm">
-                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary">{t.authority.stat1}</span>
-                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary">{t.authority.stat2}</span>
-                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary">{t.authority.stat3}</span>
+                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary">
+                  {t.authority.stat1}
+                </span>
+                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary">
+                  {t.authority.stat2}
+                </span>
+                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary">
+                  {t.authority.stat3}
+                </span>
               </div>
             </div>
           </div>
@@ -64,46 +116,72 @@ const AuthoritySection = () => {
         {/* Testimonials header */}
         <div className="text-center mb-12">
           <h2 className="font-serif text-3xl md:text-4xl text-foreground">
-            {t.authority.testimonialsHeaderPrefix} <span className="text-primary">{t.authority.testimonialsHeaderHighlight}</span>
+            {t.authority.testimonialsHeaderPrefix}{" "}
+            <span className="text-primary">
+              {t.authority.testimonialsHeaderHighlight}
+            </span>
           </h2>
         </div>
 
-        {/* Testimonials grid */}
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="group p-6 rounded-2xl border border-border bg-card/50 hover:border-primary/30 transition-all duration-300"
-            >
-              {/* Quote icon */}
-              <Quote className="w-8 h-8 text-primary/30 mb-4" />
+        {/* Testimonials Carousel */}
+        <div className="w-full">
+          <Carousel
+            setApi={setApi}
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent>
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem
+                  key={index}
+                  className="md:basis-1/2 lg:basis-1/3 pl-4"
+                >
+                  <div className="group h-full p-6 rounded-2xl border border-border bg-card/50 hover:border-primary/30 transition-all duration-300 flex flex-col">
+                    {/* Quote icon */}
+                    <Quote className="w-8 h-8 text-primary/30 mb-4 shrink-0" />
 
-              {/* Rating */}
-              <div className="flex gap-1 mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-                ))}
-              </div>
+                    {/* Rating */}
+                    <div className="flex gap-1 mb-4 shrink-0">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className="w-4 h-4 fill-primary text-primary"
+                        />
+                      ))}
+                    </div>
 
-              {/* Text */}
-              <p className="text-foreground leading-relaxed mb-6 italic">
-                "{testimonial.text}"
-              </p>
+                    {/* Text */}
+                    <p className="text-foreground leading-relaxed mb-6 italic flex-grow">
+                      "{testimonial.text}"
+                    </p>
 
-              {/* Author */}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-sm font-medium text-primary">
-                    {testimonial.author.split(' ').map(n => n[0]).join('')}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-foreground">{testimonial.author}</p>
-                  <p className="text-xs text-muted-foreground">{testimonial.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
+                    {/* Author */}
+                    <div className="flex items-center gap-3 shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span className="text-sm font-medium text-primary">
+                          {testimonial.author
+                            .split(" ")
+                            .map((n: string) => n[0])
+                            .join("")}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">
+                          {testimonial.author}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {testimonial.role}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </div>
       </div>
     </section>
