@@ -44,7 +44,20 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
         return "en";
     });
 
-    const [country, setCountry] = useState<RPNInput.Country>("US");
+    const [country, setCountry] = useState<RPNInput.Country>(() => {
+        // Priority 1: Browser Language (Navigator) for initial guess
+        if (typeof window !== "undefined") {
+            const navLang = navigator.language || navigator.languages?.[0];
+            if (navLang) {
+                // Default to Brazil for Portuguese users (High probability and fixes 24h format expectations)
+                if (navLang.startsWith("pt")) return "BR";
+                // Default to Spain for Spanish (Arbitrary but safe-ish, better than US for metric/formatting?)
+                // Actually, let's stick to US for others unless we are sure, but pt->BR is the critical fix for this user.
+                if (navLang.startsWith("es")) return "ES";
+            }
+        }
+        return "US";
+    });
 
     // Persist language changes
     useEffect(() => {

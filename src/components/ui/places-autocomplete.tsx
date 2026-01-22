@@ -25,6 +25,7 @@ export interface Place {
         city?: string
         town?: string
         village?: string
+        hamlet?: string
         municipality?: string
         state?: string
         state_district?: string
@@ -37,16 +38,18 @@ export interface Place {
 interface PlacesAutocompleteProps {
     value?: string
     onChange: (value: string) => void
+    onPlaceSelect?: () => void
     placeholder?: string
     className?: string
 }
 
-export function PlacesAutocomplete({
+export const PlacesAutocomplete = React.forwardRef<HTMLInputElement, PlacesAutocompleteProps>(({
     value,
     onChange,
+    onPlaceSelect,
     placeholder = "Search for a city...",
     className,
-}: PlacesAutocompleteProps) {
+}, ref) => {
     const [open, setOpen] = React.useState(false)
     const [inputValue, setInputValue] = React.useState(value || "")
     const [places, setPlaces] = React.useState<Place[]>([])
@@ -78,7 +81,7 @@ export function PlacesAutocomplete({
                 const response = await fetch(
                     `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
                         debouncedValue
-                    )}&addressdetails=1&limit=20`, // Increased limit to allow for filtering
+                    )}&addressdetails=1&limit=30`, // Increased limit
                     {
                         headers: {
                             "User-Agent": "SoulMapAlchemy/1.0",
@@ -88,24 +91,45 @@ export function PlacesAutocomplete({
                 )
                 const data: Place[] = await response.json()
 
-                // Strict filtering for cities only
+                // Filter logic
                 const filteredPlaces = data.filter((place) => {
                     const type = place.addresstype || place.type;
-                    const acceptedTypes = ['city', 'town', 'village', 'municipality', 'hamlet', 'borough', 'suburb'];
-                    const excludedTypes = ['country', 'state', 'state_district', 'region', 'continent', 'postcode'];
+
+                    // What to exclude explicitly
+                    const excludedTypes = [
+                        'continent', 'country', 'state', 'region', 'state_district',
+                        'postcode', 'road', 'neighbourhood', 'quarter', 'commercial',
+                        'residential', 'industrial', 'attraction' // Avoid street/neighborhood level if possible, we want cities
+                    ];
 
                     if (excludedTypes.includes(type || '')) return false;
 
-                    // Specific check: if it has display_name starting with the query but is a state/country, ignore
-                    // But simpler: just check if it fits the accepted types or has a city-like structure in address
-                    const hasCityLike = place.address.city || place.address.town || place.address.village || place.address.municipality;
-
-                    return acceptedTypes.includes(type || '') || (hasCityLike && !excludedTypes.includes(type || ''));
+                    // Must have some city-like distinctness or be a valid administrative boundary
+                    // But "Joinville" might come as "administrative"
+                    return true;
                 });
 
-                // Deduplicate by basic name to avoid "Brasilia, DF" and "Brasilia, Brasil" separate vague entries
-                // Keep the top 5 after filtering
-                setPlaces(filteredPlaces.slice(0, 5))
+                // Deduplicate by formatted address
+                const uniquePlaces = new Map();
+                filteredPlaces.forEach(place => {
+                    const addr = place.address;
+                    // Heuristic for city name:
+                    const city = addr.city || addr.town || addr.village || addr.municipality || addr.hamlet || place.display_name.split(',')[0];
+                    const state = addr.state || addr.state_district || addr.region;
+                    const country = addr.country;
+
+                    // Format: City, State, Country
+                    const parts = [city];
+                    if (state) parts.push(state);
+                    if (country) parts.push(country);
+
+                    const fullStr = parts.filter(Boolean).join(", ");
+                    if (!uniquePlaces.has(fullStr)) {
+                        uniquePlaces.set(fullStr, place);
+                    }
+                });
+
+                setPlaces(Array.from(uniquePlaces.values()).slice(0, 5))
             } catch (error) {
                 console.error("Error fetching places:", error)
                 setPlaces([])
@@ -127,8 +151,6 @@ export function PlacesAutocomplete({
 
     // ... inside component
 
-
-
     // ... rendering
 
     return (
@@ -136,6 +158,7 @@ export function PlacesAutocomplete({
             <PopoverTrigger asChild>
                 <div className="relative w-full">
                     <Input
+                        ref={ref}
                         placeholder={placeholder}
                         value={inputValue}
                         onChange={(e) => {
@@ -168,7 +191,7 @@ export function PlacesAutocomplete({
                         <CommandGroup>
                             {places.map((place) => {
                                 const addr = place.address;
-                                const city = addr.city || addr.town || addr.village || addr.municipality || place.display_name.split(',')[0];
+                                const city = addr.city || addr.town || addr.village || addr.municipality || addr.hamlet || place.display_name.split(',')[0];
                                 const state = addr.state || addr.state_district || addr.region;
                                 const country = addr.country;
 
@@ -176,15 +199,13 @@ export function PlacesAutocomplete({
                                 const parts = [city];
                                 if (state) parts.push(state);
                                 if (country) parts.push(country);
-                                const uniqueParts = parts.filter((item, index) => parts.indexOf(item) === index);
-                                const fullAddress = uniqueParts.join(", ");
+                                const fullAddress = parts.filter(Boolean).join(", ");
 
-                                // Build the "rest" of the address for display
+                                // For display, we want bold City, then State, Country
                                 const restParts = [];
                                 if (state) restParts.push(state);
                                 if (country) restParts.push(country);
-                                const uniqueRestParts = restParts.filter((item, index) => restParts.indexOf(item) === index);
-                                const restAddress = uniqueRestParts.join(", ");
+                                const restAddress = restParts.filter(Boolean).join(", ");
 
                                 const countryCode = place.address.country_code;
                                 const flag = countryCode ? getFlagEmoji(countryCode) : "🌍";
@@ -197,6 +218,9 @@ export function PlacesAutocomplete({
                                             setInputValue(fullAddress)
                                             onChange(fullAddress)
                                             setOpen(false)
+                                            if (onPlaceSelect) {
+                                                onPlaceSelect()
+                                            }
                                         }}
                                         className="cursor-pointer"
                                     >
@@ -220,4 +244,5 @@ export function PlacesAutocomplete({
             </PopoverContent>
         </Popover>
     )
-}
+})
+PlacesAutocomplete.displayName = "PlacesAutocomplete"
