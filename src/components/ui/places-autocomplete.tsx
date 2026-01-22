@@ -16,142 +16,136 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-export interface Place {
-    place_id: number
-    display_name: string
-    type?: string
-    addresstype?: string
-    address: {
-        city?: string
-        town?: string
-        village?: string
-        hamlet?: string
-        municipality?: string
-        state?: string
-        state_district?: string
-        region?: string
-        country?: string
-        country_code?: string
-    }
+export interface PlaceResult {
+    description: string;
+    details?: any; 
 }
 
 interface PlacesAutocompleteProps {
-    value?: string
-    onChange: (value: string) => void
-    onPlaceSelect?: () => void
-    placeholder?: string
-    className?: string
+    value?: string;
+    onChange: (value: string) => void;
+    onPlaceSelect?: (place: PlaceResult) => void;
+    placeholder?: string;
+    className?: string;
 }
 
 export const PlacesAutocomplete = React.forwardRef<HTMLInputElement, PlacesAutocompleteProps>(({
     value,
     onChange,
     onPlaceSelect,
-    placeholder = "Search for a city...",
+    placeholder = "Search for a city...", // Voltei para o original (Inglês/Genérico)
     className,
 }, ref) => {
     const [open, setOpen] = React.useState(false)
     const [inputValue, setInputValue] = React.useState(value || "")
-    const [places, setPlaces] = React.useState<Place[]>([])
-    const [loading, setLoading] = React.useState(false)
+    const [predictions, setPredictions] = React.useState<any[]>([]) 
+    const [isFetching, setIsFetching] = React.useState(false)
 
-    const debouncedValue = useDebounce(inputValue, 500)
+    // Google Services
+    const [autocompleteService, setAutocompleteService] = React.useState<any>(null);
+    const [placesService, setPlacesService] = React.useState<any>(null);
+    const [sessionToken, setSessionToken] = React.useState<any>(null);
 
-    // Update local input if external value changes (and is different from what we have)
+    const debouncedValue = useDebounce(inputValue, 300)
+
+    // Loading visual imediato
+    const isLoading = isFetching || (inputValue !== debouncedValue && inputValue.length > 2);
+
+    React.useEffect(() => {
+        const initGoogle = () => {
+            const w = window as any;
+            if (w.google && w.google.maps && w.google.maps.places) {
+                setAutocompleteService(new w.google.maps.places.AutocompleteService());
+                setPlacesService(new w.google.maps.places.PlacesService(document.createElement('div')));
+                setSessionToken(new w.google.maps.places.AutocompleteSessionToken());
+            } else {
+                 const checkInterval = setInterval(() => {
+                    const w2 = window as any;
+                    if (w2.google && w2.google.maps && w2.google.maps.places) {
+                        setAutocompleteService(new w2.google.maps.places.AutocompleteService());
+                        setPlacesService(new w2.google.maps.places.PlacesService(document.createElement('div')));
+                        setSessionToken(new w2.google.maps.places.AutocompleteSessionToken());
+                        clearInterval(checkInterval);
+                    }
+                }, 500);
+                setTimeout(() => clearInterval(checkInterval), 5000);
+            }
+        };
+        initGoogle();
+    }, []);
+
     React.useEffect(() => {
         if (value !== undefined && value !== inputValue) {
             setInputValue(value)
         }
     }, [value])
 
-
     React.useEffect(() => {
-        if (!debouncedValue || debouncedValue.length < 3) {
-            setPlaces([])
+        let active = true;
+
+        if (!debouncedValue || debouncedValue.length < 3 || !autocompleteService || !sessionToken) {
+            setPredictions([])
             return
         }
 
-        // Avoid searching if the debounced value matches the currently selected value exactly
-        // to prevent reopening the list after selection (optional, depends on UX preference)
         if (debouncedValue === value) return;
 
-        setLoading(true)
-        const fetchPlaces = async () => {
-            try {
-                const response = await fetch(
-                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-                        debouncedValue
-                    )}&addressdetails=1&limit=30`, // Increased limit
-                    {
-                        headers: {
-                            "User-Agent": "SoulMapAlchemy/1.0",
-                            "Accept-Language": "pt-BR,en-US;q=0.8" // Prefer Portuguese/English
-                        }
-                    }
-                )
-                const data: Place[] = await response.json()
+        setIsFetching(true)
 
-                // Filter logic
-                const filteredPlaces = data.filter((place) => {
-                    const type = place.addresstype || place.type;
+        const request = {
+            input: debouncedValue,
+            types: ['(cities)'],
+            sessionToken: sessionToken
+            // REMOVIDO: language: 'pt-BR' -> Agora respeita o idioma do browser do usuário
+        };
 
-                    // What to exclude explicitly
-                    const excludedTypes = [
-                        'continent', 'country', 'state', 'region', 'state_district',
-                        'postcode', 'road', 'neighbourhood', 'quarter', 'commercial',
-                        'residential', 'industrial', 'attraction' // Avoid street/neighborhood level if possible, we want cities
-                    ];
-
-                    if (excludedTypes.includes(type || '')) return false;
-
-                    // Must have some city-like distinctness or be a valid administrative boundary
-                    // But "Joinville" might come as "administrative"
-                    return true;
-                });
-
-                // Deduplicate by formatted address
-                const uniquePlaces = new Map();
-                filteredPlaces.forEach(place => {
-                    const addr = place.address;
-                    // Heuristic for city name:
-                    const city = addr.city || addr.town || addr.village || addr.municipality || addr.hamlet || place.display_name.split(',')[0];
-                    const state = addr.state || addr.state_district || addr.region;
-                    const country = addr.country;
-
-                    // Format: City, State, Country
-                    const parts = [city];
-                    if (state) parts.push(state);
-                    if (country) parts.push(country);
-
-                    const fullStr = parts.filter(Boolean).join(", ");
-                    if (!uniquePlaces.has(fullStr)) {
-                        uniquePlaces.set(fullStr, place);
-                    }
-                });
-
-                setPlaces(Array.from(uniquePlaces.values()).slice(0, 5))
-            } catch (error) {
-                console.error("Error fetching places:", error)
-                setPlaces([])
-            } finally {
-                setLoading(false)
+        autocompleteService.getPlacePredictions(request, (results: any[], status: any) => {
+            if (!active) return;
+            
+            setIsFetching(false)
+            if (results && status === 'OK') {
+                setPredictions(results);
+            } else {
+                setPredictions([]);
             }
+        });
+
+        return () => {
+            active = false;
+            setIsFetching(false);
+        };
+
+    }, [debouncedValue, autocompleteService, sessionToken])
+
+    const handleSelect = (prediction: any) => {
+        const description = prediction.description;
+        setInputValue(description);
+        onChange(description);
+        setOpen(false);
+
+        if (placesService && sessionToken) {
+            const request = {
+                placeId: prediction.place_id,
+                fields: ['address_components', 'formatted_address', 'geometry', 'name'],
+                sessionToken: sessionToken
+            };
+
+            placesService.getDetails(request, (placeDetails: any, status: any) => {
+                if (status === 'OK' && placeDetails) {
+                    if (onPlaceSelect) {
+                        onPlaceSelect({
+                            description: description,
+                            details: placeDetails
+                        });
+                    }
+                    const w = window as any;
+                    if (w.google && w.google.maps && w.google.maps.places) {
+                        setSessionToken(new w.google.maps.places.AutocompleteSessionToken());
+                    }
+                }
+            });
         }
-
-        fetchPlaces()
-    }, [debouncedValue])
-
-    const getFlagEmoji = (countryCode: string) => {
-        const codePoints = countryCode
-            .toUpperCase()
-            .split('')
-            .map(char => 127397 + char.charCodeAt(0));
-        return String.fromCodePoint(...codePoints);
-    }
-
-    // ... inside component
-
-    // ... rendering
+    };
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -163,14 +157,22 @@ export const PlacesAutocomplete = React.forwardRef<HTMLInputElement, PlacesAutoc
                         value={inputValue}
                         onChange={(e) => {
                             setInputValue(e.target.value)
-                            if (!open) setOpen(true)
+                            if (!open && e.target.value.length > 0) setOpen(true)
                         }}
-                        onFocus={() => setOpen(true)}
+                        onFocus={() => {
+                            if (predictions.length > 0 || inputValue.length >= 3) setOpen(true)
+                        }}
                         className={cn("bg-background/50 border-border focus:border-primary pl-9", className)}
                         role="combobox"
                         aria-expanded={open}
                     />
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    
+                    {isLoading && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                            <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                        </div>
+                    )}
                 </div>
             </PopoverTrigger>
             <PopoverContent
@@ -180,64 +182,36 @@ export const PlacesAutocomplete = React.forwardRef<HTMLInputElement, PlacesAutoc
             >
                 <Command shouldFilter={false}>
                     <CommandList>
-                        {loading && (
-                            <div className="flex items-center justify-center p-4">
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                            </div>
+                        
+                        {!isLoading && predictions.length === 0 && debouncedValue.length >= 3 && (
+                            <CommandEmpty>No cities found.</CommandEmpty> // Voltei para o original (Inglês)
                         )}
-                        {!loading && places.length === 0 && debouncedValue.length >= 3 && (
-                            <CommandEmpty>No cities found.</CommandEmpty>
-                        )}
+                        
                         <CommandGroup>
-                            {places.map((place) => {
-                                const addr = place.address;
-                                const city = addr.city || addr.town || addr.village || addr.municipality || addr.hamlet || place.display_name.split(',')[0];
-                                const state = addr.state || addr.state_district || addr.region;
-                                const country = addr.country;
-
-                                // Build the full string for the value prop
-                                const parts = [city];
-                                if (state) parts.push(state);
-                                if (country) parts.push(country);
-                                const fullAddress = parts.filter(Boolean).join(", ");
-
-                                // For display, we want bold City, then State, Country
-                                const restParts = [];
-                                if (state) restParts.push(state);
-                                if (country) restParts.push(country);
-                                const restAddress = restParts.filter(Boolean).join(", ");
-
-                                const countryCode = place.address.country_code;
-                                const flag = countryCode ? getFlagEmoji(countryCode) : "🌍";
-
-                                return (
-                                    <CommandItem
-                                        key={place.place_id}
-                                        value={fullAddress}
-                                        onSelect={() => {
-                                            setInputValue(fullAddress)
-                                            onChange(fullAddress)
-                                            setOpen(false)
-                                            if (onPlaceSelect) {
-                                                onPlaceSelect()
-                                            }
-                                        }}
-                                        className="cursor-pointer"
-                                    >
-                                        <span className="mr-3 text-lg" role="img" aria-label={countryCode}>{flag}</span>
-                                        <span>
-                                            <span className="font-bold">{city}</span>
-                                            {restAddress && <span className="text-muted-foreground">, {restAddress}</span>}
+                            {predictions.map((prediction) => (
+                                <CommandItem
+                                    key={prediction.place_id}
+                                    value={prediction.description}
+                                    onSelect={() => handleSelect(prediction)}
+                                    className="cursor-pointer aria-selected:bg-primary/20"
+                                >
+                                    <MapPin className="mr-2 h-4 w-4 text-muted-foreground shrink-0" />
+                                    <div className="flex flex-col overflow-hidden">
+                                        <span className="font-semibold text-foreground truncate">
+                                            {prediction.structured_formatting.main_text}
                                         </span>
-                                        <Check
-                                            className={cn(
-                                                "ml-auto h-4 w-4",
-                                                value === fullAddress ? "opacity-100" : "opacity-0"
-                                            )}
-                                        />
-                                    </CommandItem>
-                                )
-                            })}
+                                        <span className="text-xs text-muted-foreground truncate">
+                                            {prediction.structured_formatting.secondary_text}
+                                        </span>
+                                    </div>
+                                    <Check
+                                        className={cn(
+                                            "ml-auto h-4 w-4 text-primary shrink-0",
+                                            value === prediction.description ? "opacity-100" : "opacity-0"
+                                        )}
+                                    />
+                                </CommandItem>
+                            ))}
                         </CommandGroup>
                     </CommandList>
                 </Command>

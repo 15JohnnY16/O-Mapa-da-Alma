@@ -16,6 +16,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format, parse, isValid } from "date-fns";
 import { ptBR, es, enUS } from "date-fns/locale";
+import { PlacesAutocomplete } from "@/components/ui/places-autocomplete";
 
 
 const createFormSchema = (t: typeof translations["pt"]) => z.object({
@@ -671,18 +672,16 @@ const FormSection = () => {
                   <FormItem>
                     <FormLabel className="text-foreground">{t.birthCityLabel}</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
+                      <PlacesAutocomplete
+                        value={field.value}
+                        onChange={field.onChange}
                         placeholder={country === 'BR' ? "Ex: Campinas - SP" : "Ex: New York, NY"}
                         className="bg-background/50 border-border focus:border-primary"
                         ref={cityRef}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            if (phoneRef.current) {
-                              // Assuming standard behavior for now.
-                              phoneRef.current.focus();
-                            }
+                        onPlaceSelect={() => {
+                          // Try to focus phone input
+                          if (phoneRef.current) {
+                            phoneRef.current.focus();
                           }
                         }}
                       />
