@@ -512,6 +512,8 @@ const FormSection = () => {
                   render={({ field }) => {
                     const [day, setDay] = useState("");
                     const [month, setMonth] = useState("");
+                    const [monthDisplay, setMonthDisplay] = useState("");
+                    const monthValRef = useRef(""); // Ref to track current input value synchronously
                     const [year, setYear] = useState("");
 
                     // Initialize generic months for dropdown
@@ -591,24 +593,146 @@ const FormSection = () => {
                           </FormControl>
 
                           <div className="flex-1 relative">
-                            <select
-                              className="flex h-10 w-full rounded-md border border-border bg-background/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none"
-                              value={month}
-                              ref={monthRef}
+                            <Input
+                              placeholder="Mês"
+                              className="bg-background/50 border-border focus:border-primary text-center px-1"
+                              value={monthDisplay} // Use separate display state
+                              onFocus={(e) => {
+                                e.target.select();
+                                monthValRef.current = monthDisplay; // Sync ref on focus
+                              }}
                               onChange={(e) => {
-                                setMonth(e.target.value);
-                                if (e.target.value) {
-                                  yearRef.current?.focus();
+                                // Logic:
+                                // 1. Allow digits.
+                                // 2. If valid number found, map to month name, setMonth(value), focus Year
+                                // 3. If partial (0 or 1), updat display, wait.
+                                // 4. If user deletes, clear.
+                                const val = e.target.value;
+                                monthValRef.current = val; // Always sync ref first
+
+                                // Filter non-digits? 
+                                // But we want to allow the month name to stay if they didn't touch it.
+                                // Actually, we only care about the new numeric input usually.
+                                // If they backspace a letter of "Janeiro", we should probably clear.
+                                const numericOnly = val.replace(/\D/g, '');
+
+                                // Handling the case where we had "Janeiro" and they typed "2" at the end -> "Janeiro2" -> regex "2" (if we ignore prior text?)
+                                // But simpler: just take the string.
+
+                                // If the user completely cleared it
+                                if (val === "") {
+                                  setMonthDisplay("");
+                                  setMonth("");
+                                  return;
+                                }
+
+                                // If it matches a month name (partially or fully), let it be?
+                                // But this is a numeric input for months.
+                                // If user types "2", value is "2".
+                                // If state was "Fevereiro", value becomes "Fevereiro2" or "2" depending on selection.
+                                // If select() worked, it is "2".
+
+                                // Strict numeric handling for the *entry* phase.
+                                // Check if the *new* value implies a number.
+                                if (/^\d+$/.test(val)) {
+                                  const num = parseInt(val);
+
+                                  // Logic check
+                                  if (num >= 2 && num <= 9) {
+                                    // Immediate match (Feb - Sep)
+                                    if (val.length === 1) { // Only if they just typed the single digit
+                                      const mIndex = num - 1;
+                                      const mName = months[mIndex].label;
+                                      setMonth(mIndex.toString());
+                                      setMonthDisplay(mName);
+                                      // Update ref to the name so onBlur doesn't think it's a number to re-parse
+                                      monthValRef.current = mName;
+                                      yearRef.current?.focus();
+                                      return;
+                                    }
+                                  }
+
+                                  if (num > 12) {
+                                    // Invalid.
+                                    // Do nothing or prevent update?
+                                    // For now, let's just not update state if possible or keep previous?
+                                    // Actually, we must allow updating state or input freezes. 
+                                    // If user types 13, maybe just clear it or let them see 13 and correct it?
+                                    // Default behavior: let them type, rely on blur validation or just clamp?
+                                    // Let's just update display.
+                                  }
+
+                                  // If num is 10, 11, 12 -> Valid.
+                                  if (val.length === 2) {
+                                    if (num >= 1 && num <= 12) {
+                                      const mIndex = num - 1;
+                                      const mName = months[mIndex].label;
+                                      setMonth(mIndex.toString());
+                                      setMonthDisplay(mName);
+                                      monthValRef.current = mName; // Sync ref
+                                      yearRef.current?.focus();
+                                      return;
+                                    }
+                                  }
+
+                                  // If 0, 1 -> Ambiguous, just update display
+                                  setMonthDisplay(val);
+                                  setMonth("");
+                                } else {
+                                  // User might be backspacing characters of "Janeiro"
+                                  // If valid date isn't preserved, clear it
+                                  // If val is not digits, it might be "Janeiro". 
+                                  // If it is strictly equal to one of our months, keep it.
+                                  // Else, clear.
+                                  const normalize = (s: string) => s.toLowerCase();
+                                  const match = months.find(m => normalize(m.label).startsWith(normalize(val)));
+                                  if (!match) {
+                                    setMonthDisplay(val); // Let them type? Or force clear?
+                                    setMonth("");
+                                  } else {
+                                    setMonthDisplay(val); // Update display (e.g. "Janeir")
+                                  }
                                 }
                               }}
-                            >
-                              <option value="" disabled>Mês</option>
-                              {months.map((m) => (
-                                <option key={m.value} value={m.value} className="bg-popover text-popover-foreground">
-                                  {m.label}
-                                </option>
-                              ))}
-                            </select>
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === "Tab") {
+                                  const val = monthValRef.current;
+                                  // validation on leave
+                                  if (val === "1" || val === "01") {
+                                    const mIndex = 0; // Jan
+                                    setMonth("0");
+                                    setMonthDisplay(months[0].label);
+                                    monthValRef.current = months[0].label;
+                                    if (e.key === "Enter") {
+                                      e.preventDefault();
+                                      yearRef.current?.focus();
+                                    }
+                                  }
+                                  // If "0" -> usually invalid for 1-based month. 
+                                  // If they type 0 and leave, we might default to Jan or Error?
+                                  // Let's ignore "0".
+                                }
+                              }}
+                              onBlur={() => {
+                                const val = monthValRef.current;
+                                // Same as enter logic logic: consistency
+                                if (val === "1" || val === "01") {
+                                  setMonth("0");
+                                  setMonthDisplay(months[0].label);
+                                  monthValRef.current = months[0].label;
+                                }
+                                // If it's a number 2-12 that somehow stuck (rare due to onChange), map it
+                                if (/^\d+$/.test(val)) {
+                                  const n = parseInt(val);
+                                  if (n >= 1 && n <= 12) {
+                                    setMonth((n - 1).toString());
+                                    setMonthDisplay(months[n - 1].label);
+                                    monthValRef.current = months[n - 1].label;
+                                  }
+                                }
+                              }}
+                              ref={monthRef as any} // Cast because input ref vs select ref
+                            />
                           </div>
 
                           <FormControl>
