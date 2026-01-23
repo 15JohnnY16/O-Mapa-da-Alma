@@ -28,6 +28,8 @@ const createFormSchema = (t: typeof translations["pt"]) => z.object({
   birthDate: z.date({ required_error: t.errors.birthDateInvalid }),
   birthTime: z.string().trim().min(4, t.errors.birthTimeInvalid),
   birthCity: z.string().trim().min(3, t.errors.birthCityInvalid),
+  latitude: z.string().optional(),
+  longitude: z.string().optional(),
 });
 
 type FormData = {
@@ -38,6 +40,8 @@ type FormData = {
   birthDate: Date;
   birthTime: string;
   birthCity: string;
+  latitude?: string;
+  longitude?: string;
 };
 
 // Extracted component to ensure stable hooks and state
@@ -316,6 +320,8 @@ const FormSection = () => {
       phone: "",
       birthTime: "",
       birthCity: "",
+      latitude: "",
+      longitude: "",
     },
   });
 
@@ -361,7 +367,9 @@ const FormSection = () => {
         phone: data.phone,
         birthDate: formattedDate, // Data formatada
         birthTime: data.birthTime,
-        birthCity: data.birthCity
+        birthCity: data.birthCity,
+        latitude: data.latitude,
+        longitude: data.longitude
       };
 
       // 3. Enviar para a HostGator
@@ -796,19 +804,33 @@ const FormSection = () => {
                   <FormItem>
                     <FormLabel className="text-foreground">{t.birthCityLabel}</FormLabel>
                     <FormControl>
-                      <PlacesAutocomplete
-                        value={field.value}
-                        onChange={field.onChange}
-                        placeholder={country === 'BR' ? "Ex: Campinas - SP" : "Ex: New York, NY"}
-                        className="bg-background/50 border-border focus:border-primary"
-                        ref={cityRef}
-                        onPlaceSelect={() => {
-                          // Try to focus phone input
-                          if (phoneRef.current) {
-                            phoneRef.current.focus();
-                          }
-                        }}
-                      />
+                      <div className="space-y-2">
+                        <PlacesAutocomplete
+                          value={field.value}
+                          onChange={field.onChange}
+                          placeholder={country === 'BR' ? "Ex: Campinas - SP" : "Ex: New York, NY"}
+                          className="bg-background/50 border-border focus:border-primary"
+                          ref={cityRef}
+                          onPlaceSelect={(place) => {
+                            // Extract lat/lng
+                            const location = place.details?.geometry?.location;
+                            if (location) {
+                              const lat = typeof location.lat === 'function' ? location.lat() : location.lat;
+                              const lng = typeof location.lng === 'function' ? location.lng() : location.lng;
+
+                              form.setValue('latitude', String(lat));
+                              form.setValue('longitude', String(lng));
+                            }
+
+                            // Auto focus phone input
+                            if (phoneRef.current) {
+                              phoneRef.current.focus();
+                            }
+                          }}
+                        />
+                        <input type="hidden" {...form.register('latitude')} />
+                        <input type="hidden" {...form.register('longitude')} />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -891,7 +913,7 @@ const FormSection = () => {
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 };
 
