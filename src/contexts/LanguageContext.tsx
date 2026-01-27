@@ -1,72 +1,18 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import * as RPNInput from "react-phone-number-input";
-import { getLanguageFromCountry, Language, translations } from "../lib/i18n";
 
 type LanguageContextType = {
-    language: Language;
-    setLanguage: (lang: Language) => void;
     country: RPNInput.Country;
     setCountry: (country: RPNInput.Country) => void;
-    t: typeof translations["pt"];
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-    const [language, setLanguage] = useState<Language>(() => {
-        // Priority 1: URL Query Param
-        if (typeof window !== "undefined") {
-            const params = new URLSearchParams(window.location.search);
-            const langParam = params.get("lang");
-            if (langParam === "pt" || langParam === "es" || langParam === "en") {
-                return langParam;
-            }
-        }
-
-        // Priority 2: LocalStorage
-        if (typeof window !== "undefined") {
-            const storedLang = localStorage.getItem("soul-map-language");
-            if (storedLang === "pt" || storedLang === "es" || storedLang === "en") {
-                return storedLang;
-            }
-        }
-
-        // Priority 3: Browser Language (Navigator)
-        if (typeof window !== "undefined") {
-            const navLang = navigator.language || navigator.languages?.[0];
-            if (navLang) {
-                if (navLang.startsWith("pt")) return "pt";
-                if (navLang.startsWith("es")) return "es";
-            }
-        }
-
-        // Default to English initially (will be refined by IP if needed, but usually En is safe default)
-        return "en";
-    });
-
-    const [country, setCountry] = useState<RPNInput.Country>(() => {
-        // Priority 1: Browser Language (Navigator) for initial guess
-        if (typeof window !== "undefined") {
-            const navLang = navigator.language || navigator.languages?.[0];
-            if (navLang) {
-                // Default to Brazil for Portuguese users (High probability and fixes 24h format expectations)
-                if (navLang.startsWith("pt")) return "BR";
-                // Default to Spain for Spanish (Arbitrary but safe-ish, better than US for metric/formatting?)
-                // Actually, let's stick to US for others unless we are sure, but pt->BR is the critical fix for this user.
-                if (navLang.startsWith("es")) return "ES";
-            }
-        }
-        return "US";
-    });
-
-    // Persist language changes
-    useEffect(() => {
-        localStorage.setItem("soul-map-language", language);
-    }, [language]);
+    const [country, setCountry] = useState<RPNInput.Country>("BR");
 
     useEffect(() => {
         const detectLocation = async () => {
-            // Service 1: ipapi.co (Simple text)
             try {
                 const response = await fetch("https://ipapi.co/country/");
                 if (response.ok) {
@@ -74,14 +20,13 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
                     const countryCode = data.trim() as RPNInput.Country;
                     if (countryCode && countryCode.length === 2) {
                         setCountry(countryCode);
-                        return; // Success
+                        return;
                     }
                 }
             } catch (e) {
                 console.warn("ipapi.co failed, trying fallback 1");
             }
 
-            // Service 2: api.country.is (Reliable, JSON)
             try {
                 const response = await fetch("https://api.country.is");
                 if (response.ok) {
@@ -89,14 +34,13 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
                     const countryCode = data.country as RPNInput.Country;
                     if (countryCode && countryCode.length === 2) {
                         setCountry(countryCode);
-                        return; // Success
+                        return;
                     }
                 }
             } catch (e) {
                 console.warn("api.country.is failed, trying fallback 2");
             }
 
-            // Service 3: ipwho.is (JSON, no SSL sometimes but usually ok)
             try {
                 const response = await fetch("https://ipwho.is/");
                 if (response.ok) {
@@ -116,11 +60,8 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
     }, []);
 
     const value = {
-        language,
-        setLanguage,
         country,
         setCountry,
-        t: translations[language],
     };
 
     return (

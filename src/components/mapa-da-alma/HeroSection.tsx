@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Compass } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { translations as t } from "@/lib/i18n";
 
 const HeroSection = () => {
-  const { t } = useLanguage();
 
   const scrollToForm = () => {
     document.getElementById("formulario")?.scrollIntoView({ behavior: "smooth" });

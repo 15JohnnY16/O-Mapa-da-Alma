@@ -1,5 +1,5 @@
 import { Star, Quote } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { translations as t } from "@/lib/i18n";
 import {
   Carousel,
   CarouselContent,
@@ -9,7 +9,6 @@ import {
 import { useEffect, useState } from "react";
 
 const AuthoritySection = () => {
-  const { t } = useLanguage();
   const [api, setApi] = useState<CarouselApi>();
 
   // Use "as any" to access properties that might not exist in all language types yet

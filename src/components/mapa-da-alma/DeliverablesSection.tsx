@@ -1,8 +1,7 @@
 import { Flame, Moon, Zap, Clock, Target, Compass } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { translations as t } from "@/lib/i18n";
 
 const DeliverablesSection = () => {
-  const { t } = useLanguage();
 
   const deliverables = [
     {
@@ -53,8 +52,8 @@ const DeliverablesSection = () => {
             <div
               key={index}
               className={`group relative p-6 md:p-8 rounded-2xl border transition-all duration-300 ${item.featured
-                  ? "border-primary/50 bg-primary/5 hover:border-primary"
-                  : "border-border bg-card/50 hover:border-primary/30"
+                ? "border-primary/50 bg-primary/5 hover:border-primary"
+                : "border-border bg-card/50 hover:border-primary/30"
                 }`}
             >
               {/* Featured badge */}
@@ -76,8 +75,8 @@ const DeliverablesSection = () => {
                   <h3 className="font-serif text-xl text-foreground">{item.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
                   <span className={`inline-block text-xs font-medium px-2 py-1 rounded-full ${item.featured
-                      ? "bg-primary/20 text-primary"
-                      : "bg-secondary text-foreground"
+                    ? "bg-primary/20 text-primary"
+                    : "bg-secondary text-foreground"
                     }`}>
                     {item.highlight}
                   </span>

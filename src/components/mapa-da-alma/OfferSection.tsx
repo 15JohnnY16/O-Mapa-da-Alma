@@ -1,9 +1,8 @@
-import { ShieldCheck, Lock, Zap, AlertTriangle } from "lucide-react";
+import { ShieldCheck, Lock, Zap, AlertTriangle, Fingerprint } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { translations as t } from "@/lib/i18n";
 
 const OfferSection = () => {
-  const { t } = useLanguage();
 
   const scrollToForm = () => {
     document.getElementById("formulario")?.scrollIntoView({ behavior: "smooth" });
@@ -83,10 +82,10 @@ const OfferSection = () => {
                   </div>
                 </div>
 
-                {/* Badge 3: Delivery */}
+                {/* Badge 3: Artesanal */}
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-                    <Zap className="w-6 h-6 text-purple-500" />
+                    <Fingerprint className="w-6 h-6 text-purple-500" />
                   </div>
                   <div>
                     <h4 className="text-purple-500 font-semibold">{(t.offer as any).badges?.badge3Title}</h4>

@@ -5,10 +5,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { HelpCircle } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { translations as t } from "@/lib/i18n";
 
 const FAQSection = () => {
-  const { t } = useLanguage();
 
   const faqs = [
     {

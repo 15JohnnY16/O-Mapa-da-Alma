@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { translations as t } from "@/lib/i18n";
 
 interface CheckoutButtonProps {
   mpLink: string; // O link que vais gerar no MercadoPago
@@ -13,7 +13,6 @@ export const CheckoutButton: React.FC<CheckoutButtonProps> = ({
   text,
   className
 }) => {
-  const { t } = useLanguage();
   const buttonText = text || t.checkout.defaultText;
 
   const handleCheckout = () => {

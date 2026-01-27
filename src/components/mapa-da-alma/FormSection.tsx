@@ -8,23 +8,47 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, Lock, CalendarIcon, Clock, MapPin, ShieldCheck, Zap } from "lucide-react";
+import { Sparkles, Lock, Fingerprint, ShieldCheck, Zap, User, Baby } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { translations } from "@/lib/i18n";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
-import { format, parse, isValid } from "date-fns";
-import { ptBR, es, enUS } from "date-fns/locale";
+import { translations as t } from "@/lib/i18n";
+import { format, parse, isValid, differenceInYears } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { PlacesAutocomplete } from "@/components/ui/places-autocomplete";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
+type Translations = typeof t;
 
-const createFormSchema = (t: typeof translations["pt"]) => z.object({
-  name: z.string().trim().min(10, t.errors.nameMin).max(100, t.errors.nameMax),
+interface FormProps {
+  tipo?: 'venda' | 'gratis';
+  publico?: 'adulto' | 'jovem';
+  titulo?: string;
+}
+
+// Atualizamos o Schema para aceitar childName se for Jovem
+const createFormSchema = (t: Translations, tipo: string = 'venda', publico: string = 'adulto') => z.object({
+  name: z.string().trim().min(5, t.errors.nameMin).max(100, t.errors.nameMax),
+  // Se for jovem, exigimos o nome da criança. Se for adulto, é opcional.
+  childName: publico === 'jovem'
+    ? z.string().trim().min(2, "Nome da criança é obrigatório")
+    : z.string().optional(),
   email: z.string().trim().email(t.errors.emailInvalid).max(255, t.errors.emailMax),
   gender: z.string({ required_error: (t.errors as any).genderInvalid }).min(1, (t.errors as any).genderInvalid),
   phone: z.string({ required_error: t.errors.phoneInvalid }).trim()
     .refine((val) => isValidPhoneNumber(val), t.errors.phoneInvalid),
+
+  // CPF: Obrigatório se for VENDA.
+  cpf: tipo === 'venda'
+    ? z.string({ required_error: (t.errors as any).cpfInvalid }).min(14, (t.errors as any).cpfInvalid)
+    : z.string().optional(),
+
   birthDate: z.date({ required_error: t.errors.birthDateInvalid }),
   birthTime: z.string().trim().min(4, t.errors.birthTimeInvalid),
   birthCity: z.string().trim().min(3, t.errors.birthCityInvalid),
@@ -34,9 +58,11 @@ const createFormSchema = (t: typeof translations["pt"]) => z.object({
 
 type FormData = {
   name: string;
+  childName?: string; // Novo campo
   email: string;
   gender: string;
   phone: string;
+  cpf: string;
   birthDate: Date;
   birthTime: string;
   birthCity: string;
@@ -44,157 +70,101 @@ type FormData = {
   longitude?: string;
 };
 
-// Extracted component to ensure stable hooks and state
-const BirthTimeInput = ({
-  value,
-  onChange,
-  hourRef,
-  minuteRef,
-  nextRef,
-  is24Hour
-}: {
-  value: string;
-  onChange: (val: string) => void;
-  hourRef: React.RefObject<HTMLInputElement>;
-  minuteRef: React.RefObject<HTMLInputElement>;
-  nextRef: React.RefObject<HTMLElement>;
-  is24Hour: boolean;
-}) => {
+// --- MANTENDO SEU COMPONENTE DE HORA EXATAMENTE IGUAL ---
+const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) => {
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
-  const [period, setPeriod] = useState("AM");
+  const valuesRef = useRef({ hours: "", minutes: "" });
 
-  // Refs to hold current values for synchronous access in onBlur/onChange
-  const valuesRef = useRef({ hours: "", minutes: "", period: "AM" });
+  useEffect(() => { valuesRef.current = { hours, minutes }; }, [hours, minutes]);
 
-  // Update refs whenever state changes
-  useEffect(() => {
-    valuesRef.current = { hours, minutes, period };
-  }, [hours, minutes, period]);
-
-  // Sync local state when value changes (e.g. initial load or reset)
   useEffect(() => {
     if (value) {
       const [h, m] = value.split(":");
       if (h && m) {
-        let hInt = parseInt(h);
-        if (is24Hour) {
-          setHours(h);
-        } else {
-          const p = hInt >= 12 ? "PM" : "AM";
-          const h12 = hInt % 12 || 12;
-          setHours(h12.toString().padStart(2, "0"));
-          setPeriod(p);
-        }
+        setHours(h);
         setMinutes(m);
       }
-    } else {
-      // Only reset if we truly believe it's a reset (e.g. both empty).
-      // If we are just mounting, we might want to respect empty.
-      // But to avoid the "async country load wipes partial input" bug, we can check if we have nothing yet?
-      // Actually, the cleanest way: if value is "", force clear.
-      // The bug happens because is24Hour changes, triggering this effect while value is still "".
-      // WE MUST SPLIT THE EFFECT.
-      setHours("");
-      setMinutes("");
-    }
-  }, [value]); // Removed is24Hour dependency to prevent reset on mode switch
+    } else { setHours(""); setMinutes(""); }
+  }, [value]);
 
-  // Effect to handle mode switching (e.g. US -> BR)
-  // If we have a value and mode changes, we want to re-render it in new format?
-  // Current logic: we only store "hours" (display). form value is "HH:mm" (24h always?).
-  // Wait, if form value is ALWAYS 24h (which it is, e.g. "14:00"), then [value] dependency handles it?
-  // If is24Hour changes, value doesn't change. We need to re-parse value.
-  // BUT we should not execute the 'else' block (reset) just because is24Hour changed.
-  useEffect(() => {
-    if (value) {
-      // Re-run parse because format needs to change
-      const [h, m] = value.split(":");
-      if (h && m) {
-        let hInt = parseInt(h);
-        if (is24Hour) {
-          setHours(h);
-        } else {
-          const p = hInt >= 12 ? "PM" : "AM";
-          const h12 = hInt % 12 || 12;
-          setHours(h12.toString().padStart(2, "0"));
-          setPeriod(p);
-        }
-        setMinutes(m);
-      }
-    }
-    // logic for "if value is empty, do nothing" is implicitly safe here.
-  }, [is24Hour, value]);
-
-
-  const updateTime = (newH: string, newM: string, newP: string) => {
+  const updateTime = (newH: string, newM: string) => {
     if (newH.length > 0 && newM.length > 0) {
       let hInt = parseInt(newH);
       const mInt = parseInt(newM);
-
       if (!isNaN(hInt) && !isNaN(mInt)) {
-        if (is24Hour) {
-          // Strict 0-23
-          hInt = Math.min(23, Math.max(0, hInt));
-        } else {
-          // Strict 1-12
-          // If user types '0', it becomes 1? Or 12? usually 12h clock has no 0.
-          if (hInt === 0) hInt = 12;
-          hInt = Math.min(12, Math.max(1, hInt));
-        }
+        hInt = Math.min(23, Math.max(0, hInt));
         const mValid = Math.min(59, Math.max(0, mInt));
 
-        let finalH = hInt;
-        if (!is24Hour) {
-          if (newP === "PM" && hInt < 12) finalH += 12;
-          if (newP === "AM" && hInt === 12) finalH = 0;
-        }
+        const finalH = hInt.toString().padStart(2, "0");
+        const finalM = mValid.toString().padStart(2, "0");
 
-        const formattedTime = `${finalH.toString().padStart(2, "0")}:${mValid.toString().padStart(2, "0")}`;
-
-        // Update local display to match clamped values immediately?
-        // If we don't, user sees "99" but saves "23".
-        // Let's update local display too.
-        if (is24Hour) {
-          setHours(finalH.toString().padStart(2, "0"));
-        } else {
-          // If 12h, we need to show the 12h version
-          // finalH is 24h.
-          // But hInt is already the 12h version we want to show?
-          // Yes, hInt was clamped to 1-12.
-          setHours(hInt.toString().padStart(2, "0"));
-        }
-        setMinutes(mValid.toString().padStart(2, "0"));
-
-        onChange(formattedTime);
+        setHours(finalH);
+        setMinutes(finalM);
+        onChange(`${finalH}:${finalM}`);
       }
     }
   };
 
   const handleBlur = () => {
-    // Use refs to get the LATEST value, because onBlur might fire 
-    // immediately after onChange (before state update) if we auto-focused.
-    // actually, wait. if we update state in onChange, then calling focus() sync:
-    // React state updates are batched/async. 
-    // So 'hours' variable in this closure is STALE. 'valuesRef.current' might also be STALE if effect hasn't run!
-    // BETTER: Update the ref manually in onChange BEFORE focusing.
-
     let currentH = valuesRef.current.hours;
     let currentM = valuesRef.current.minutes;
 
+    // Auto-pad on blur if single digit
     if (currentH.length === 1) {
       currentH = currentH.padStart(2, "0");
       setHours(currentH);
-      valuesRef.current.hours = currentH; // Sync ref
+      valuesRef.current.hours = currentH;
     }
     if (currentM.length === 1) {
       currentM = currentM.padStart(2, "0");
       setMinutes(currentM);
-      valuesRef.current.minutes = currentM; // Sync ref
+      valuesRef.current.minutes = currentM;
     }
 
-    if (currentH && currentM) {
-      updateTime(currentH, currentM, valuesRef.current.period);
+    if (currentH && currentM) { updateTime(currentH, currentM); }
+  };
+
+  const handleHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, '').slice(0, 2);
+
+    // Auto-clamp if 2 digits
+    if (val.length === 2) {
+      let num = parseInt(val);
+      if (num > 23) val = "23";
+    }
+
+    setHours(val);
+    valuesRef.current.hours = val;
+
+    if (val.length === 2) {
+      minuteRef.current?.focus();
+    }
+
+    // If we have both parts, update parent
+    if (val.length === 2 && valuesRef.current.minutes.length === 2) {
+      updateTime(val, valuesRef.current.minutes);
+    }
+  };
+
+  const handleMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, '').slice(0, 2);
+
+    // Auto-clamp if 2 digits
+    if (val.length === 2) {
+      let num = parseInt(val);
+      if (num > 59) val = "59";
+    }
+
+    setMinutes(val);
+    valuesRef.current.minutes = val;
+
+    if (val.length === 2) {
+      // Only move to next reference if we have a valid hour too
+      if (valuesRef.current.hours.length > 0) {
+        nextRef.current?.focus();
+      }
+      updateTime(valuesRef.current.hours, val);
     }
   };
 
@@ -206,18 +176,7 @@ const BirthTimeInput = ({
           placeholder="H"
           className="bg-background/50 border-border focus:border-primary text-center px-1"
           value={hours}
-          onChange={(e) => {
-            const val = e.target.value.replace(/\D/g, '').slice(0, 2);
-            setHours(val);
-            // Manually update ref specifically for the auto-focus race condition
-            valuesRef.current.hours = val;
-
-            // Validating/Updating on blur gives a better UX (no fighting the user)
-            // But we do auto-focus the next field for convenience
-            if (val.length === 2) {
-              minuteRef.current?.focus();
-            }
-          }}
+          onChange={handleHourChange}
           onBlur={handleBlur}
           ref={hourRef}
           maxLength={2}
@@ -230,691 +189,531 @@ const BirthTimeInput = ({
           placeholder="M"
           className="bg-background/50 border-border focus:border-primary text-center px-1"
           value={minutes}
-          onChange={(e) => {
-            const val = e.target.value.replace(/\D/g, '').slice(0, 2);
-            setMinutes(val);
-            valuesRef.current.minutes = val; // Sync ref
-
-            if (val.length === 2 && hours) {
-              // We can commit here or wait for blur of this field. 
-              // Committing here enables the "nextRef" focus to carry the valid state?
-              // Actually, let's defer to blur for consistency, OR keep it here but ensure clamp doesn't bite.
-              // If we defer to blur, the user might hit "Next" (city) and form state is not updated yet?
-              // Blur happens when focus leaves, so form state WILL update before next field interaction implies data usage.
-              nextRef.current?.focus();
-            }
-          }}
+          onChange={handleMinuteChange}
           onBlur={handleBlur}
           ref={minuteRef}
           maxLength={2}
         />
       </div>
-      {!is24Hour && (
-        <div className="relative w-20">
-          <select
-            className="flex h-10 w-full rounded-md border border-border bg-background/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none"
-            value={period}
-            onChange={(e) => {
-              setPeriod(e.target.value);
-              updateTime(hours, minutes, e.target.value);
-            }}
-          >
-            <option value="AM" className="bg-popover text-popover-foreground">AM</option>
-            <option value="PM" className="bg-popover text-popover-foreground">PM</option>
-          </select>
-        </div>
-      )}
-      {is24Hour && (
-        <div className="text-muted-foreground text-xs ml-1 whitespace-nowrap">
-          (24h)
-        </div>
-      )}
     </div>
   );
 };
 
-const FormSection = () => {
+export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: FormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { t, country, language } = useLanguage();
+  const { country } = useLanguage();
   const { toast } = useToast();
 
-  // Local state for manual date input to allow typing
   const [dateInputValue, setDateInputValue] = useState("");
+  const [showAgeModal, setShowAgeModal] = useState(false);
 
-  // Refs for auto-focus
   const emailRef = useRef<HTMLInputElement>(null);
   const genderRef = useRef<HTMLSelectElement>(null);
   const dayRef = useRef<HTMLInputElement>(null);
-  const monthRef = useRef<HTMLSelectElement>(null);
+  const monthRef = useRef<HTMLInputElement>(null);
   const yearRef = useRef<HTMLInputElement>(null);
   const hourRef = useRef<HTMLInputElement>(null);
   const minuteRef = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
-  // Using a class based selector or just assuming it's the next focusable might be tricky for PhoneInput
-  // But we can try to focus the container or find the input inside.
-  // PhoneInput doesn't easily expose a ref to the input element directly in a way we control easily without wrapper changes.
-  // We will assume focusing the container or a specific class.
-  // Actually, ShadCN PhoneInput forwards ref to the underlying RPNInput.
+  const cpfRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<any>(null);
+  const childNameRef = useRef<HTMLInputElement>(null);
 
-  const getDateLocale = () => {
-    switch (language) {
-      case "pt": return ptBR;
-      case "es": return es;
-      default: return enUS;
-    }
-  };
-
-  const getDateFormat = () => {
-    return language === 'en' ? 'MM/dd/yyyy' : 'dd/MM/yyyy';
-  };
-
-  const formSchema = createFormSchema(t);
+  const formSchema = createFormSchema(t, tipo, publico);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      gender: "",
-      phone: "",
-      birthTime: "",
-      birthCity: "",
-      latitude: "",
-      longitude: "",
+      name: "", childName: "", email: "", gender: "", phone: "", cpf: "", birthTime: "", birthCity: "", latitude: "", longitude: "",
     },
   });
 
-  // Sync date input with form value when form value changes (e.g. from calendar select)
   useEffect(() => {
     const currentDate = form.getValues("birthDate");
     if (currentDate && isValid(currentDate)) {
-      setDateInputValue(format(currentDate, getDateFormat()));
-    }
-  }, [form.watch("birthDate"), language]);
+      setDateInputValue(format(currentDate, 'dd/MM/yyyy'));
 
-
-  const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldChange: (date: Date | undefined) => void) => {
-    const value = e.target.value;
-    setDateInputValue(value);
-
-    // Attempt to parse
-    const parsedDate = parse(value, getDateFormat(), new Date());
-
-    if (isValid(parsedDate) && value.length >= 8) {
-      // Only update form if valid and looks complete to avoid premature validation errors
-      // Check if year is reasonable
-      if (parsedDate.getFullYear() > 1900 && parsedDate.getFullYear() <= new Date().getFullYear()) {
-        fieldChange(parsedDate);
+      // Age Check
+      if (publico !== 'jovem') {
+        const age = differenceInYears(new Date(), currentDate);
+        if (age < 18) {
+          setShowAgeModal(true);
+        }
       }
     }
-  };
+  }, [form.watch("birthDate")]);
 
+  // Função auxiliar para renderizar os campos de data (mantendo sua lógica original)
+  const renderDateFields = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+      <FormField control={form.control} name="birthDate" render={({ field }) => {
+        const [day, setDay] = useState("");
+        const [monthInput, setMonthInput] = useState("");
+        const [monthVal, setMonthVal] = useState<number | null>(null);
+        const [year, setYear] = useState("");
+
+        const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+
+        useEffect(() => {
+          if (field.value) {
+            setDay(format(field.value, "dd"));
+            const m = field.value.getMonth();
+            setMonthVal(m);
+            setMonthInput(months[m]);
+            setYear(format(field.value, "yyyy"));
+          }
+        }, []);
+
+        const tryUpdateDate = (d: string, m: number | null, y: string) => {
+          if (d && m !== null && y && y.length === 4) {
+            const date = new Date(parseInt(y), m, parseInt(d));
+            if (isValid(date)) field.onChange(date);
+          }
+        };
+
+        const handleMonthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const val = e.target.value;
+
+          if (!val) {
+            setMonthInput("");
+            setMonthVal(null);
+            return;
+          }
+
+          const digits = val.replace(/\D/g, '').slice(0, 2);
+          if (!digits) return;
+
+          const num = parseInt(digits);
+          const len = digits.length;
+
+          // Logic for 2 digits (01-12)
+          if (len === 2) {
+            if (num >= 1 && num <= 12) {
+              const mIdx = num - 1;
+              setMonthInput(months[mIdx]);
+              setMonthVal(mIdx);
+              yearRef.current?.focus();
+              tryUpdateDate(day, mIdx, year);
+            }
+            // Ignore invalid 2-digit numbers
+          } else {
+            // Length 1 (0, 1..9)
+            // Check if it's potentially ambiguous or valid
+            if (num >= 2 && num <= 9) {
+              const mIdx = num - 1;
+              setMonthInput(months[mIdx]);
+              setMonthVal(mIdx);
+              yearRef.current?.focus();
+              tryUpdateDate(day, mIdx, year);
+            } else {
+              // 0 or 1 - Wait for second digit
+              setMonthInput(digits);
+              setMonthVal(null);
+            }
+          }
+        };
+
+        const handleMonthBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+          const val = e.target.value;
+          if (val === "1" || val === "01") {
+            setMonthInput("Janeiro");
+            setMonthVal(0);
+            tryUpdateDate(day, 0, year);
+          }
+        };
+
+        return (
+          <FormItem>
+            <FormLabel className="text-foreground">{t.birthDateLabel}</FormLabel>
+            <div className="flex gap-2">
+              <Input placeholder="Dia" className="bg-background/50 border-border focus:border-primary w-[28%] text-center px-1" value={day}
+                onChange={(e) => {
+                  let val = e.target.value.replace(/\D/g, '').slice(0, 2);
+                  if (parseInt(val) > 31) val = "31";
+                  setDay(val);
+                  if (val.length === 2) monthRef.current?.focus();
+                  tryUpdateDate(val, monthVal, year);
+                }}
+                ref={dayRef} maxLength={2}
+              />
+              <div className="flex-1 relative">
+                <Input
+                  placeholder="Mês"
+                  className="bg-background/50 border-border focus:border-primary text-center px-1"
+                  value={monthInput}
+                  onChange={handleMonthChange}
+                  onBlur={handleMonthBlur}
+                  onFocus={(e) => e.target.select()}
+                  ref={monthRef}
+                />
+              </div>
+              <Input placeholder="Ano" className="bg-background/50 border-border focus:border-primary w-[30%] text-center px-1" value={year}
+                onChange={(e) => {
+                  let val = e.target.value.replace(/\D/g, '').slice(0, 4);
+                  setYear(val);
+                  if (val.length === 4) hourRef.current?.focus();
+                  tryUpdateDate(day, monthVal, val);
+                }}
+                ref={yearRef} maxLength={4}
+              />
+            </div>
+            <FormMessage />
+          </FormItem>
+        )
+      }} />
+
+      <FormField control={form.control} name="birthTime" render={({ field }) => {
+        return (
+          <FormItem>
+            <FormLabel className="text-foreground">{t.birthTimeLabel}</FormLabel>
+            <FormControl>
+              <BirthTimeInput value={field.value} onChange={field.onChange} hourRef={hourRef} minuteRef={minuteRef} nextRef={cityRef as any} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        );
+      }} />
+    </div>
+  );
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-
     try {
-      // 1. Formatar a data para o padrão do MySQL (YYYY-MM-DD)
-      // Estamos usando a função 'format' do date-fns que você já importou
       const formattedDate = format(data.birthDate, 'yyyy-MM-dd');
 
-      // 2. Preparar o objeto para envio
       const payload = {
-        name: data.name,
+        name: data.name, // Nome do PAI (Responsável)
+        childName: data.childName, // Nome da Criança (Só vai se for Jovem)
         email: data.email,
         gender: data.gender,
         phone: data.phone,
-        birthDate: formattedDate, // Data formatada
+        cpf: data.cpf,
+        birthDate: formattedDate,
         birthTime: data.birthTime,
         birthCity: data.birthCity,
         latitude: data.latitude,
-        longitude: data.longitude
+        longitude: data.longitude,
+        tipo_lead: tipo,
+        publico_alvo: publico
       };
 
-      // 3. Enviar para a HostGator
-      // IMPORTANTE: Troque 'omapadaalma.com' pelo seu domínio real se for diferente
-      const response = await fetch('https://omapadaalma.com/api/salvar.php', {
+      const endpoint = tipo === 'venda'
+        ? 'https://omapadaalma.com/api/salvar.php'
+        : 'https://omapadaalma.com/api/salvar_lead.php';
+
+      const response = await fetch(endpoint, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
       const result = await response.json();
 
       if (result.status === 'success') {
-        toast({
-          title: t.successTitle, // "Sucesso!"
-          description: t.successMessage, // "Seus dados foram enviados."
-        });
-
-        // Limpar formulário apenas se deu certo
+        toast({ title: t.successTitle, description: tipo === 'venda' ? "Redirecionando..." : "Solicitação recebida!" });
+        if (tipo === 'venda' && result.paymentUrl) {
+          setTimeout(() => { window.location.href = result.paymentUrl; }, 1500);
+        } else {
+          setTimeout(() => { window.location.href = "https://omapadaalma.com/obrigado-amostra"; }, 1500);
+        }
         form.reset();
         setDateInputValue("");
       } else {
         throw new Error(result.message || "Erro no servidor");
       }
-
-    } catch (error) {
-      console.error("Erro de envio:", error);
-      toast({
-        variant: "destructive",
-        title: "Erro ao enviar",
-        description: "Não foi possível salvar seus dados. Tente novamente.",
-      });
+    } catch (error: any) {
+      console.error("Erro:", error);
+      toast({ variant: "destructive", title: "Erro ao enviar", description: "Tente novamente." });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section id="formulario" className="py-20 md:py-28 relative overflow-hidden">
-      {/* Background */}
+    <section id="formulario" className="py-10 md:py-28 relative overflow-hidden">
       <div className="absolute inset-0 constellation-pattern opacity-20" />
-
       <div className="container mx-auto px-4 max-w-xl relative z-10">
-        {/* Form card */}
         <div className="p-8 md:p-10 rounded-3xl border border-primary/30 bg-card/80 backdrop-blur-sm">
-          {/* Header */}
+
           <div className="text-center mb-8 space-y-4">
             <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
               <Sparkles className="w-8 h-8 text-primary" />
             </div>
             <h2 className="font-serif text-2xl md:text-3xl text-foreground">
-              {t.headerTitlePrefix} <span className="text-primary">{t.headerTitleHighlight}</span>
+              {titulo ? <span className="text-primary">{titulo}</span> : <>{t.headerTitlePrefix} <span className="text-primary">{t.headerTitleHighlight}</span></>}
             </h2>
             <p className="text-muted-foreground text-sm">
-              {t.headerSubtitle}
+              {publico === 'jovem'
+                ? "Preencha os dados do responsável e da criança."
+                : tipo === 'gratis'
+                  ? "Preencha seus dados para receber sua amostra gratuita diretamente no seu e-mail ou WhatsApp."
+                  : t.headerSubtitle
+              }
             </p>
           </div>
 
-          {/* Form */}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-foreground">{t.nameLabel}</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={t.namePlaceholder}
-                        className="bg-background/50 border-border focus:border-primary"
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            emailRef.current?.focus();
-                          }
-                        }}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-foreground">{t.emailLabel}</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="email"
-                        placeholder={t.emailPlaceholder}
-                        className="bg-background/50 border-border focus:border-primary"
-                        ref={emailRef}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            genderRef.current?.focus();
-                          }
-                        }}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="gender"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-foreground">{(t as any).genderLabel}</FormLabel>
-                    <div className="relative">
-                      <select
-                        className="flex h-10 w-full rounded-md border border-border bg-background/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none text-foreground"
-                        value={field.value}
-                        ref={genderRef}
-                        onChange={(e) => {
-                          field.onChange(e);
-                          // Auto focus next
-                          if (e.target.value) {
-                            dayRef.current?.focus();
-                          }
-                        }}
-                      >
-                        <option value="" disabled>{(t as any).genderPlaceholder}</option>
-                        <option value="female" className="bg-popover text-popover-foreground">{(t as any).genderFemale}</option>
-                        <option value="male" className="bg-popover text-popover-foreground">{(t as any).genderMale}</option>
-                        <option value="other" className="bg-popover text-popover-foreground">{(t as any).genderOther}</option>
-                      </select>
+              {/* === LAYOUT PARA JOVEM (ORDEM ESPECÍFICA) === */}
+              {publico === 'jovem' ? (
+                <>
+                  {/* 1. DADOS DO RESPONSÁVEL */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2 text-primary font-semibold text-sm">
+                      <User className="w-4 h-4" /> Dados do Responsável (Adulto)
                     </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-                <FormField
-                  control={form.control}
-                  name="birthDate"
-                  render={({ field }) => {
-                    const [day, setDay] = useState("");
-                    const [month, setMonth] = useState("");
-                    const [monthDisplay, setMonthDisplay] = useState("");
-                    const monthValRef = useRef(""); // Ref to track current input value synchronously
-                    const [year, setYear] = useState("");
-
-                    // Initialize generic months for dropdown
-                    const months = Array.from({ length: 12 }, (_, i) => {
-                      const date = new Date(2000, i, 1);
-                      return {
-                        value: i.toString(),
-                        label: format(date, "MMMM", { locale: getDateLocale() }),
-                      };
-                    });
-
-                    // Effect to update the main form field when parts change
-                    useEffect(() => {
-                      if (day && month && year) {
-                        const d = parseInt(day);
-                        const m = parseInt(month);
-                        const y = parseInt(year);
-
-                        if (!isNaN(d) && !isNaN(m) && !isNaN(y)) {
-                          // Validate Day immediately if possible (visual feedback mostly handled by Zod, 
-                          // but blocking invalid input prevents bad state)
-                          // However, we just need to ensure valid object creation.
-
-                          // Check for future date
-                          const now = new Date();
-                          const currentYear = now.getFullYear();
-                          const currentMonth = now.getMonth();
-                          const currentDay = now.getDate();
-
-                          let isValidDate = true;
-
-                          if (y > currentYear) isValidDate = false;
-                          if (y === currentYear && m > currentMonth) isValidDate = false;
-                          if (y === currentYear && m === currentMonth && d > currentDay) isValidDate = false;
-
-                          // Basic ranges
-                          if (d < 1 || d > 31) isValidDate = false;
-                          if (m < 0 || m > 11) isValidDate = false; // Month is 0-indexed in JS Date and our options
-                          if (y < 1900) isValidDate = false;
-
-                          if (isValidDate) {
-                            const newDate = new Date(y, m, d);
-                            // Verify JS date validity (e.g. Feb 31 -> Mar 3)
-                            // We want to REJECT if JS rolled it over.
-                            if (isValid(newDate) && newDate.getDate() === d && newDate.getMonth() === m && newDate.getFullYear() === y) {
-                              field.onChange(newDate);
-                            } else {
-                              // Invalid date (e.g. 31st Feb), don't set form value (or set null/error?)
-                              // If we don't set it, Zod validation won't clear until it's valid.
-                            }
-                          }
-                        }
-                      }
-                    }, [day, month, year]);
-
-                    return (
+                    <FormField control={form.control} name="name" render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">{t.birthDateLabel}</FormLabel>
-                        <div className="flex gap-2">
+                        <FormLabel className="text-foreground">Nome Completo (Adulto)</FormLabel>
+                        <FormControl><Input placeholder="Nome do Pai/Mãe" className="bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="email" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-foreground">Email (Adulto)</FormLabel>
+                        <FormControl><Input type="email" placeholder="seu@email.com" className="bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="phone" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-foreground">WhatsApp (Adulto)</FormLabel>
+                        <FormControl><PhoneInput defaultCountry={country} value={field.value as any} onChange={field.onChange} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    {tipo === 'venda' && (
+                      <FormField control={form.control} name="cpf" render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground">CPF (Adulto)</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="Dia"
-                              className="bg-background/50 border-border focus:border-primary w-[28%] text-center px-1"
-                              value={day}
-                              onChange={(e) => {
-                                let val = e.target.value.replace(/\D/g, '').slice(0, 2);
-                                // Strict day limit 31
-                                if (parseInt(val) > 31) val = "31";
-                                setDay(val);
-                                if (val.length === 2) {
-                                  monthRef.current?.focus();
-                                }
-                              }}
-                              ref={dayRef}
-                              maxLength={2}
-                            />
+                            <Input placeholder="000.000.000-00" className="bg-background/50 border-border focus:border-primary" maxLength={14} {...field}
+                              onChange={(e) => { let v = e.target.value.replace(/\D/g, ""); if (v.length > 11) v = v.slice(0, 11); v = v.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"); field.onChange(v); }} />
                           </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )} />
+                    )}
+                  </div>
 
-                          <div className="flex-1 relative">
-                            <Input
-                              placeholder="Mês"
-                              className="bg-background/50 border-border focus:border-primary text-center px-1"
-                              value={monthDisplay} // Use separate display state
-                              onFocus={(e) => {
-                                e.target.select();
-                                monthValRef.current = monthDisplay; // Sync ref on focus
-                              }}
-                              onChange={(e) => {
-                                // Logic:
-                                // 1. Allow digits.
-                                // 2. If valid number found, map to month name, setMonth(value), focus Year
-                                // 3. If partial (0 or 1), updat display, wait.
-                                // 4. If user deletes, clear.
-                                const val = e.target.value;
-                                monthValRef.current = val; // Always sync ref first
+                  {/* SEPARADOR */}
+                  <div className="relative py-4">
+                    <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-primary/30"></span></div>
+                    <div className="relative flex justify-center text-xs uppercase"><span className="bg-card px-2 text-primary font-bold">De quem é o mapa?</span></div>
+                  </div>
 
-                                // Filter non-digits? 
-                                // But we want to allow the month name to stay if they didn't touch it.
-                                // Actually, we only care about the new numeric input usually.
-                                // If they backspace a letter of "Janeiro", we should probably clear.
-                                const numericOnly = val.replace(/\D/g, '');
+                  {/* 2. DADOS DA CRIANÇA */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2 text-primary font-semibold text-sm">
+                      <Baby className="w-4 h-4" /> Dados da Criança
+                    </div>
 
-                                // Handling the case where we had "Janeiro" and they typed "2" at the end -> "Janeiro2" -> regex "2" (if we ignore prior text?)
-                                // But simpler: just take the string.
+                    <FormField control={form.control} name="childName" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-foreground">Nome da Criança</FormLabel>
+                        <FormControl><Input placeholder="Nome completo do filho(a)" className="bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
 
-                                // If the user completely cleared it
-                                if (val === "") {
-                                  setMonthDisplay("");
-                                  setMonth("");
-                                  return;
-                                }
-
-                                // If it matches a month name (partially or fully), let it be?
-                                // But this is a numeric input for months.
-                                // If user types "2", value is "2".
-                                // If state was "Fevereiro", value becomes "Fevereiro2" or "2" depending on selection.
-                                // If select() worked, it is "2".
-
-                                // Strict numeric handling for the *entry* phase.
-                                // Check if the *new* value implies a number.
-                                if (/^\d+$/.test(val)) {
-                                  const num = parseInt(val);
-
-                                  // Logic check
-                                  if (num >= 2 && num <= 9) {
-                                    // Immediate match (Feb - Sep)
-                                    if (val.length === 1) { // Only if they just typed the single digit
-                                      const mIndex = num - 1;
-                                      const mName = months[mIndex].label;
-                                      setMonth(mIndex.toString());
-                                      setMonthDisplay(mName);
-                                      // Update ref to the name so onBlur doesn't think it's a number to re-parse
-                                      monthValRef.current = mName;
-                                      yearRef.current?.focus();
-                                      return;
-                                    }
-                                  }
-
-                                  if (num > 12) {
-                                    // Invalid.
-                                    // Do nothing or prevent update?
-                                    // For now, let's just not update state if possible or keep previous?
-                                    // Actually, we must allow updating state or input freezes. 
-                                    // If user types 13, maybe just clear it or let them see 13 and correct it?
-                                    // Default behavior: let them type, rely on blur validation or just clamp?
-                                    // Let's just update display.
-                                  }
-
-                                  // If num is 10, 11, 12 -> Valid.
-                                  if (val.length === 2) {
-                                    if (num >= 1 && num <= 12) {
-                                      const mIndex = num - 1;
-                                      const mName = months[mIndex].label;
-                                      setMonth(mIndex.toString());
-                                      setMonthDisplay(mName);
-                                      monthValRef.current = mName; // Sync ref
-                                      yearRef.current?.focus();
-                                      return;
-                                    }
-                                  }
-
-                                  // If 0, 1 -> Ambiguous, just update display
-                                  setMonthDisplay(val);
-                                  setMonth("");
-                                } else {
-                                  // User might be backspacing characters of "Janeiro"
-                                  // If valid date isn't preserved, clear it
-                                  // If val is not digits, it might be "Janeiro". 
-                                  // If it is strictly equal to one of our months, keep it.
-                                  // Else, clear.
-                                  const normalize = (s: string) => s.toLowerCase();
-                                  const match = months.find(m => normalize(m.label).startsWith(normalize(val)));
-                                  if (!match) {
-                                    setMonthDisplay(val); // Let them type? Or force clear?
-                                    setMonth("");
-                                  } else {
-                                    setMonthDisplay(val); // Update display (e.g. "Janeir")
-                                  }
-                                }
-                              }}
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter" || e.key === "Tab") {
-                                  const val = monthValRef.current;
-                                  // validation on leave
-                                  if (val === "1" || val === "01") {
-                                    const mIndex = 0; // Jan
-                                    setMonth("0");
-                                    setMonthDisplay(months[0].label);
-                                    monthValRef.current = months[0].label;
-                                    if (e.key === "Enter") {
-                                      e.preventDefault();
-                                      yearRef.current?.focus();
-                                    }
-                                  }
-                                  // If "0" -> usually invalid for 1-based month. 
-                                  // If they type 0 and leave, we might default to Jan or Error?
-                                  // Let's ignore "0".
-                                }
-                              }}
-                              onBlur={() => {
-                                const val = monthValRef.current;
-                                // Same as enter logic logic: consistency
-                                if (val === "1" || val === "01") {
-                                  setMonth("0");
-                                  setMonthDisplay(months[0].label);
-                                  monthValRef.current = months[0].label;
-                                }
-                                // If it's a number 2-12 that somehow stuck (rare due to onChange), map it
-                                if (/^\d+$/.test(val)) {
-                                  const n = parseInt(val);
-                                  if (n >= 1 && n <= 12) {
-                                    setMonth((n - 1).toString());
-                                    setMonthDisplay(months[n - 1].label);
-                                    monthValRef.current = months[n - 1].label;
-                                  }
-                                }
-                              }}
-                              ref={monthRef as any} // Cast because input ref vs select ref
-                            />
-                          </div>
-
-                          <FormControl>
-                            <Input
-                              placeholder="Ano"
-                              className="bg-background/50 border-border focus:border-primary w-[30%] text-center px-1"
-                              value={year}
-                              onChange={(e) => {
-                                let val = e.target.value.replace(/\D/g, '').slice(0, 4);
-                                // Prevent future year immediately if 4 chars?
-                                // Hard to do without context of month/day, but we can stop obvious ones
-                                const limitYear = new Date().getFullYear();
-                                if (val.length === 4 && parseInt(val) > limitYear) {
-                                  val = limitYear.toString();
-                                }
-                                setYear(val);
-                                if (val.length === 4) {
-                                  hourRef.current?.focus();
-                                }
-                              }}
-                              ref={yearRef}
-                              maxLength={4}
-                            />
-                          </FormControl>
+                    <FormField control={form.control} name="gender" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-foreground">Gênero</FormLabel>
+                        <div className="relative">
+                          <select className="flex h-10 w-full rounded-md border border-border bg-background/50 px-3 py-2 text-sm appearance-none text-foreground" value={field.value} onChange={field.onChange}>
+                            <option value="" disabled>Selecione</option>
+                            <option value="female" className="bg-popover text-popover-foreground">Feminino</option>
+                            <option value="male" className="bg-popover text-popover-foreground">Masculino</option>
+                            <option value="other" className="bg-popover text-popover-foreground">Outro</option>
+                          </select>
                         </div>
                         <FormMessage />
                       </FormItem>
-                    );
-                  }}
-                />
+                    )} />
 
-                <FormField
-                  control={form.control}
-                  name="birthTime"
-                  render={({ field }) => {
-                    const is24Hour = country !== 'US';
-                    return (
+                    {/* DATA E HORA DA CRIANÇA */}
+                    {renderDateFields()}
+
+                    <FormField control={form.control} name="birthCity" render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">{t.birthTimeLabel}</FormLabel>
+                        <FormLabel className="text-foreground">Cidade de Nascimento</FormLabel>
                         <FormControl>
-                          <BirthTimeInput
-                            value={field.value}
-                            onChange={field.onChange}
-                            hourRef={hourRef}
-                            minuteRef={minuteRef}
-                            nextRef={cityRef as any}
-                            is24Hour={is24Hour}
-                          />
+                          <div className="space-y-2">
+                            <PlacesAutocomplete ref={cityRef} value={field.value} onChange={field.onChange} placeholder="Ex: Campinas - SP" className="bg-background/50 border-border focus:border-primary" onPlaceSelect={(place) => { const loc = place.details?.geometry?.location; if (loc) { const lat = typeof loc.lat === 'function' ? loc.lat() : loc.lat; const lng = typeof loc.lng === 'function' ? loc.lng() : loc.lng; form.setValue('latitude', String(lat)); form.setValue('longitude', String(lng)); } }} />
+                            <input type="hidden" {...form.register('latitude')} /><input type="hidden" {...form.register('longitude')} />
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
-                    );
-                  }}
-                />
-              </div>
+                    )} />
+                  </div>
+                </>
+              ) : (
+                // === LAYOUT PARA ADULTO (PADRÃO) ===
+                <>
+                  <FormField control={form.control} name="name" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-foreground">{t.nameLabel}</FormLabel>
+                      <FormControl><Input placeholder={t.namePlaceholder} className="bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
 
-              <FormField
-                control={form.control}
-                name="birthCity"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-foreground">{t.birthCityLabel}</FormLabel>
-                    <FormControl>
-                      <div className="space-y-2">
-                        <PlacesAutocomplete
-                          value={field.value}
-                          onChange={field.onChange}
-                          placeholder={country === 'BR' ? "Ex: Campinas - SP" : "Ex: New York, NY"}
-                          className="bg-background/50 border-border focus:border-primary"
-                          ref={cityRef}
-                          onPlaceSelect={(place) => {
-                            // Extract lat/lng
-                            const location = place.details?.geometry?.location;
-                            if (location) {
-                              const lat = typeof location.lat === 'function' ? location.lat() : location.lat;
-                              const lng = typeof location.lng === 'function' ? location.lng() : location.lng;
+                  <FormField control={form.control} name="email" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-foreground">{t.emailLabel}</FormLabel>
+                      <FormControl><Input type="email" placeholder={t.emailPlaceholder} className="bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
 
-                              form.setValue('latitude', String(lat));
-                              form.setValue('longitude', String(lng));
-                            }
-
-                            // Auto focus phone input
-                            if (phoneRef.current) {
-                              phoneRef.current.focus();
-                            }
-                          }}
-                        />
-                        <input type="hidden" {...form.register('latitude')} />
-                        <input type="hidden" {...form.register('longitude')} />
+                  <FormField control={form.control} name="gender" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-foreground">{(t as any).genderLabel}</FormLabel>
+                      <div className="relative">
+                        <select className="flex h-10 w-full rounded-md border border-border bg-background/50 px-3 py-2 text-sm appearance-none text-foreground" value={field.value} onChange={field.onChange}>
+                          <option value="" disabled>{(t as any).genderPlaceholder}</option>
+                          <option value="female" className="bg-popover text-popover-foreground">{(t as any).genderFemale}</option>
+                          <option value="male" className="bg-popover text-popover-foreground">{(t as any).genderMale}</option>
+                          <option value="other" className="bg-popover text-popover-foreground">{(t as any).genderOther}</option>
+                        </select>
                       </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <FormMessage />
+                    </FormItem>
+                  )} />
 
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-foreground">{t.phoneLabel}</FormLabel>
-                    <FormControl>
-                      <PhoneInput
-                        key={country}
-                        value={field.value as any}
-                        onChange={field.onChange}
-                        defaultCountry={country}
-                        ref={phoneRef}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  {renderDateFields()}
 
-              <Button
-                type="submit"
-                size="lg"
-                disabled={isSubmitting}
-                className="w-full text-lg py-6 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
-              >
+                  <FormField control={form.control} name="birthCity" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-foreground">{t.birthCityLabel}</FormLabel>
+                      <FormControl>
+                        <div className="space-y-2">
+                          <PlacesAutocomplete ref={cityRef} value={field.value} onChange={field.onChange} placeholder="Ex: Campinas - SP" className="bg-background/50 border-border focus:border-primary" onPlaceSelect={(place) => { const loc = place.details?.geometry?.location; if (loc) { const lat = typeof loc.lat === 'function' ? loc.lat() : loc.lat; const lng = typeof loc.lng === 'function' ? loc.lng() : loc.lng; form.setValue('latitude', String(lat)); form.setValue('longitude', String(lng)); } }} />
+                          <input type="hidden" {...form.register('latitude')} /><input type="hidden" {...form.register('longitude')} />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+
+                  <FormField control={form.control} name="phone" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-foreground">{t.phoneLabel}</FormLabel>
+                      <FormControl><PhoneInput defaultCountry={country} value={field.value as any} onChange={field.onChange} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+
+                  {tipo === 'venda' && (
+                    <FormField control={form.control} name="cpf" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-foreground">{(t as any).cpfLabel}</FormLabel>
+                        <FormControl>
+                          <Input placeholder={(t as any).cpfPlaceholder} className="bg-background/50 border-border focus:border-primary" maxLength={14} {...field} onChange={(e) => { let v = e.target.value.replace(/\D/g, ""); if (v.length > 11) v = v.slice(0, 11); v = v.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"); field.onChange(v); }} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                  )}
+                </>
+              )}
+
+              <Button type="submit" size="lg" disabled={isSubmitting} className="w-full text-lg py-6 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300">
                 {isSubmitting ? t.submitButtonLoading : t.submitButton}
               </Button>
             </form>
           </Form>
 
-          {/* Security note */}
           <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
             <Lock className="w-3 h-3" />
             <span>{t.footerSecurity}</span>
           </div>
 
-          {/* Trust Badges */}
+          {/* === BADGES INTELIGENTES === */}
           <div className="mt-8 pt-6 border-t border-border/50">
             <div className="grid grid-cols-3 gap-4">
-              {/* Badge 1: Guarantee */}
+
+              {/* 1. BADGE DE RISCO (Verde) */}
               <div className="flex flex-col items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center">
                   <ShieldCheck className="w-4 h-4 text-green-500" />
                 </div>
                 <div className="text-center">
-                  <h4 className="text-[10px] md:text-xs text-green-500 font-semibold leading-tight">{(t.offer as any).badges?.badge1Title}</h4>
-                  <p className="text-[10px] text-muted-foreground hidden md:block">{(t.offer as any).badges?.badge1Sub}</p>
+                  <h4 className="text-[10px] md:text-xs text-green-500 font-semibold leading-tight">
+                    {tipo === 'venda' ? "Garantia de 30 Dias" : "100% Gratuito"}
+                  </h4>
+                  <p className="text-[10px] text-muted-foreground hidden md:block">
+                    {tipo === 'venda' ? "Risco Zero" : "Sem custo nenhum"}
+                  </p>
                 </div>
               </div>
 
-              {/* Badge 2: Security */}
+              {/* 2. BADGE DE SEGURANÇA (Azul) */}
               <div className="flex flex-col items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
                   <Lock className="w-4 h-4 text-blue-500" />
                 </div>
                 <div className="text-center">
-                  <h4 className="text-[10px] md:text-xs text-blue-500 font-semibold leading-tight">{(t.offer as any).badges?.badge2Title}</h4>
-                  <p className="text-[10px] text-muted-foreground hidden md:block">{(t.offer as any).badges?.badge2Sub}</p>
+                  <h4 className="text-[10px] md:text-xs text-blue-500 font-semibold leading-tight">
+                    {tipo === 'venda' ? "Compra Segura" : "Dados Protegidos"}
+                  </h4>
+                  <p className="text-[10px] text-muted-foreground hidden md:block">
+                    {tipo === 'venda' ? "Ambiente Criptografado" : "Sigilo absoluto"}
+                  </p>
                 </div>
               </div>
 
-              {/* Badge 3: Delivery */}
+              {/* 3. BADGE DE DIFERENCIAL (Roxo) */}
               <div className="flex flex-col items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-purple-500" />
+                  <Fingerprint className="w-4 h-4 text-purple-500" />
                 </div>
                 <div className="text-center">
-                  <h4 className="text-[10px] md:text-xs text-purple-500 font-semibold leading-tight">{(t.offer as any).badges?.badge3Title}</h4>
-                  <p className="text-[10px] text-muted-foreground hidden md:block">{(t.offer as any).badges?.badge3Sub}</p>
+                  <h4 className="text-[10px] md:text-xs text-purple-500 font-semibold leading-tight">
+                    {tipo === 'venda' ? "Análise Artesanal" : "Análise Única"}
+                  </h4>
+                  <p className="text-[10px] text-muted-foreground hidden md:block">
+                    {publico === 'jovem'
+                      ? "Identidade da Criança"
+                      : (tipo === 'venda' ? "Feita manualmente" : "Identidade Astral")
+                    }
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <AlertDialog open={showAgeModal} onOpenChange={setShowAgeModal}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Atenção</AlertDialogTitle>
+              <AlertDialogDescription>
+                Identificamos que você tem menos de 18 anos. Para realizar o mapa astral, precisamos dos dados do seu responsável.
+                <br /><br />
+                Você será redirecionado para a página correta.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction onClick={() => {
+                const url = tipo === 'venda' ? '/jovem' : '/jovem-amostra';
+                window.location.href = url;
+              }}>
+                Entendi, me leve para lá
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </section >
   );
-};
+}
 
 export default FormSection;

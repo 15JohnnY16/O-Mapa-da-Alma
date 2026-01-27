@@ -1,8 +1,7 @@
 import { Battery, Repeat, UserX } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { translations as t } from "@/lib/i18n";
 
 const PainSection = () => {
-  const { t } = useLanguage();
 
   const painPoints = [
     {

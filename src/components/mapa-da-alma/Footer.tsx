@@ -1,8 +1,8 @@
 import { MessageCircle, Mail, Heart } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { translations as t } from "@/lib/i18n";
 
 const Footer = () => {
-  const { t } = useLanguage();
+
 
   return (
     <footer className="py-12 border-t border-border">
@@ -30,11 +30,11 @@ const Footer = () => {
                 WhatsApp
               </a>
               <a
-                href="mailto:contato@mapadaalma.com.br"
+                href="mailto:contato@omapadaalma.com"
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 <Mail className="w-4 h-4" />
-                contato@mapadaalma.com.br
+                contato@omapadaalma.com
               </a>
             </div>
           </div>
