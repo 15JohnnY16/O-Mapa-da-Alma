@@ -94,11 +94,11 @@ Para gerar a versão otimizada para produção:
 #Bash
 npm run build
 
-** Os arquivos estáticos serão gerados na pasta dist/. Esses arquivos podem ser hospedados em qualquer serviço de hospedagem estática como Vercel, Netlify, ou em um servidor VPS/Hostgator (via Nginx/Apache).
+Os arquivos estáticos serão gerados na pasta dist/. Esses arquivos podem ser hospedados em qualquer serviço de hospedagem estática como Vercel, Netlify, ou em um servidor VPS/Hostgator (via Nginx/Apache).
 
-** 🛡️ Direitos e Licença**
+🛡️ Direitos e Licença
 
-** Este projeto é propriedade intelectual da RFJM LTDA. Todo o conteúdo, design e metodologia "O Mapa da Alma" são protegidos.
+Este projeto é propriedade intelectual da RFJM LTDA. Todo o conteúdo, design e metodologia "O Mapa da Alma" são protegidos.
 
 Desenvolvimento: Equipe Tech O Mapa da Alma.
 
