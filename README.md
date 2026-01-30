@@ -1,73 +1,107 @@
-# Welcome to your Lovable project
+# O Mapa da Alma 🌌
 
-## Project info
+> Landing Page de alta conversão para venda de mapas astrológicos personalizados e astrogenealogia.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+![Project Status](https://img.shields.io/badge/status-active-success)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-Private-red)
 
-## How can I edit this code?
+## 📋 Sobre o Projeto
 
-There are several ways of editing your application.
+**O Mapa da Alma** é uma plataforma web desenvolvida para oferecer leituras astrológicas profundas e personalizadas. O projeto consiste em uma Landing Page moderna, responsiva e otimizada para conversão, oferecendo dois fluxos principais:
+1.  **Venda do Produto Completo:** Um livro digital personalizado (+40 páginas) com plano de 90 dias.
+2.  **Captura de Leads (Amostra Grátis):** Entrega de uma "Carta" inicial com a tríade astrológica (Sol, Lua, Ascendente).
 
-**Use Lovable**
+O design foca em uma estética mística e elegante (Dark Mode com detalhes em Dourado), utilizando animações sutis e uma UX fluida.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Tecnologias Utilizadas
 
-**Use your preferred IDE**
+O projeto foi construído com uma stack moderna focada em performance e manutenibilidade:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+* **[React](https://reactjs.org/):** Biblioteca principal para construção da interface.
+* **[TypeScript](https://www.typescriptlang.org/):** Superset JavaScript para tipagem estática e segurança no código.
+* **[Vite](https://vitejs.dev/):** Build tool de próxima geração (rápido e leve).
+* **[Tailwind CSS](https://tailwindcss.com/):** Framework de utilitários para estilização rápida e responsiva.
+* **[Lucide React](https://lucide.dev/):** Biblioteca de ícones leve e consistente.
+* **[Framer Motion](https://www.framer.com/motion/):** (Opcional/Se utilizado) Para animações complexas de entrada.
+* **[Radix UI / Shadcn UI](https://ui.shadcn.com/):** Componentes base acessíveis (Modais, Botões, etc.).
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## ✨ Funcionalidades Principais
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+* **🎨 Design Responsivo & Temático:** Layout adaptável (Mobile/Desktop) com tema escuro e acentos dourados (`text-gradient-gold`).
+* **🔄 Modos de Visualização:** Lógica interna para alternar entre "Página de Vendas" e "Página de Captura" (Amostra).
+* **📝 Formulário de Nascimento:** Coleta precisa de dados (Data, Hora, Cidade) para geração do mapa.
+* **⚖️ Conformidade Legal (LGPD):** Modais integrados e acessíveis para:
+    * Termos de Uso.
+    * Política de Privacidade (com detalhes sobre Meta Pixel/Google Analytics).
+    * Política de Reembolso/Trocas.
+* **💳 Integração de Checkout:** Redirecionamento seguro para gateway de pagamento (Asaas).
+* **📱 Seções Otimizadas:**
+    * **Hero:** Promessa forte e CTA claro.
+    * **Dores (Shadows):** Conexão emocional com o usuário.
+    * **Solução (Mandala):** Explicação visual do produto.
+    * **Entregáveis:** Cards detalhados com o que o cliente recebe.
+    * **Prova Social:** Depoimentos e garantia.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+---
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 📂 Estrutura do Projeto
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+src/
+├── assets/             # Imagens, logos e recursos estáticos
+├── components/
+│   ├── ui/             # Componentes base (Button, Input, etc.)
+│   ├── mapa-da-alma/   # Componentes específicos da Landing Page
+│   │   ├── HeroSection.tsx
+│   │   ├── DeliverablesSection.tsx
+│   │   ├── LegalModal.tsx  <-- Modais de Termos/Privacidade
+│   │   ├── Footer.tsx
+│   │   └── ...
+├── lib/
+│   ├── utils.ts        # Funções utilitárias (cn, formatação)
+│   └── i18n.ts         # Arquivo de traduções/textos centralizados
+├── App.tsx             # Componente raiz e roteamento
+└── main.tsx            # Ponto de entrada
+
+🔧 Como Rodar Localmente
+Pré-requisitos: Você precisa ter o Node.js instalado.
+
+1. Clone o repositório:
+#Bash
+git clone [https://github.com/15JohnnY16/soul-map-alchemy-06.git](https://github.com/15JohnnY16/soul-map-alchemy-06.git)
+cd soul-map-alchemy-06
+
+2. Instale as dependências:
+#Bash
+npm install
+# ou
+yarn install
+
+3. Rode o servidor de desenvolvimento:
+#Bash
 npm run dev
-```
 
-**Edit a file directly in GitHub**
+4. Acesse no navegador: O projeto estará rodando em http://localhost:xxxx (xxxx é a porta indicada no terminal).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+📦 Build e Deploy
 
-**Use GitHub Codespaces**
+Para gerar a versão otimizada para produção:
+#Bash
+npm run build
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+** Os arquivos estáticos serão gerados na pasta dist/. Esses arquivos podem ser hospedados em qualquer serviço de hospedagem estática como Vercel, Netlify, ou em um servidor VPS/Hostgator (via Nginx/Apache).
 
-## What technologies are used for this project?
+** 🛡️ Direitos e Licença**
 
-This project is built with:
+** Este projeto é propriedade intelectual da RFJM LTDA. Todo o conteúdo, design e metodologia "O Mapa da Alma" são protegidos.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Desenvolvimento: Equipe Tech O Mapa da Alma.
 
-## How can I deploy this project?
+Contato: contato@omapadaalma.com
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+<p align="center"> Feito com 💜 e ✨ </p>
