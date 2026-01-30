@@ -1,4 +1,4 @@
-import { ShieldCheck, Lock, Zap, AlertTriangle, Fingerprint } from "lucide-react";
+import { ShieldCheck, Lock, Fingerprint, Infinity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { translations as t } from "@/lib/i18n";
 
@@ -47,13 +47,15 @@ const OfferSection = () => {
               {t.offer.cta}
             </Button>
 
+            <div className="flex items-center justify-center gap-1.5 mt-3 mb-16 opacity-80">
+              <Lock className="w-4 h-4 text-green-500" />
+              <span className="text-sm text-green-500 font-medium">{t.offer.security}</span>
+            </div>
+
             {/* Scarcity alert */}
-            <div className="flex items-center justify-center gap-3 p-4 rounded-xl mb-8">
-              <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0" />
-              <p className="text-sm text-foreground text-left">
-                <span className="font-semibold">{t.offer.scarcityPrefix}</span> {t.offer.scarcityMiddle}{" "}
-                <span className="text-primary font-semibold">{t.offer.scarcityHighlight}</span>
-                {t.offer.scarcitySuffix}
+            <div className="flex justify-center mt-6 p-5 mb-16">
+              <p className="text-sm md:text-base text-center max-w-lg mx-auto text-foreground/90 font-medium leading-relaxed">
+                {t.offer.scarcityHighlight}
               </p>
             </div>
 
@@ -71,10 +73,10 @@ const OfferSection = () => {
                   </div>
                 </div>
 
-                {/* Badge 2: Security */}
+                {/* Badge 2: Artesanal */}
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                    <Lock className="w-6 h-6 text-blue-500" />
+                    <Fingerprint className="w-6 h-6 text-blue-500" />
                   </div>
                   <div>
                     <h4 className="text-blue-500 font-semibold">{(t.offer as any).badges?.badge2Title}</h4>
@@ -85,7 +87,7 @@ const OfferSection = () => {
                 {/* Badge 3: Artesanal */}
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-                    <Fingerprint className="w-6 h-6 text-purple-500" />
+                    <Infinity className="w-6 h-6 text-purple-500" />
                   </div>
                   <div>
                     <h4 className="text-purple-500 font-semibold">{(t.offer as any).badges?.badge3Title}</h4>

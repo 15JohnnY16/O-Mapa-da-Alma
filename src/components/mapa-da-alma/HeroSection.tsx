@@ -33,15 +33,17 @@ const HeroSection = () => {
           {/* Headline */}
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground">
             {t.hero.headlinePrefix}{" "}
-            <span className="text-gradient-gold">{t.hero.headlineGradient}</span>{" "}
+            <span className="text-gradient-gold">{t.hero.headlineGradient}</span>
             {t.hero.headlineSuffix}{" "}
             <span className="text-primary">{t.hero.headlineTime}</span>
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             {t.hero.subheadlinePrefix}{" "}
             <span className="text-foreground font-medium">{t.hero.subheadlineHighlight}</span>{" "}
+            {t.hero.subheadlineMiddle}{" "}
+            <span className="text-foreground font-medium">{t.hero.subheadlineHighlight2}</span>
             {t.hero.subheadlineSuffix}
           </p>
 
@@ -50,7 +52,7 @@ const HeroSection = () => {
             <Button
               onClick={scrollToForm}
               size="lg"
-              className="text-lg px-8 py-6 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
+              className="text-lg px-16 py-7 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
             >
               {t.hero.ctaButton}
             </Button>

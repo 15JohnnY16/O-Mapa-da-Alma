@@ -79,41 +79,43 @@ const AuthoritySection = () => {
             <div className="flex justify-center md:justify-start">
               <div className="w-48 h-48 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/30 flex items-center justify-center">
                 <div className="w-40 h-40 rounded-full bg-navy-medium flex items-center justify-center">
-                  <span className="text-4xl text-primary font-serif">AS</span>
+                  <span className="text-4xl text-primary font-serif">RC</span>
                 </div>
               </div>
             </div>
 
             {/* Bio text */}
-            <div className="md:col-span-2 text-center md:text-left space-y-4">
+            <div className="md:col-span-2 text-center md:text-left space-y-2">
               <div className="space-y-1">
                 <h3 className="font-serif text-2xl text-foreground">
-                  {t.authority.bioName}
+                  {t.authority.bioName} {" "}
+                  <span className="text-primary font-medium">
+                    {t.authority.bioTitle}
+                  </span>
                 </h3>
-                <p className="text-primary font-medium">
-                  {t.authority.bioTitle}
-                </p>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                {t.authority.bioDescription}
+                {t.authority.bioDescription} {" "}
+                <span className="text-primary font-medium">
+                  {t.authority.bioGradient}
+                </span>
+                {t.authority.bioDot}
               </p>
-              <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm">
-                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary">
-                  {t.authority.stat1}
+              <p className="text-muted-foreground leading-relaxed">
+                {t.authority.bioSuffix}
+              </p>
+              <p className="text-foreground font-medium">
+                {t.authority.bioPromisse}
+                <span className="text-muted-foreground leading-relaxed">
+                  {t.authority.bioPromisseDesc}
                 </span>
-                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary">
-                  {t.authority.stat2}
-                </span>
-                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary">
-                  {t.authority.stat3}
-                </span>
-              </div>
+              </p>
             </div>
           </div>
         </div>
 
         {/* Testimonials header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <h2 className="font-serif text-3xl md:text-4xl text-foreground">
             {t.authority.testimonialsHeaderPrefix}{" "}
             <span className="text-primary">

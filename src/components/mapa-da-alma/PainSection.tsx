@@ -1,21 +1,21 @@
-import { Battery, Repeat, UserX } from "lucide-react";
+import { RefreshCcw, Lock, Wallet } from "lucide-react";
 import { translations as t } from "@/lib/i18n";
 
 const PainSection = () => {
 
   const painPoints = [
     {
-      icon: Battery,
+      icon: RefreshCcw ,
       title: t.pain.point1Title,
       description: t.pain.point1Desc,
     },
     {
-      icon: Repeat,
+      icon: Wallet ,
       title: t.pain.point2Title,
       description: t.pain.point2Desc,
     },
     {
-      icon: UserX,
+      icon: Lock,
       title: t.pain.point3Title,
       description: t.pain.point3Desc,
     },
@@ -38,10 +38,9 @@ const PainSection = () => {
             {t.pain.storyPrefix}{" "}
             <span className="text-foreground">{t.pain.storyHighlight1}</span>
             {t.pain.storyMiddle}{" "}
-            <span className="text-foreground">{t.pain.storyHighlight2}</span>
+            <span className="text-primary font-medium">{t.pain.storyStat}{" "}</span>
             {t.pain.storySuffix}{" "}
-            <span className="text-primary font-medium">{t.pain.storyStat}</span>{" "}
-            {t.pain.storyEnd}
+            <span className="text-foreground">{t.pain.storyHighlight2}</span>
           </p>
         </div>
 
@@ -65,7 +64,7 @@ const PainSection = () => {
         <div className="mt-16 p-6 md:p-8 rounded-2xl border border-primary/20 bg-primary/5 text-center">
           <p className="text-lg md:text-xl text-foreground font-medium">
             {t.pain.highlightPrefix} <span className="text-primary">{t.pain.highlightHighlight1}</span> {t.pain.highlightMiddle}{" "}
-            <span className="text-primary"> {t.pain.highlightHighlight2}</span> {t.pain.highlightSuffix}
+            <span className="text-primary"> {t.pain.highlightHighlight2}</span>
           </p>
         </div>
       </div>

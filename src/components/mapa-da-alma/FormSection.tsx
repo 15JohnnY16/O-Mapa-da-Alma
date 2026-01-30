@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, Lock, Fingerprint, ShieldCheck, Zap, User, Baby } from "lucide-react";
+import { Sparkles, Lock, Fingerprint, ShieldCheck, Zap, User, Baby, Sparkle, ExternalLink, Infinity, Scroll } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translations as t } from "@/lib/i18n";
 import { format, parse, isValid, differenceInYears } from "date-fns";
@@ -154,16 +154,15 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
     if (val.length === 2) {
       let num = parseInt(val);
       if (num > 59) val = "59";
+
+      // Auto-advance to next field (City)
+      nextRef.current?.focus();
     }
 
     setMinutes(val);
     valuesRef.current.minutes = val;
 
     if (val.length === 2) {
-      // Only move to next reference if we have a valid hour too
-      if (valuesRef.current.hours.length > 0) {
-        nextRef.current?.focus();
-      }
       updateTime(valuesRef.current.hours, val);
     }
   };
@@ -440,7 +439,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
               <Sparkles className="w-8 h-8 text-primary" />
             </div>
             <h2 className="font-serif text-2xl md:text-3xl text-foreground">
-              {titulo ? <span className="text-primary">{titulo}</span> : <>{t.headerTitlePrefix} <span className="text-primary">{t.headerTitleHighlight}</span></>}
+              {titulo ? <span className="text-primary">{titulo}</span> : <>{t.headerTitlePrefix}</>}
             </h2>
             <p className="text-muted-foreground text-sm">
               {publico === 'jovem'
@@ -630,10 +629,22 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
               </Button>
             </form>
           </Form>
+          
+          {tipo === 'venda' && (
+            <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+              <ExternalLink className="w-3 h-3 text-blue-500" />
+              <span>{t.footerText}</span>
+            </div>
+          )}
 
           <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
-            <Lock className="w-3 h-3" />
-            <span>{t.footerSecurity}</span>
+            <Lock className="w-3 h-3 text-green-500" />
+            <span className="text-green-500">{t.footerSecurity}</span>
+          </div>
+
+          <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+            <Zap className="w-3 h-3 text-yellow-500" />
+            <span>{t.footerConfirm}</span>
           </div>
 
           {/* === BADGES INTELIGENTES === */}
@@ -647,25 +658,25 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                 </div>
                 <div className="text-center">
                   <h4 className="text-[10px] md:text-xs text-green-500 font-semibold leading-tight">
-                    {tipo === 'venda' ? "Garantia de 30 Dias" : "100% Gratuito"}
+                    {tipo === 'venda' ? "Risco Zero" : "100% Gratuito"}
                   </h4>
                   <p className="text-[10px] text-muted-foreground hidden md:block">
-                    {tipo === 'venda' ? "Risco Zero" : "Sem custo nenhum"}
+                    {tipo === 'venda' ? "Garantia total de 7 dias" : "Sem custo nenhum"}
                   </p>
                 </div>
               </div>
 
-              {/* 2. BADGE DE SEGURANÇA (Azul) */}
+              {/* 2. BADGE DE ARTESANAL (Azul) */}
               <div className="flex flex-col items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                  <Lock className="w-4 h-4 text-blue-500" />
+                  <Fingerprint className="w-4 h-4 text-blue-500" />
                 </div>
                 <div className="text-center">
                   <h4 className="text-[10px] md:text-xs text-blue-500 font-semibold leading-tight">
-                    {tipo === 'venda' ? "Compra Segura" : "Dados Protegidos"}
+                    {tipo === 'venda' ? "Análise Personalizada" : "Análise Personalizada"}
                   </h4>
                   <p className="text-[10px] text-muted-foreground hidden md:block">
-                    {tipo === 'venda' ? "Ambiente Criptografado" : "Sigilo absoluto"}
+                    {tipo === 'venda' ? "Entrega em até 5 dias úteis" : "Entrega em até 5 dias úteis"}
                   </p>
                 </div>
               </div>
@@ -673,16 +684,16 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
               {/* 3. BADGE DE DIFERENCIAL (Roxo) */}
               <div className="flex flex-col items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-                  <Fingerprint className="w-4 h-4 text-purple-500" />
+                  {tipo === 'venda' ? <Infinity className="w-4 h-4 text-purple-500" /> : <Scroll className="w-4 h-4 text-purple-500" />}
                 </div>
                 <div className="text-center">
                   <h4 className="text-[10px] md:text-xs text-purple-500 font-semibold leading-tight">
-                    {tipo === 'venda' ? "Análise Artesanal" : "Análise Única"}
+                    {tipo === 'venda' ? "Acesso Vitalício" : "Sua Carta Presente"}
                   </h4>
                   <p className="text-[10px] text-muted-foreground hidden md:block">
                     {publico === 'jovem'
                       ? "Identidade da Criança"
-                      : (tipo === 'venda' ? "Feita manualmente" : "Identidade Astral")
+                      : (tipo === 'venda' ? "Acesse sempre que quiser" : "Um resumo exclusivo para você")
                     }
                   </p>
                 </div>
