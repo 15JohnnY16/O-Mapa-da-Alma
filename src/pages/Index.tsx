@@ -51,7 +51,7 @@ const Index = ({ tipo = 'venda', publico = 'adulto', titulo }: IndexProps) => {
       {/* Repassamos as configurações para o formulário */}
       <FormSection tipo={tipo} publico={publico} titulo={titulo} />
       
-      <FAQSection />
+      <FAQSection type={tipo} />
       <Footer />
     </main>
   );
