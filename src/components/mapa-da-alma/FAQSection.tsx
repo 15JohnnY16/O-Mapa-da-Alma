@@ -151,31 +151,34 @@ const FAQSection = ({ type }: FAQSectionProps) => {
   const activeFaqs = type === "venda" ? saleFaqs : sampleFaqs;
 
   return (
-    <section className="py-20 md:py-28 bg-navy-light">
+    <section className="py-16 md:py-28 bg-navy-light">
       <div className="container mx-auto px-4 max-w-3xl">
-        {/* Header */}
-        <div className="text-center mb-12 space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5">
-            <HelpCircle className="w-4 h-4 text-primary" />
-            <span className="text-sm text-primary font-medium">{t.faq.badge}</span>
+        
+        {/* Header Compacto no Mobile */}
+        <div className="text-center mb-8 md:mb-12 space-y-3 md:space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-primary/30 bg-primary/5">
+            <HelpCircle className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
+            <span className="text-xs md:text-sm text-primary font-medium">{t.faq.badge}</span>
           </div>
-          <h2 className="font-serif text-3xl md:text-4xl text-foreground">
+          {/* Fonte reduzida no mobile: text-2xl */}
+          <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl text-foreground">
             {t.faq.titlePrefix} <span className="text-primary">{t.faq.titleHighlight}</span>
           </h2>
         </div>
 
-        {/* FAQ Accordion - Agora mapeando o 'activeFaqs' */}
-        <Accordion type="single" collapsible className="space-y-4">
+        {/* FAQ Accordion */}
+        <Accordion type="single" collapsible className="space-y-3 md:space-y-4">
           {activeFaqs.map((faq, index) => (
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="border border-border rounded-xl px-6 bg-card/50 data-[state=open]:border-primary/30"
+              // Padding reduzido: px-4 no mobile vs px-6 no desktop
+              className="border border-border rounded-xl px-4 md:px-6 bg-card/50 data-[state=open]:border-primary/30 transition-all duration-200"
             >
-              <AccordionTrigger className="text-left font-medium text-foreground hover:text-primary hover:no-underline py-5">
+              <AccordionTrigger className="text-left font-medium text-sm md:text-base text-foreground hover:text-primary hover:no-underline py-4 md:py-5">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground leading-relaxed pb-5 whitespace-pre-line">
+              <AccordionContent className="text-muted-foreground text-sm md:text-base leading-relaxed pb-4 whitespace-pre-line">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
@@ -183,14 +186,14 @@ const FAQSection = ({ type }: FAQSectionProps) => {
         </Accordion>
 
         {/* Additional help */}
-        <div className="mt-12 text-center">
-          <p className="text-muted-foreground">
+        <div className="mt-8 md:mt-12 text-center">
+          <p className="text-sm md:text-base text-muted-foreground">
             {t.faq.footerText}{" "}
             <a
               href="https://wa.me/5500000000000"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:underline"
+              className="text-primary hover:underline font-medium"
             >
               WhatsApp
             </a>

@@ -67,46 +67,46 @@ const AuthoritySection = () => {
   }, [api]);
 
   return (
-    <section className="py-20 md:py-28 relative overflow-hidden">
+    <section className="py-16 md:py-28 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 constellation-pattern opacity-20" />
 
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
         {/* Author bio */}
-        <div className="max-w-4xl mx-auto mb-20">
-          <div className="grid md:grid-cols-3 gap-8 items-center p-6 md:p-10 rounded-2xl border border-border bg-card/50">
+        <div className="max-w-4xl mx-auto mb-12 md:mb-20">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 items-center p-5 md:p-10 rounded-2xl border border-border bg-card/50">
             {/* Photo placeholder */}
             <div className="flex justify-center md:justify-start">
-              <div className="w-48 h-48 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/30 flex items-center justify-center">
-                <div className="w-40 h-40 rounded-full bg-navy-medium flex items-center justify-center">
-                  <span className="text-4xl text-primary font-serif">RC</span>
+              <div className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/30 flex items-center justify-center shrink-0">
+                <div className="w-24 h-24 md:w-40 md:h-40 rounded-full bg-navy-medium flex items-center justify-center">
+                  <span className="text-2xl md:text-4xl text-primary font-serif">RC</span>
                 </div>
               </div>
             </div>
 
             {/* Bio text */}
-            <div className="md:col-span-2 text-center md:text-left space-y-2">
+            <div className="md:col-span-2 text-center md:text-left space-y-2 md:space-y-3">
               <div className="space-y-1">
-                <h3 className="font-serif text-2xl text-foreground">
+                <h3 className="font-serif text-xl md:text-2xl text-foreground">
                   {t.authority.bioName} {" "}
                   <span className="text-primary font-medium">
                     {t.authority.bioTitle}
                   </span>
                 </h3>
               </div>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                 {t.authority.bioDescription} {" "}
                 <span className="text-primary font-medium">
                   {t.authority.bioGradient}
                 </span>
                 {t.authority.bioDot}
               </p>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                 {t.authority.bioSuffix}
               </p>
-              <p className="text-foreground font-medium">
+              <p className="text-sm md:text-base text-foreground font-medium">
                 {t.authority.bioPromisse}
-                <span className="text-muted-foreground leading-relaxed">
+                <span className="text-muted-foreground leading-relaxed block md:inline mt-1 md:mt-0">
                   {t.authority.bioPromisseDesc}
                 </span>
               </p>
@@ -115,8 +115,8 @@ const AuthoritySection = () => {
         </div>
 
         {/* Testimonials header */}
-        <div className="text-center mb-10">
-          <h2 className="font-serif text-3xl md:text-4xl text-foreground">
+        <div className="text-center mb-8 md:mb-10">
+          <h2 className="font-serif text-2xl md:text-4xl text-foreground">
             {t.authority.testimonialsHeaderPrefix}{" "}
             <span className="text-primary">
               {t.authority.testimonialsHeaderHighlight}
@@ -140,29 +140,29 @@ const AuthoritySection = () => {
                   key={index}
                   className="md:basis-1/2 lg:basis-1/3 pl-4"
                 >
-                  <div className="group h-full p-6 rounded-2xl border border-border bg-card/50 hover:border-primary/30 transition-all duration-300 flex flex-col">
+                  <div className="group h-full p-5 md:p-6 rounded-2xl border border-border bg-card/50 hover:border-primary/30 transition-all duration-300 flex flex-col">
                     {/* Quote icon */}
-                    <Quote className="w-8 h-8 text-primary/30 mb-4 shrink-0" />
+                    <Quote className="w-6 h-6 md:w-8 md:h-8 text-primary/30 mb-3 md:mb-4 shrink-0" />
 
                     {/* Rating */}
-                    <div className="flex gap-1 mb-4 shrink-0">
+                    <div className="flex gap-1 mb-3 md:mb-4 shrink-0">
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <Star
                           key={i}
-                          className="w-4 h-4 fill-primary text-primary"
+                          className="w-3 h-3 md:w-4 md:h-4 fill-primary text-primary"
                         />
                       ))}
                     </div>
 
                     {/* Text */}
-                    <p className="text-foreground leading-relaxed mb-6 italic flex-grow">
+                    <p className="text-sm md:text-base text-foreground leading-relaxed mb-4 md:mb-6 italic flex-grow">
                       "{testimonial.text}"
                     </p>
 
                     {/* Author */}
                     <div className="flex items-center gap-3 shrink-0">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <span className="text-sm font-medium text-primary">
+                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span className="text-xs md:text-sm font-medium text-primary">
                           {testimonial.author
                             .split(" ")
                             .map((n: string) => n[0])
@@ -170,10 +170,10 @@ const AuthoritySection = () => {
                         </span>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-foreground">
+                        <p className="text-xs md:text-sm font-medium text-foreground">
                           {testimonial.author}
                         </p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-[10px] md:text-xs text-muted-foreground">
                           {testimonial.role}
                         </p>
                       </div>

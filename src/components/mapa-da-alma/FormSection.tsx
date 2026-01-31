@@ -428,20 +428,22 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
     }
   };
 
-  return (
-    <section id="formulario" className="py-10 md:py-28 relative overflow-hidden">
+return (
+    <section id="formulario" className="py-16 md:py-28 relative overflow-hidden">
       <div className="absolute inset-0 constellation-pattern opacity-20" />
       <div className="container mx-auto px-4 max-w-xl relative z-10">
-        <div className="p-8 md:p-10 rounded-3xl border border-primary/30 bg-card/80 backdrop-blur-sm">
+        
+        {/* MUDANÇA 1: Padding reduzido no mobile (p-5 vs p-8) */}
+        <div className="p-5 md:p-10 rounded-3xl border border-primary/30 bg-card/80 backdrop-blur-sm shadow-2xl">
 
-          <div className="text-center mb-8 space-y-4">
-            <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-              <Sparkles className="w-8 h-8 text-primary" />
+          <div className="text-center mb-6 md:mb-8 space-y-3 md:space-y-4">
+            <div className="w-12 h-12 md:w-16 md:h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <Sparkles className="w-6 h-6 md:w-8 md:h-8" />
             </div>
             <h2 className="font-serif text-2xl md:text-3xl text-foreground">
               {titulo ? <span className="text-primary">{titulo}</span> : <>{t.headerTitlePrefix}</>}
             </h2>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-sm leading-relaxed">
               {publico === 'jovem'
                 ? "Preencha os dados do responsável e da criança."
                 : tipo === 'gratis'
@@ -452,7 +454,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
           </div>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-5">
 
               {/* === LAYOUT PARA JOVEM (ORDEM ESPECÍFICA) === */}
               {publico === 'jovem' ? (
@@ -466,7 +468,8 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                     <FormField control={form.control} name="name" render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-foreground">Nome Completo (Adulto)</FormLabel>
-                        <FormControl><Input placeholder="Nome do Pai/Mãe" className="bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
+                        {/* MUDANÇA 2: Input mobile-friendly (h-11 e text-base) */}
+                        <FormControl><Input placeholder="Nome do Pai/Mãe" className="h-11 md:h-12 text-base md:text-sm bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
@@ -474,7 +477,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                     <FormField control={form.control} name="email" render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-foreground">Email (Adulto)</FormLabel>
-                        <FormControl><Input type="email" placeholder="seu@email.com" className="bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
+                        <FormControl><Input type="email" placeholder="seu@email.com" className="h-11 md:h-12 text-base md:text-sm bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
@@ -482,7 +485,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                     <FormField control={form.control} name="phone" render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-foreground">WhatsApp (Adulto)</FormLabel>
-                        <FormControl><PhoneInput defaultCountry={country} value={field.value as any} onChange={field.onChange} /></FormControl>
+                        <FormControl><PhoneInput defaultCountry={country} value={field.value as any} onChange={field.onChange} className="h-11 md:h-12 text-base md:text-sm" /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
@@ -492,7 +495,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                         <FormItem>
                           <FormLabel className="text-foreground">CPF (Adulto)</FormLabel>
                           <FormControl>
-                            <Input placeholder="000.000.000-00" className="bg-background/50 border-border focus:border-primary" maxLength={14} {...field}
+                            <Input placeholder="000.000.000-00" className="h-11 md:h-12 text-base md:text-sm bg-background/50 border-border focus:border-primary" maxLength={14} {...field}
                               onChange={(e) => { let v = e.target.value.replace(/\D/g, ""); if (v.length > 11) v = v.slice(0, 11); v = v.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"); field.onChange(v); }} />
                           </FormControl>
                           <FormMessage />
@@ -516,7 +519,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                     <FormField control={form.control} name="childName" render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-foreground">Nome da Criança</FormLabel>
-                        <FormControl><Input placeholder="Nome completo do filho(a)" className="bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
+                        <FormControl><Input placeholder="Nome completo do filho(a)" className="h-11 md:h-12 text-base md:text-sm bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
@@ -525,7 +528,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                       <FormItem>
                         <FormLabel className="text-foreground">Gênero</FormLabel>
                         <div className="relative">
-                          <select className="flex h-10 w-full rounded-md border border-border bg-background/50 px-3 py-2 text-sm appearance-none text-foreground" value={field.value} onChange={field.onChange}>
+                          <select className="flex h-11 md:h-12 w-full rounded-md border border-border bg-background/50 px-3 py-2 text-base md:text-sm appearance-none text-foreground focus:border-primary" value={field.value} onChange={field.onChange}>
                             <option value="" disabled>Selecione</option>
                             <option value="female" className="bg-popover text-popover-foreground">Feminino</option>
                             <option value="male" className="bg-popover text-popover-foreground">Masculino</option>
@@ -544,7 +547,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                         <FormLabel className="text-foreground">Cidade de Nascimento</FormLabel>
                         <FormControl>
                           <div className="space-y-2">
-                            <PlacesAutocomplete ref={cityRef} value={field.value} onChange={field.onChange} placeholder="Ex: Campinas - SP" className="bg-background/50 border-border focus:border-primary" onPlaceSelect={(place) => { const loc = place.details?.geometry?.location; if (loc) { const lat = typeof loc.lat === 'function' ? loc.lat() : loc.lat; const lng = typeof loc.lng === 'function' ? loc.lng() : loc.lng; form.setValue('latitude', String(lat)); form.setValue('longitude', String(lng)); } }} />
+                            <PlacesAutocomplete ref={cityRef} value={field.value} onChange={field.onChange} placeholder="Ex: Campinas - SP" className="h-11 md:h-12 text-base md:text-sm bg-background/50 border-border focus:border-primary" onPlaceSelect={(place) => { const loc = place.details?.geometry?.location; if (loc) { const lat = typeof loc.lat === 'function' ? loc.lat() : loc.lat; const lng = typeof loc.lng === 'function' ? loc.lng() : loc.lng; form.setValue('latitude', String(lat)); form.setValue('longitude', String(lng)); } }} />
                             <input type="hidden" {...form.register('latitude')} /><input type="hidden" {...form.register('longitude')} />
                           </div>
                         </FormControl>
@@ -559,7 +562,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                   <FormField control={form.control} name="name" render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-foreground">{t.nameLabel}</FormLabel>
-                      <FormControl><Input placeholder={t.namePlaceholder} className="bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
+                      <FormControl><Input placeholder={t.namePlaceholder} className="h-11 md:h-12 text-base md:text-sm bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
@@ -567,7 +570,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                   <FormField control={form.control} name="email" render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-foreground">{t.emailLabel}</FormLabel>
-                      <FormControl><Input type="email" placeholder={t.emailPlaceholder} className="bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
+                      <FormControl><Input type="email" placeholder={t.emailPlaceholder} className="h-11 md:h-12 text-base md:text-sm bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
@@ -576,7 +579,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                     <FormItem>
                       <FormLabel className="text-foreground">{(t as any).genderLabel}</FormLabel>
                       <div className="relative">
-                        <select className="flex h-10 w-full rounded-md border border-border bg-background/50 px-3 py-2 text-sm appearance-none text-foreground" value={field.value} onChange={field.onChange}>
+                        <select className="flex h-11 md:h-12 w-full rounded-md border border-border bg-background/50 px-3 py-2 text-base md:text-sm appearance-none text-foreground focus:border-primary" value={field.value} onChange={field.onChange}>
                           <option value="" disabled>{(t as any).genderPlaceholder}</option>
                           <option value="female" className="bg-popover text-popover-foreground">{(t as any).genderFemale}</option>
                           <option value="male" className="bg-popover text-popover-foreground">{(t as any).genderMale}</option>
@@ -594,7 +597,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                       <FormLabel className="text-foreground">{t.birthCityLabel}</FormLabel>
                       <FormControl>
                         <div className="space-y-2">
-                          <PlacesAutocomplete ref={cityRef} value={field.value} onChange={field.onChange} placeholder="Ex: Campinas - SP" className="bg-background/50 border-border focus:border-primary" onPlaceSelect={(place) => { const loc = place.details?.geometry?.location; if (loc) { const lat = typeof loc.lat === 'function' ? loc.lat() : loc.lat; const lng = typeof loc.lng === 'function' ? loc.lng() : loc.lng; form.setValue('latitude', String(lat)); form.setValue('longitude', String(lng)); } }} />
+                          <PlacesAutocomplete ref={cityRef} value={field.value} onChange={field.onChange} placeholder="Ex: Campinas - SP" className="h-11 md:h-12 text-base md:text-sm bg-background/50 border-border focus:border-primary" onPlaceSelect={(place) => { const loc = place.details?.geometry?.location; if (loc) { const lat = typeof loc.lat === 'function' ? loc.lat() : loc.lat; const lng = typeof loc.lng === 'function' ? loc.lng() : loc.lng; form.setValue('latitude', String(lat)); form.setValue('longitude', String(lng)); } }} />
                           <input type="hidden" {...form.register('latitude')} /><input type="hidden" {...form.register('longitude')} />
                         </div>
                       </FormControl>
@@ -605,7 +608,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                   <FormField control={form.control} name="phone" render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-foreground">{t.phoneLabel}</FormLabel>
-                      <FormControl><PhoneInput defaultCountry={country} value={field.value as any} onChange={field.onChange} /></FormControl>
+                      <FormControl><PhoneInput defaultCountry={country} value={field.value as any} onChange={field.onChange} className="h-11 md:h-12 text-base md:text-sm" /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
@@ -615,7 +618,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                       <FormItem>
                         <FormLabel className="text-foreground">{(t as any).cpfLabel}</FormLabel>
                         <FormControl>
-                          <Input placeholder={(t as any).cpfPlaceholder} className="bg-background/50 border-border focus:border-primary" maxLength={14} {...field} onChange={(e) => { let v = e.target.value.replace(/\D/g, ""); if (v.length > 11) v = v.slice(0, 11); v = v.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"); field.onChange(v); }} />
+                          <Input placeholder={(t as any).cpfPlaceholder} className="h-11 md:h-12 text-base md:text-sm bg-background/50 border-border focus:border-primary" maxLength={14} {...field} onChange={(e) => { let v = e.target.value.replace(/\D/g, ""); if (v.length > 11) v = v.slice(0, 11); v = v.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"); field.onChange(v); }} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -624,32 +627,35 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                 </>
               )}
 
-              <Button type="submit" size="lg" disabled={isSubmitting} className="w-full text-lg py-6 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300">
+              {/* MUDANÇA 3: Botão grande e fácil de clicar */}
+              <Button type="submit" size="lg" disabled={isSubmitting} className="w-full h-14 md:h-auto text-lg md:py-6 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300 rounded-xl md:rounded-lg mt-6">
                 {isSubmitting ? t.submitButtonLoading : t.submitButton}
               </Button>
             </form>
           </Form>
+
+          
           
           {tipo === 'venda' && (
-            <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+            <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground opacity-80">
               <ExternalLink className="w-3 h-3 text-blue-500" />
               <span>{t.footerText}</span>
             </div>
           )}
 
-          <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+          <div className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground opacity-80">
             <Lock className="w-3 h-3 text-green-500" />
             <span className="text-green-500">{t.footerSecurity}</span>
           </div>
 
-          <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+          <div className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground opacity-80">
             <Zap className="w-3 h-3 text-yellow-500" />
             <span>{t.footerConfirm}</span>
           </div>
 
           {/* === BADGES INTELIGENTES === */}
           <div className="mt-8 pt-6 border-t border-border/50">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-3 md:gap-4">
 
               {/* 1. BADGE DE RISCO (Verde) */}
               <div className="flex flex-col items-center gap-2">
@@ -660,7 +666,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                   <h4 className="text-[10px] md:text-xs text-green-500 font-semibold leading-tight">
                     {tipo === 'venda' ? "Risco Zero" : "100% Gratuito"}
                   </h4>
-                  <p className="text-[10px] text-muted-foreground hidden md:block">
+                  <p className="text-[10px] text-muted-foreground hidden md:block mt-1">
                     {tipo === 'venda' ? "Garantia total de 7 dias" : "Sem custo nenhum"}
                   </p>
                 </div>
@@ -675,7 +681,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                   <h4 className="text-[10px] md:text-xs text-blue-500 font-semibold leading-tight">
                     {tipo === 'venda' ? "Análise Personalizada" : "Análise Personalizada"}
                   </h4>
-                  <p className="text-[10px] text-muted-foreground hidden md:block">
+                  <p className="text-[10px] text-muted-foreground hidden md:block mt-1">
                     {tipo === 'venda' ? "Entrega em até 5 dias úteis" : "Entrega em até 5 dias úteis"}
                   </p>
                 </div>
@@ -690,7 +696,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                   <h4 className="text-[10px] md:text-xs text-purple-500 font-semibold leading-tight">
                     {tipo === 'venda' ? "Acesso Vitalício" : "Sua Carta Presente"}
                   </h4>
-                  <p className="text-[10px] text-muted-foreground hidden md:block">
+                  <p className="text-[10px] text-muted-foreground hidden md:block mt-1">
                     {publico === 'jovem'
                       ? "Identidade da Criança"
                       : (tipo === 'venda' ? "Acesse sempre que quiser" : "Um resumo exclusivo para você")
@@ -703,7 +709,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
         </div>
 
         <AlertDialog open={showAgeModal} onOpenChange={setShowAgeModal}>
-          <AlertDialogContent>
+          <AlertDialogContent className="w-[90%] max-w-md rounded-2xl">
             <AlertDialogHeader>
               <AlertDialogTitle>Atenção</AlertDialogTitle>
               <AlertDialogDescription>

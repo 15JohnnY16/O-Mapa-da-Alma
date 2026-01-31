@@ -31,7 +31,7 @@ const SolutionSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left: Description */}
           <div className="space-y-8">
-            <ul className="space-y-4">
+            <ul className="space-y-4 md:space-y-6">
               <li className="flex items-start gap-3">
                 <span className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="w-2 h-2 rounded-full bg-primary" />
@@ -72,8 +72,8 @@ const SolutionSection = () => {
               </li>
             </ul>
 
-            <div className="p-4 rounded-lg border border-primary/20 bg-primary/5">
-              <p className="text-foreground font-medium italic">
+            <div className="bg-card border border-primary/20 rounded-xl p-4 md:p-6 mb-8 md:mb-12 text-center relative overflow-hidden">
+              <p className="text-foreground font-medium italic text-sm md:text-lg relative z-10">
                 {t.solution.quote}
               </p>
             </div>
@@ -82,7 +82,7 @@ const SolutionSection = () => {
           {/* Right: Visual representation */}
           <div className="relative flex flex-col items-center">
             {/* Animated Chart Container */}
-            <div className="relative w-full aspect-square max-w-[500px] mx-auto pointer-events-none select-none mb-8">
+            <div className="relative w-full aspect-square max-w-[260px] md:max-w-[400px] mx-auto pointer-events-none select-none">
               <img src="/chart-layer-1.webp" alt="Birth Chart Layer 1" className="w-full h-full absolute top-0 left-0 animate-animatedchartlayer1 opacity-40" loading="lazy" />
               <img src="/chart-layer-2.webp" alt="Birth Chart Layer 2" className="w-full h-full absolute top-0 left-0 animate-animatedchartlayer2 mix-blend-screen opacity-70" loading="lazy" />
               <img src="/chart-layer-3.webp" alt="Birth Chart Layer 3" className="w-full h-full absolute top-0 left-0 animate-animatedchartlayer3 mix-blend-overlay opacity-70" loading="lazy" />

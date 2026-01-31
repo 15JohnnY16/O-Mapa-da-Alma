@@ -31,7 +31,7 @@ const HeroSection = () => {
           </div>
 
           {/* Headline */}
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground">
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground">
             {t.hero.headlinePrefix}{" "}
             <span className="text-gradient-gold">{t.hero.headlineGradient}</span>
             {t.hero.headlineSuffix}{" "}
@@ -39,7 +39,7 @@ const HeroSection = () => {
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             {t.hero.subheadlinePrefix}{" "}
             <span className="text-foreground font-medium">{t.hero.subheadlineHighlight}</span>{" "}
             {t.hero.subheadlineMiddle}{" "}
@@ -52,7 +52,7 @@ const HeroSection = () => {
             <Button
               onClick={scrollToForm}
               size="lg"
-              className="text-lg px-16 py-7 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
+              className="w-full sm:w-auto text-lg px-16 py-7 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
             >
               {t.hero.ctaButton}
             </Button>
@@ -73,13 +73,6 @@ const HeroSection = () => {
               <span>{t.hero.trust3}</span>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 rounded-full border-2 border-primary/30 flex justify-center pt-2">
-          <div className="w-1 h-2 rounded-full bg-primary" />
         </div>
       </div>
     </section>

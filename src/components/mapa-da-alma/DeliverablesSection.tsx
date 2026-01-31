@@ -109,15 +109,15 @@ const DeliverablesSection = () => {
   ];
 
   return (
-    <section className="py-20 md:py-28 bg-navy-light">
-      <div className="container mx-auto px-16 max-w-6xl">
+    <section className="py-16 md:py-28 bg-navy-light">
+      <div className="container mx-auto px-4 md:px-16 max-w-6xl">
         {/* Section header */}
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground">
+        <div className="text-center mb-10 md:mb-16 space-y-4">
+          <h2 className="font-serif text-2xl md:text-4xl lg:text-5xl text-foreground">
             {t.deliverables.titlePrefix} <span className="text-primary">{t.deliverables.titleHighlight}</span>
           </h2>
-          <br></br>
-          <p className="font-serif text-5xl md:text-5xl lg:text-4xl text-foreground">
+          <br className="hidden md:block" />
+          <p className="font-serif text-2xl md:text-3xl lg:text-4xl text-foreground leading-tight">
             <span className="text-primary">{t.deliverables.subtitleGradient}</span> 
             <span className="text-muted-foreground">{t.deliverables.subtitleMiddle}</span>
             <span className="text-foreground">{t.deliverables.subtitleHighlight}</span>
@@ -129,11 +129,11 @@ const DeliverablesSection = () => {
         </div>
 
         {/* Deliverables grid */}
-        <div className="grid md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
           {deliverables.map((item, index) => (
             <div
               key={index}
-              className={`group relative p-6 md:p-8 rounded-2xl border transition-all duration-300 ${item.featured
+              className={`group relative p-5 md:p-8 rounded-2xl border transition-all duration-300 ${item.featured
                 ? "border-primary/50 bg-primary/5 hover:border-primary"
                 : "border-border bg-card/50 hover:border-primary/30"
                 }`}
@@ -147,14 +147,14 @@ const DeliverablesSection = () => {
 
               <div className="flex flex-col md:flex-row gap-4">
                 {/* Icon */}
-                <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${item.featured ? "bg-primary/20" : "bg-primary/10"
+                <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${item.featured ? "bg-primary/20" : "bg-primary/10"
                   } group-hover:bg-primary/20 transition-colors`}>
-                  <item.icon className={`w-7 h-7 ${item.featured ? "text-primary" : "text-primary"}`} />
+                  <item.icon className={`w-6 h-6 md:w-7 md:h-7 ${item.featured ? "text-primary" : "text-primary"}`} />
                 </div>
 
                 {/* Content */}
                 <div className="space-y-2">
-                  <h3 className="font-serif text-xl text-foreground">{item.title}</h3>
+                  <h3 className="font-serif text-lg md:text-xl text-foreground">{item.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
                   {item.listItems && (
                     <ul className="mt-2 space-y-2 mb-4">
@@ -193,12 +193,12 @@ const DeliverablesSection = () => {
         </div>
 
         {/* Summary */}
-        <div className="mt-10 text-center">
-          <p className="text-lg text-foreground">
+        <div className="mt-8 md:mt-10 text-center px-2">
+          <p className="text-base md:text-lg text-foreground leading-relaxed">
             <span className="text-foreground">{t.deliverables.summaryPrefix}</span> {" "}
             <span className="text-primary font-semibold">{t.deliverables.summaryMiddle}</span> 
             <span className="text-foreground">{t.deliverables.summaryMiddle2}</span>
-            <br></br>
+            <br className="hidden md:block" />
             <span className="text-primary font-semibold">{t.deliverables.summaryHighlight}</span>{" "}
             {t.deliverables.summarySuffix}
           </p>
