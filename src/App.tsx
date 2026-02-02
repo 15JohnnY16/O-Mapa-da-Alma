@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import ExitPopup from "./components/mapa-da-alma/ExitPopup";
 
 import { LanguageProvider } from "./contexts/LanguageContext";
+import ThankYouPage from "./pages/ThankYouPage";
 
 const queryClient = new QueryClient();
 
@@ -32,17 +33,17 @@ const App = () => (
 
             {/* 2. ROTA AMOSTRA GRÁTIS (Adulto Lead) */}
             {/* Acessa: omapadaalma.com/amostra */}
-            <Route path="/amostra" element={
+            <Route path="/carta" element={
               <Index 
                 tipo="gratis" 
                 publico="adulto" 
-                titulo="Receba sua Amostra Gratuita" 
+                titulo="Receba a sua Carta da Alma" 
               />
             } />
 
             {/* 3. ROTA JOVEM VENDA (< 18 Pagante) */}
             {/* Acessa: omapadaalma.com/jovem */}
-            <Route path="/jovem" element={
+            <Route path="/jovem-venda" element={
               <Index 
                 tipo="venda" 
                 publico="jovem" 
@@ -52,13 +53,17 @@ const App = () => (
 
             {/* 4. ROTA JOVEM GRÁTIS (< 18 Lead) */}
             {/* Acessa: omapadaalma.com/jovem-amostra */}
-            <Route path="/jovem-amostra" element={
+            <Route path="/jovem-carta" element={
               <Index 
                 tipo="gratis" 
                 publico="jovem" 
-                titulo="Amostra Grátis - Edição Jovem" 
+                titulo="Carta da Alma - Edição Jovem" 
               />
             } />
+
+            {/* 5. ROTA OBRIGADO */}
+            {/* Acessa: omapadaalma.com/obrigado */}
+            <Route path="/obrigado" element={<ThankYouPage />} />
 
             {/* Rota de Erro 404 */}
             <Route path="*" element={<NotFound />} />

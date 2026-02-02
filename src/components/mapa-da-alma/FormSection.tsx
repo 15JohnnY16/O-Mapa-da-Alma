@@ -43,8 +43,6 @@ const createFormSchema = (t: Translations, tipo: string = 'venda', publico: stri
   phone: z.string({ required_error: t.errors.phoneInvalid }).trim()
     .refine((val) => isValidPhoneNumber(val), t.errors.phoneInvalid),
 
-  // CPF REMOVIDO DAQUI
-
   birthDate: z.date({ required_error: t.errors.birthDateInvalid }),
   birthTime: z.string().trim().min(4, t.errors.birthTimeInvalid),
   birthCity: z.string().trim().min(3, t.errors.birthCityInvalid),
@@ -59,7 +57,6 @@ type FormData = {
   email: string;
   gender: string;
   phone: string;
-  // cpf removido
   birthDate: Date;
   birthTime: string;
   birthCity: string;
@@ -361,20 +358,27 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
     try {
       const formattedDate = format(data.birthDate, 'yyyy-MM-dd');
 
+      const searchParams = new URLSearchParams(window.location.search);
+
       const payload = {
         name: data.name,
         childName: data.childName,
         email: data.email,
         gender: data.gender,
         phone: data.phone,
-        // cpf REMOVIDO DO PAYLOAD
         birthDate: formattedDate,
         birthTime: data.birthTime,
         birthCity: data.birthCity,
         latitude: data.latitude,
         longitude: data.longitude,
         tipo_lead: tipo,
-        publico_alvo: publico
+        publico_alvo: publico,
+
+        utm_source: searchParams.get('utm_source') || '',
+        utm_medium: searchParams.get('utm_medium') || '',
+        utm_campaign: searchParams.get('utm_campaign') || '',
+        utm_content: searchParams.get('utm_content') || '',
+        utm_term: searchParams.get('utm_term') || ''
       };
 
       const endpoint = tipo === 'venda'
@@ -394,7 +398,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
         if (tipo === 'venda' && result.paymentUrl) {
           setTimeout(() => { window.location.href = result.paymentUrl; }, 1500);
         } else {
-          setTimeout(() => { window.location.href = "https://omapadaalma.com/obrigado-amostra"; }, 1500);
+          setTimeout(() => { window.location.href = `https://omapadaalma.com/obrigado?tipo=carta&name=${encodeURIComponent(data.name)}`; }, 1500);
         }
         form.reset();
         setDateInputValue("");
