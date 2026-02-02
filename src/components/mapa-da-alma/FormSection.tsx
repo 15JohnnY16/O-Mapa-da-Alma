@@ -8,11 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, Lock, Fingerprint, ShieldCheck, Zap, User, Baby, Sparkle, ExternalLink, Infinity, Scroll } from "lucide-react";
+import { Sparkles, Lock, Fingerprint, ShieldCheck, Zap, User, Baby, ExternalLink, Infinity, Scroll } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translations as t } from "@/lib/i18n";
-import { format, parse, isValid, differenceInYears } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { format, isValid, differenceInYears } from "date-fns";
 import { PlacesAutocomplete } from "@/components/ui/places-autocomplete";
 import {
   AlertDialog,
@@ -32,7 +31,7 @@ interface FormProps {
   titulo?: string;
 }
 
-// Atualizamos o Schema para aceitar childName se for Jovem
+// 1. SCHEMA ATUALIZADO (SEM CPF)
 const createFormSchema = (t: Translations, tipo: string = 'venda', publico: string = 'adulto') => z.object({
   name: z.string().trim().min(5, t.errors.nameMin).max(100, t.errors.nameMax),
   // Se for jovem, exigimos o nome da criança. Se for adulto, é opcional.
@@ -44,10 +43,7 @@ const createFormSchema = (t: Translations, tipo: string = 'venda', publico: stri
   phone: z.string({ required_error: t.errors.phoneInvalid }).trim()
     .refine((val) => isValidPhoneNumber(val), t.errors.phoneInvalid),
 
-  // CPF: Obrigatório se for VENDA.
-  cpf: tipo === 'venda'
-    ? z.string({ required_error: (t.errors as any).cpfInvalid }).min(14, (t.errors as any).cpfInvalid)
-    : z.string().optional(),
+  // CPF REMOVIDO DAQUI
 
   birthDate: z.date({ required_error: t.errors.birthDateInvalid }),
   birthTime: z.string().trim().min(4, t.errors.birthTimeInvalid),
@@ -56,13 +52,14 @@ const createFormSchema = (t: Translations, tipo: string = 'venda', publico: stri
   longitude: z.string().optional(),
 });
 
+// 2. TIPO ATUALIZADO (SEM CPF)
 type FormData = {
   name: string;
-  childName?: string; // Novo campo
+  childName?: string;
   email: string;
   gender: string;
   phone: string;
-  cpf: string;
+  // cpf removido
   birthDate: Date;
   birthTime: string;
   birthCity: string;
@@ -70,7 +67,7 @@ type FormData = {
   longitude?: string;
 };
 
-// --- MANTENDO SEU COMPONENTE DE HORA EXATAMENTE IGUAL ---
+// --- COMPONENTE DE HORA (MANTIDO IGUAL) ---
 const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) => {
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
@@ -110,7 +107,6 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
     let currentH = valuesRef.current.hours;
     let currentM = valuesRef.current.minutes;
 
-    // Auto-pad on blur if single digit
     if (currentH.length === 1) {
       currentH = currentH.padStart(2, "0");
       setHours(currentH);
@@ -127,21 +123,15 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
 
   const handleHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value.replace(/\D/g, '').slice(0, 2);
-
-    // Auto-clamp if 2 digits
     if (val.length === 2) {
       let num = parseInt(val);
       if (num > 23) val = "23";
     }
-
     setHours(val);
     valuesRef.current.hours = val;
-
     if (val.length === 2) {
       minuteRef.current?.focus();
     }
-
-    // If we have both parts, update parent
     if (val.length === 2 && valuesRef.current.minutes.length === 2) {
       updateTime(val, valuesRef.current.minutes);
     }
@@ -149,19 +139,13 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
 
   const handleMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value.replace(/\D/g, '').slice(0, 2);
-
-    // Auto-clamp if 2 digits
     if (val.length === 2) {
       let num = parseInt(val);
       if (num > 59) val = "59";
-
-      // Auto-advance to next field (City)
       nextRef.current?.focus();
     }
-
     setMinutes(val);
     valuesRef.current.minutes = val;
-
     if (val.length === 2) {
       updateTime(valuesRef.current.hours, val);
     }
@@ -206,6 +190,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
   const [dateInputValue, setDateInputValue] = useState("");
   const [showAgeModal, setShowAgeModal] = useState(false);
 
+  // Refs
   const emailRef = useRef<HTMLInputElement>(null);
   const genderRef = useRef<HTMLSelectElement>(null);
   const dayRef = useRef<HTMLInputElement>(null);
@@ -214,7 +199,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
   const hourRef = useRef<HTMLInputElement>(null);
   const minuteRef = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
-  const cpfRef = useRef<HTMLInputElement>(null);
+  // cpfRef REMOVIDO
   const phoneRef = useRef<any>(null);
   const childNameRef = useRef<HTMLInputElement>(null);
 
@@ -223,7 +208,16 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "", childName: "", email: "", gender: "", phone: "", cpf: "", birthTime: "", birthCity: "", latitude: "", longitude: "",
+      name: "", 
+      childName: "", 
+      email: "", 
+      gender: "", 
+      phone: "", 
+      // cpf: "", REMOVIDO
+      birthTime: "", 
+      birthCity: "", 
+      latitude: "", 
+      longitude: "",
     },
   });
 
@@ -231,7 +225,6 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
     const currentDate = form.getValues("birthDate");
     if (currentDate && isValid(currentDate)) {
       setDateInputValue(format(currentDate, 'dd/MM/yyyy'));
-
       // Age Check
       if (publico !== 'jovem') {
         const age = differenceInYears(new Date(), currentDate);
@@ -242,7 +235,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
     }
   }, [form.watch("birthDate")]);
 
-  // Função auxiliar para renderizar os campos de data (mantendo sua lógica original)
+  // Função auxiliar para renderizar os campos de data
   const renderDateFields = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
       <FormField control={form.control} name="birthDate" render={({ field }) => {
@@ -272,20 +265,12 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
 
         const handleMonthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const val = e.target.value;
-
-          if (!val) {
-            setMonthInput("");
-            setMonthVal(null);
-            return;
-          }
-
+          if (!val) { setMonthInput(""); setMonthVal(null); return; }
           const digits = val.replace(/\D/g, '').slice(0, 2);
           if (!digits) return;
-
           const num = parseInt(digits);
           const len = digits.length;
 
-          // Logic for 2 digits (01-12)
           if (len === 2) {
             if (num >= 1 && num <= 12) {
               const mIdx = num - 1;
@@ -294,10 +279,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
               yearRef.current?.focus();
               tryUpdateDate(day, mIdx, year);
             }
-            // Ignore invalid 2-digit numbers
           } else {
-            // Length 1 (0, 1..9)
-            // Check if it's potentially ambiguous or valid
             if (num >= 2 && num <= 9) {
               const mIdx = num - 1;
               setMonthInput(months[mIdx]);
@@ -305,7 +287,6 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
               yearRef.current?.focus();
               tryUpdateDate(day, mIdx, year);
             } else {
-              // 0 or 1 - Wait for second digit
               setMonthInput(digits);
               setMonthVal(null);
             }
@@ -381,12 +362,12 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
       const formattedDate = format(data.birthDate, 'yyyy-MM-dd');
 
       const payload = {
-        name: data.name, // Nome do PAI (Responsável)
-        childName: data.childName, // Nome da Criança (Só vai se for Jovem)
+        name: data.name,
+        childName: data.childName,
         email: data.email,
         gender: data.gender,
         phone: data.phone,
-        cpf: data.cpf,
+        // cpf REMOVIDO DO PAYLOAD
         birthDate: formattedDate,
         birthTime: data.birthTime,
         birthCity: data.birthCity,
@@ -428,12 +409,11 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
     }
   };
 
-return (
+  return (
     <section id="formulario" className="py-16 md:py-28 relative overflow-hidden">
       <div className="absolute inset-0 constellation-pattern opacity-20" />
       <div className="container mx-auto px-4 max-w-xl relative z-10">
         
-        {/* MUDANÇA 1: Padding reduzido no mobile (p-5 vs p-8) */}
         <div className="p-5 md:p-10 rounded-3xl border border-primary/30 bg-card/80 backdrop-blur-sm shadow-2xl">
 
           <div className="text-center mb-6 md:mb-8 space-y-3 md:space-y-4">
@@ -456,7 +436,7 @@ return (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-5">
 
-              {/* === LAYOUT PARA JOVEM (ORDEM ESPECÍFICA) === */}
+              {/* === LAYOUT PARA JOVEM === */}
               {publico === 'jovem' ? (
                 <>
                   {/* 1. DADOS DO RESPONSÁVEL */}
@@ -468,7 +448,6 @@ return (
                     <FormField control={form.control} name="name" render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-foreground">Nome Completo (Adulto)</FormLabel>
-                        {/* MUDANÇA 2: Input mobile-friendly (h-11 e text-base) */}
                         <FormControl><Input placeholder="Nome do Pai/Mãe" className="h-11 md:h-12 text-base md:text-sm bg-background/50 border-border focus:border-primary" {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
@@ -489,19 +468,8 @@ return (
                         <FormMessage />
                       </FormItem>
                     )} />
-
-                    {tipo === 'venda' && (
-                      <FormField control={form.control} name="cpf" render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-foreground">CPF (Adulto)</FormLabel>
-                          <FormControl>
-                            <Input placeholder="000.000.000-00" className="h-11 md:h-12 text-base md:text-sm bg-background/50 border-border focus:border-primary" maxLength={14} {...field}
-                              onChange={(e) => { let v = e.target.value.replace(/\D/g, ""); if (v.length > 11) v = v.slice(0, 11); v = v.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"); field.onChange(v); }} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )} />
-                    )}
+                    
+                    {/* CPF REMOVIDO AQUI */}
                   </div>
 
                   {/* SEPARADOR */}
@@ -613,29 +581,16 @@ return (
                     </FormItem>
                   )} />
 
-                  {tipo === 'venda' && (
-                    <FormField control={form.control} name="cpf" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-foreground">{(t as any).cpfLabel}</FormLabel>
-                        <FormControl>
-                          <Input placeholder={(t as any).cpfPlaceholder} className="h-11 md:h-12 text-base md:text-sm bg-background/50 border-border focus:border-primary" maxLength={14} {...field} onChange={(e) => { let v = e.target.value.replace(/\D/g, ""); if (v.length > 11) v = v.slice(0, 11); v = v.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"); field.onChange(v); }} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
-                  )}
+                  {/* CPF REMOVIDO AQUI TAMBÉM */}
                 </>
               )}
 
-              {/* MUDANÇA 3: Botão grande e fácil de clicar */}
               <Button type="submit" size="lg" disabled={isSubmitting} className="w-full h-14 md:h-auto text-lg md:py-6 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300 rounded-xl md:rounded-lg mt-6">
                 {isSubmitting ? t.submitButtonLoading : t.submitButton}
               </Button>
             </form>
           </Form>
 
-          
-          
           {tipo === 'venda' && (
             <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground opacity-80">
               <ExternalLink className="w-3 h-3 text-blue-500" />
@@ -656,7 +611,6 @@ return (
           {/* === BADGES INTELIGENTES === */}
           <div className="mt-8 pt-6 border-t border-border/50">
             <div className="grid grid-cols-3 gap-3 md:gap-4">
-
               {/* 1. BADGE DE RISCO (Verde) */}
               <div className="flex flex-col items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center">
