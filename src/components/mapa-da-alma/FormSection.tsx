@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, Lock, Fingerprint, ShieldCheck, Zap, User, Baby, ExternalLink, Infinity, Scroll } from "lucide-react";
+import { Sparkles, Lock, Fingerprint, ShieldCheck, Zap, User, Baby, ExternalLink, Infinity, Scroll, Percent, Ticket } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translations as t } from "@/lib/i18n";
 import { format, isValid, differenceInYears } from "date-fns";
@@ -48,6 +48,8 @@ const createFormSchema = (t: Translations, tipo: string = 'venda', publico: stri
   birthCity: z.string().trim().min(3, t.errors.birthCityInvalid),
   latitude: z.string().optional(),
   longitude: z.string().optional(),
+
+  coupon: z.string().optional(),
 });
 
 // 2. TIPO ATUALIZADO (SEM CPF)
@@ -62,6 +64,7 @@ type FormData = {
   birthCity: string;
   latitude?: string;
   longitude?: string;
+  coupon?: string;
 };
 
 // --- COMPONENTE DE HORA (MANTIDO IGUAL) ---
@@ -69,6 +72,8 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
   const valuesRef = useRef({ hours: "", minutes: "" });
+
+  const { toast } = useToast();
 
   useEffect(() => { valuesRef.current = { hours, minutes }; }, [hours, minutes]);
 
@@ -122,7 +127,15 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
     let val = e.target.value.replace(/\D/g, '').slice(0, 2);
     if (val.length === 2) {
       let num = parseInt(val);
-      if (num > 23) val = "23";
+      if (num > 23) {
+        toast({
+          title: "Hora inválida",
+          description: `O valor ${num} não é uma hora válida. Use entre 00 e 23.`,
+          variant: "destructive",
+          duration: 3000,
+        });
+        val = "";
+      };
     }
     setHours(val);
     valuesRef.current.hours = val;
@@ -138,9 +151,19 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
     let val = e.target.value.replace(/\D/g, '').slice(0, 2);
     if (val.length === 2) {
       let num = parseInt(val);
-      if (num > 59) val = "59";
-      nextRef.current?.focus();
+      if (num > 59) {
+        toast({
+          title: "Minuto inválido",
+          description: `O valor ${num} não é um minuto válido. Use entre 00 e 59.`,
+          variant: "destructive",
+          duration: 3000,
+        });
+        val = "";
+      } else {
+        nextRef.current?.focus();
+      }
     }
+
     setMinutes(val);
     valuesRef.current.minutes = val;
     if (val.length === 2) {
@@ -153,7 +176,7 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
       <div className="relative flex-1">
         <Input
           type="text"
-          placeholder="H"
+          placeholder="08"
           className="bg-background/50 border-border focus:border-primary text-center px-1"
           value={hours}
           onChange={handleHourChange}
@@ -166,7 +189,7 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
       <div className="relative flex-1">
         <Input
           type="text"
-          placeholder="M"
+          placeholder="30"
           className="bg-background/50 border-border focus:border-primary text-center px-1"
           value={minutes}
           onChange={handleMinuteChange}
@@ -210,7 +233,6 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
       email: "", 
       gender: "", 
       phone: "", 
-      // cpf: "", REMOVIDO
       birthTime: "", 
       birthCity: "", 
       latitude: "", 
@@ -374,6 +396,8 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
         tipo_lead: tipo,
         publico_alvo: publico,
 
+        coupon: data.coupon || '',
+
         utm_source: searchParams.get('utm_source') || '',
         utm_medium: searchParams.get('utm_medium') || '',
         utm_campaign: searchParams.get('utm_campaign') || '',
@@ -472,8 +496,6 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                         <FormMessage />
                       </FormItem>
                     )} />
-                    
-                    {/* CPF REMOVIDO AQUI */}
                   </div>
 
                   {/* SEPARADOR */}
@@ -585,7 +607,30 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                     </FormItem>
                   )} />
 
-                  {/* CPF REMOVIDO AQUI TAMBÉM */}
+                  {tipo === 'venda' && (
+                    <FormField control={form.control} name="coupon" render={({ field }) => (
+                      <FormItem className="mt-4">
+                        <FormLabel className="text-foreground flex items-center gap-2">
+                          <Ticket className="w-4 h-4 text-primary" /> {/* Importe o ícone Ticket do lucide-react */}
+                          Possui um Cupom de Desconto?
+                        </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input 
+                              placeholder="Digite seu código aqui" 
+                              className="h-11 md:h-12 bg-background/50 border-border focus:border-primary uppercase placeholder:normal-case" 
+                              {...field} 
+                              onChange={(e) => field.onChange(e.target.value.toUpperCase())} // Força maiúsculo
+                            />
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                              <Percent className="w-4 h-4 text-muted-foreground/50" /> {/* Opcional: ícone decorativo */}
+                            </div>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                  )}
                 </>
               )}
 
