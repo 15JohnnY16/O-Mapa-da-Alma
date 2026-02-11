@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
-import { CheckCircle, Mail, MessageCircle, ArrowRight, Star, Gift } from "lucide-react";
+import { CheckCircle, Mail, MessageCircle, ArrowRight, Star, Gift, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useSearchParams } from "react-router-dom"; 
+import { useSearchParams, useNavigate } from "react-router-dom"; 
 
 export default function ThankYouPage() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   
   // Pega os parâmetros da URL
   // Exemplo: seite.com/obrigado?name=Joao&tipo=venda
   const userName = searchParams.get("name") || "Viajante";
   const type = searchParams.get("tipo") || "amostra"; // 'venda' ou 'amostra'
+  const token = searchParams.get("token") || "";
+
+  const [isValidAccess, setIsValidAccess] = useState(false);
 
   // Configurações dinâmicas de Texto baseadas no tipo
   const content = {
@@ -38,8 +42,17 @@ export default function ThankYouPage() {
 
   // === ÁREA DE RASTREAMENTO INTELIGENTE ===
   useEffect(() => {
+    // 1. SEGURANÇA: Verifica se o token existe e parece válido (MD5 tem 32 chars)
+    if (!token || token.length !== 32) {
+      console.warn("⛔ Acesso direto ou inválido detectado. Pixel bloqueado.");
+      // Opcional: Redirecionar para home após 3 segundos
+      const timer = setTimeout(() => navigate("/"), 4000); 
+      return () => clearTimeout(timer); 
+    }
+
+    // 2. DISPARA PIXELS (Só entra aqui se tiver token)
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[DEV] Evento Disparado: ${type === 'venda' ? 'Purchase (R$ 197)' : 'Lead (R$ 0)'}`);
+      console.log(`[DEV] Pixel Disparado: ${type} (R$ ${currentContent.value})`);
       return;
     }
 
@@ -49,16 +62,9 @@ export default function ThankYouPage() {
       if (type === 'venda') {
         // Evento de COMPRA (Alto Valor)
         // @ts-ignore
-        window.fbq('track', 'Purchase', { 
+        window.fbq('track', type === 'venda' ? 'Purchase' : 'Lead', { 
           currency: "BRL", 
-          value: 197.00 
-        });
-      } else {
-        // Evento de LEAD (Cadastro)
-        // @ts-ignore
-        window.fbq('track', 'Lead', { 
-          currency: "BRL", 
-          value: 0.00 
+          value: currentContent.value
         });
       }
     }
@@ -71,20 +77,35 @@ export default function ThankYouPage() {
         // @ts-ignore
         window.gtag('event', 'conversion', {
           'send_to': 'AW-17926087733/t_eLCKWmsvEbELXI6eNC', // Substitua pelo Label de Compra
-          'value': 197.00,
-          'currency': 'BRL'
-        });
-      } else {
-        // Conversão de Lead
-        // @ts-ignore
-        window.gtag('event', 'conversion', {
-          'send_to': 'AW-17926087733/Cmf9CKimsvEbELXI6eNC', // Substitua pelo Label de Lead
-          'value': 0.00,
+          'value': currentContent.value,
           'currency': 'BRL'
         });
       }
     }
-  }, [type]);
+  }, [type, token, navigate, currentContent.value]);
+
+  // === RENDERIZAÇÃO CONDICIONAL ===
+  // Se não tiver token, mostra erro ou loading (evita mostrar o "Obrigado" indevidamente)
+  if (!token || token.length !== 32) {
+    return (
+      <section className="min-h-screen bg-navy-light flex items-center justify-center p-4">
+        <Card className="max-w-md w-full bg-card/90 border-destructive/50 p-8 text-center shadow-2xl backdrop-blur-md">
+          <div className="flex justify-center mb-4">
+            <div className="p-3 rounded-full bg-destructive/10">
+              <AlertTriangle className="w-12 h-12 text-destructive" />
+            </div>
+          </div>
+          <h1 className="text-2xl text-foreground font-serif mb-2">Acesso Restrito</h1>
+          <p className="text-muted-foreground mb-6">
+            Esta página é exclusiva para confirmação de pedidos. Você será redirecionado para o início.
+          </p>
+          <Button onClick={() => navigate("/")} variant="outline" className="w-full border-primary/20 hover:bg-primary/5">
+            Voltar para o Início
+          </Button>
+        </Card>
+      </section>
+    );
+  }
 
   return (
     <section className="min-h-screen bg-navy-light relative flex items-center justify-center p-4 overflow-hidden">

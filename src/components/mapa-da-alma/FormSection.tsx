@@ -50,6 +50,8 @@ const createFormSchema = (t: Translations, tipo: string = 'venda', publico: stri
   longitude: z.string().optional(),
 
   coupon: z.string().optional(),
+
+  fax_check: z.string().optional(),
 });
 
 // 2. TIPO ATUALIZADO (SEM CPF)
@@ -65,6 +67,7 @@ type FormData = {
   latitude?: string;
   longitude?: string;
   coupon?: string;
+  fax_check?: string;
 };
 
 // --- COMPONENTE DE HORA (MANTIDO IGUAL) ---
@@ -237,6 +240,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
       birthCity: "", 
       latitude: "", 
       longitude: "",
+      fax_check: "",
     },
   });
 
@@ -395,6 +399,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
         longitude: data.longitude,
         tipo_lead: tipo,
         publico_alvo: publico,
+        fax_check: (data as any).fax_check || '',
 
         coupon: data.coupon || '',
 
@@ -419,13 +424,21 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
 
       if (result.status === 'success') {
         toast({ title: t.successTitle, description: tipo === 'venda' ? "Redirecionando..." : "Solicitação recebida!" });
+
         if (tipo === 'venda' && result.paymentUrl) {
           setTimeout(() => { window.location.href = result.paymentUrl; }, 1500);
         } else {
-          setTimeout(() => { window.location.href = `https://omapadaalma.com/obrigado?tipo=carta&name=${encodeURIComponent(data.name)}`; }, 1500);
+          const token = result.token || ''; 
+          setTimeout(() => { 
+              window.location.href = `https://omapadaalma.com/obrigado?tipo=carta&name=${encodeURIComponent(data.name)}&token=${token}`; 
+          }, 1500);
         }
         form.reset();
         setDateInputValue("");
+      } 
+      else if (result.status === 'ignored') {
+          console.log("Bot detectado e ignorado.");
+          // Não faz nada, não redireciona, não mostra erro. O bot fica no vácuo.
       } else {
         throw new Error(result.message || "Erro no servidor");
       }
@@ -463,6 +476,21 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-5">
+
+              {/* === HONEYPOT (Anti-Bot) === */}
+              {/* Invisível para humanos via CSS, mas visível para bots no HTML */}
+              <div style={{ display: 'none', opacity: 0, position: 'absolute', left: '-9999px' }} aria-hidden="true">
+                <label htmlFor="fax_check">Se você é humano, deixe este campo vazio.</label>
+                <input
+                  type="text"
+                  id="fax_check"
+                  name="fax_check"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  {...form.register("fax_check" as any)} // Força o registro no hook-form
+                />
+              </div>
+              {/* =========================== */}
 
               {/* === LAYOUT PARA JOVEM === */}
               {publico === 'jovem' ? (
