@@ -13,7 +13,7 @@ import Footer from "@/components/mapa-da-alma/Footer";
 // Definimos o que essa página aceita receber do Roteador (App.tsx)
 interface IndexProps {
   tipo?: 'venda' | 'gratis';
-  publico?: 'adulto' | 'jovem';
+  publico?: 'adulto' | 'jovem' | 'carreira' | 'relacionamento' | 'dinheiro';
   titulo?: string;
 }
 

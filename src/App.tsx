@@ -9,6 +9,8 @@ import ExitPopup from "./components/mapa-da-alma/ExitPopup";
 
 import { LanguageProvider } from "./contexts/LanguageContext";
 import ThankYouPage from "./pages/ThankYouPage";
+import CartaPage from "./pages/CartaPage";
+import WhatsAppButton from "./components/ui/whatsAppButton";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +22,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <ExitPopup />
+          <WhatsAppButton />
           <Routes>
             
             {/* 1. ROTA PRINCIPAL (Adulto Venda) */}
@@ -32,14 +35,11 @@ const App = () => (
             } />
 
             {/* 2. ROTA AMOSTRA GRÁTIS (Adulto Lead) */}
-            {/* Acessa: omapadaalma.com/amostra */}
-            <Route path="/carta" element={
-              <Index 
-                tipo="gratis" 
-                publico="adulto" 
-                titulo="Receba a sua Carta da Alma" 
-              />
-            } />
+            {/* Acessa: omapadaalma.com/carta */}
+            <Route path="/carta" element={<CartaPage />} />
+            <Route path="/carta-carreira" element={<CartaPage theme="carreira" />} />
+            <Route path="/carta-dinheiro" element={<CartaPage theme="dinheiro" />} />
+            <Route path="/carta-relacionamento" element={<CartaPage theme="relacionamento" />} /> 
 
             {/* 3. ROTA JOVEM VENDA (< 18 Pagante) */}
             {/* Acessa: omapadaalma.com/jovem */}

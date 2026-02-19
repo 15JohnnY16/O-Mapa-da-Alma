@@ -27,7 +27,7 @@ type Translations = typeof t;
 
 interface FormProps {
   tipo?: 'venda' | 'gratis';
-  publico?: 'adulto' | 'jovem';
+  publico?: 'adulto' | 'jovem' | 'carreira' | 'relacionamento' | 'dinheiro';
   titulo?: string;
 }
 
@@ -231,14 +231,14 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "", 
-      childName: "", 
-      email: "", 
-      gender: "", 
-      phone: "", 
-      birthTime: "", 
-      birthCity: "", 
-      latitude: "", 
+      name: "",
+      childName: "",
+      email: "",
+      gender: "",
+      phone: "",
+      birthTime: "",
+      birthCity: "",
+      latitude: "",
       longitude: "",
       fax_check: "",
     },
@@ -428,17 +428,17 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
         if (tipo === 'venda' && result.paymentUrl) {
           setTimeout(() => { window.location.href = result.paymentUrl; }, 1500);
         } else {
-          const token = result.token || ''; 
-          setTimeout(() => { 
-              window.location.href = `https://omapadaalma.com/obrigado?tipo=carta&name=${encodeURIComponent(data.name)}&token=${token}`; 
+          const token = result.token || '';
+          setTimeout(() => {
+            window.location.href = `https://omapadaalma.com/obrigado?tipo=carta&name=${encodeURIComponent(data.name)}&token=${token}`;
           }, 1500);
         }
         form.reset();
         setDateInputValue("");
-      } 
+      }
       else if (result.status === 'ignored') {
-          console.log("Bot detectado e ignorado.");
-          // Não faz nada, não redireciona, não mostra erro. O bot fica no vácuo.
+        console.log("Bot detectado e ignorado.");
+        // Não faz nada, não redireciona, não mostra erro. O bot fica no vácuo.
       } else {
         throw new Error(result.message || "Erro no servidor");
       }
@@ -454,7 +454,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
     <section id="formulario" className="py-16 md:py-28 relative overflow-hidden">
       <div className="absolute inset-0 constellation-pattern opacity-20" />
       <div className="container mx-auto px-4 max-w-xl relative z-10">
-        
+
         <div className="p-5 md:p-10 rounded-3xl border border-primary/30 bg-card/80 backdrop-blur-sm shadow-2xl">
 
           <div className="text-center mb-6 md:mb-8 space-y-3 md:space-y-4">
@@ -644,10 +644,10 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
                         </FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Input 
-                              placeholder="Digite seu código aqui" 
-                              className="h-11 md:h-12 bg-background/50 border-border focus:border-primary uppercase placeholder:normal-case" 
-                              {...field} 
+                            <Input
+                              placeholder="Digite seu código aqui"
+                              className="h-11 md:h-12 bg-background/50 border-border focus:border-primary uppercase placeholder:normal-case"
+                              {...field}
                               onChange={(e) => field.onChange(e.target.value.toUpperCase())} // Força maiúsculo
                             />
                             <div className="absolute right-3 top-1/2 -translate-y-1/2">
