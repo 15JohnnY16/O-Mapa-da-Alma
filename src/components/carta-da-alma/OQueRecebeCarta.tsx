@@ -8,23 +8,23 @@ interface OQueRecebeProps {
 const benefits = [
   {
     icon: Clock,
-    title: "Reconhecimento Imediato em até 48 Horas",
-    desc: "Você envia seus dados e recebe uma leitura escrita tão precisa que você se reconhece na hora. Sem esperar semanas. Clareza rápida para quem precisa de resposta agora."
+    title: "Clareza em até 48 Horas",
+    desc: "Você envia seus dados e em até 48 horas você recebe uma leitura personalizada escrita, direta ao ponto. Sem enrolação. Só o que importa agora."
   },
   {
     icon: MessageCircle,
-    title: "Linguagem Humana, Sem Jargão Técnico",
-    desc: "Nada de quadratura ou termos que você precisa pesquisar. A Carta é escrita como se uma amiga sábia estivesse te contando a verdade sobre você com ternura."
+    title: "Linguagem Humana (de Verdade)",
+    desc: "Nada de termos que você precise “traduzir”. É como conversar com alguém que te entende, coloca em palavras o que você sente e te devolve isso com carinho e precisão."
   },
   {
     icon: Target,
     title: "Padrões Nomeados com Exatidão",
-    desc: "Você descobre exatamente qual padrão te trava. Não é descrição genérica de horóscopo. É um espelho emocional que mostra onde você se sabota."
+    desc: "Você não vai ler descrições genéricas. Você vai ver o seu jeito de funcionar, onde você se repete, onde se protege demais e onde se sabota sem perceber."
   },
   {
     icon: ListTodo,
-    title: "Próximo Passo Prático Incluído",
-    desc: "No final da Carta, você recebe um ritual simples de 7 dias para ancorar a leitura. Não é gratidão genérica. É um exercício prático que revela onde você se sabota."
+    title: "Um Próximo Passo Prático",
+    desc: "No final, você recebe um passo simples para aplicar de imediato. Não é gratidão genérica. É um micro-ritual/ação de 7 dias para mudar o que você já reconheceu."
   }
 ];
 
@@ -38,7 +38,7 @@ export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
             O Que Você Recebe na <span className="text-primary">Carta da Alma</span>?
           </h2>
           <p className="text-muted-foreground mt-4 text-lg">
-            Uma experiência completa de autoconhecimento que vai além de um mapa técnico.
+            Uma experiência de autoconhecimento através de uma leitura curta, profunda e prática pra você se reconhecer com clareza. Sem horóscopo genérico, sem linguagem complicada e que vai além de uma mapa astral técnico.
           </p>
         </div>
 
@@ -83,21 +83,21 @@ export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
                 {/* Títulos com cor escura para contraste */}
                 <div className="space-y-4">
                     <h3 className="font-serif text-3xl md:text-5xl font-bold text-navy-dark leading-tight">
-                        Pronta Para Parar de Repetir?
+                        Pronta Para se Reconhecer Sem Desculpas?
                     </h3>
                     <p className="text-muted-foreground max-w-3xl mx-auto text-lg leading-relaxed">
-                        Receba sua Carta da Alma personalizada em até 48 horas. Sem custo. Sem compromisso. <br />Só reconhecimento real.
+                        Receba sua Carta da Alma em até 48 horas. <br /> <span className="text-primary">100% gratuita. Sem compromisso. Só clareza.</span>
                     </p>
                 </div>
 
                 {/* Botão Dourado para destacar no fundo claro */}
                 <Button 
-                onClick={scrollToForm}
-                size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold h-14 px-10 rounded-full shadow-lg shadow-primary/20 text-lg hover:scale-105 transition-transform"
+                  onClick={scrollToForm}
+                  size="lg"
+                  className="w-full sm:w-auto h-auto min-h-[56px] py-3 px-4 sm:px-10 bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-full shadow-lg shadow-primary/20 text-base sm:text-lg hover:scale-105 transition-transform flex items-center justify-center whitespace-normal text-center mx-auto"
                 >
-                <Mail className="w-5 h-5 mr-2" />
-                Solicitar Minha Carta Agora
+                  <Mail className="w-5 h-5 mr-2 flex-shrink-0" />
+                  <span>Solicitar Minha Carta Agora</span>
                 </Button>
             </div>
             </div>

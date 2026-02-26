@@ -4,22 +4,22 @@ const steps = [
   {
     icon: FileText,
     title: "1. Você Envia Seus Dados",
-    desc: "Preenche um formulário simples com data, hora e local de nascimento. Sem complicação. Sem entrevista. Sem precisar contar sua vida."
+    desc: "Preenche um formulário rápido com data, hora e cidade de nascimento. Só isso."
   },
   {
     icon: Search,
-    title: "2. Eu Estudo Seu Mapa",
-    desc: "Nos próximos 2 dias, mergulho no seu mapa natal. Cruzo astrologia com astrogenealogia. Traduzo tudo em linguagem humana, sem jargão técnico."
+    title: "2. Eu Faço a Leitura do Seu Mapa",
+    desc: "Eu analiso seu mapa com profundidade integrando diferentes abordagens da astrologia (moderna e profunda) pra te entregar uma leitura clara e aplicável."
   },
   {
     icon: Heart,
-    title: "3. Você Se Reconhece",
-    desc: "A Carta chega no seu email. São 2 páginas escritas sobre você. Você lê… e entende por as coisas são como são."
+    title: "3. Você se Reconhece",
+    desc: "Você recebe a Carta por e-mail e/ou WhatsApp. Uma Leitura leve, precisa e com aquela sensação de “uau, sou eu”."
   },
   {
     icon: MousePointerClick,
-    title: "4. Você Decide o Próximo Passo",
-    desc: "Se a Carta te tocar, você tem acesso ao Mapa completo. 40+ páginas que aprofundam amor, carreira, dinheiro e próximos passos práticos."
+    title: "4. Você Escolhe o Próximo Passo",
+    desc: "Se a Carta da Alma tocar em algo verdadeiro, você pode seguir para o Mapa da Alma. Porque aí não é só “entender”. É se enxergar por inteiro."
   }
 ];
 
@@ -39,7 +39,7 @@ export default function ComoFuncionaCarta() {
             Como Funciona a <span className="text-primary">Carta da Alma</span>?
           </h2>
           <p className="text-muted-foreground max-w-3xl mx-auto text-lg">
-            Um processo transparente em 4 etapas que entrega clareza profunda sobre quem você é.
+            Um processo simples em 4 etapas feito pra te dar clareza real sobre você, sem enrolação.
           </p>
         </div>
 

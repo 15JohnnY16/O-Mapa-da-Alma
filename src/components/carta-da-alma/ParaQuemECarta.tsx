@@ -1,42 +1,43 @@
 import { CheckCircle2, ShieldCheck, Lock, BatteryWarning, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LucideIcon } from "lucide-react";
+import { ReactNode } from "react";
 
 interface ParaQuemEItem {
   icon: LucideIcon;
-  title: string;
-  desc: string;
+  title: ReactNode;
+  desc: ReactNode;
   color: string;
   bg: string;
 }
 
 interface ParaQuemEProps {
   scrollToForm: () => void;
-  title?: React.ReactNode;
-  subtitle?: string;
-  items?: ParaQuemEItem[]; // Se passar itens, usa eles. Se não, usa o padrão.
+  title?: ReactNode;
+  subtitle?: ReactNode;
+  items?: ParaQuemEItem[];
 }
 
 // Padrão (Amor, Carreira, Dinheiro)
 const defaultItems = [
   {
     icon: RefreshCcw,
-    title: "Repete Ciclos em Relacionamentos",
-    desc: "Você atrai sempre o mesmo tipo de pessoa indisponível e quer entender por que continua escolhendo quem te machuca.",
+    title: <strong className="text-foreground">Percebe Repetição nos Relacionamentos</strong>,
+    desc: <><span className="text-primary">Você já sentiu que algumas histórias seguem um roteiro parecido?</span> <br />Se isso acontece com você, a carta ajuda a nomear o padrão e fazer perguntas mais certeiras.</>,
     color: "text-red-400",
     bg: "bg-red-400/10"
   },
   {
     icon: Lock,
-    title: "Trava Na Carreira ou no Dinheiro",
-    desc: "Você chega perto de crescer e sabota no último momento, ou ganha dinheiro mas nunca consegue segurar.",
+    title: <strong className="text-foreground">Sente Travas em Carreira ou Dinheiro</strong>,
+    desc: <><span className="text-primary">Você percebe ciclos de “vai e volta”, indecisão, ou dificuldade de sustentar constância?</span> <br />A carta organiza esses sinais e aponta um próximo passo prático.</>,
     color: "text-amber-400",
     bg: "bg-amber-400/10"
   },
   {
     icon: BatteryWarning,
-    title: "Está Cansada de Carregar Tudo Sozinha",
-    desc: "Você resolve, cuida, segura as pontas para todo mundo mas ninguém cuida de você e já não aguenta mais.",
+    title: <strong className="text-foreground">Tem a Sensação de Carregar Tudo Sozinha</strong>,
+    desc: <><span className="text-primary">Você se vê assumindo muito, resolvendo tudo, ou ficando sem espaço para você?</span> <br />A carta te ajuda a identificar o padrão por trás disso e o ponto de ajuste.</>,
     color: "text-blue-400",
     bg: "bg-blue-400/10"
   }
@@ -45,7 +46,7 @@ const defaultItems = [
 export default function ParaQuemE({ 
   scrollToForm, 
   title = <>A Carta da Alma É <span className="text-primary">Para Você Que...</span></>,
-  subtitle = "Está cansada de repetir os mesmos ciclos e quer clareza real sobre por que isso acontece.",
+  subtitle = <span className="whitespace-nowrap">Quer clareza sobre padrões que se repetem, sem rótulos, sem invenção e sem jargão.</span>,
   items = defaultItems
 }: ParaQuemEProps) {
   return (
@@ -106,11 +107,15 @@ export default function ParaQuemE({
           <div className="flex flex-wrap justify-center gap-4 md:gap-8 text-xs md:text-sm text-muted-foreground opacity-80">
              <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-500" />
-                <span>Entrega garantida em até 48 horas</span>
+                <span>Entrega em até 48 horas</span>
              </div>
              <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-primary" />
-                <span>100% gratuito • Sem compromisso</span>
+                <span>100% gratuito</span>
+             </div>
+             <div className="flex items-center gap-2">
+                <Lock className="w-4 h-4 text-blue-500" />
+                <span>Sem compromisso</span>
              </div>
           </div>
 

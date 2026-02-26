@@ -12,11 +12,11 @@ interface PainCartaProps {
 }
 
 export default function PainCarta({ 
-  title = <>O Que Você Repete <span className="text-primary">Não é Falha Sua</span>.<br />É Lealdade Invisível.</>,
-  description = <>Você já percebeu que escolhe sempre o mesmo tipo de pessoa em relacionamentos? Que trava nos mesmos pontos na carreira? Que o dinheiro escorre pelos dedos do mesmo jeito, sempre?</>,
-  pain1 = <>E você já tentou mudar. Fez terapia. Leu livros. Prometeu para si mesma que dessa vez seria diferente. Mas três meses depois, está vivendo a mesma história com outro nome.</>,
-  pain2 = <>Não é porque você não se esforça. <strong className="text-foreground">É porque você carrega padrões que não são seus.</strong></>,
-  pain3 = <>São lealdades invisíveis herdadas da sua árvore genealógica. Dinâmicas familiares que você repete como se fossem escolhas pessoais. <strong className="text-primary block mt-2">Você não falhou. Você só não sabia que estava carregando histórias que nunca foram suas.</strong></>,
+  title = <>O Que Você Repete <span className="text-primary">Não é Fraqueza</span>.<br />É um Padrão Que Ainda Não Foi <span className="text-primary">Nomeado</span>.</>,
+  description = <>Você já notou como algumas coisas <span className="text-foreground">voltam com outra roupa</span>? No <span className="text-primary">Amor</span>, você escolhe o mesmo tipo ou <br />na <span className="text-primary">Carreira</span>, trava nos mesmos pontos ou no <span className="text-primary">Dinheiro</span>, a mesma sensação de nunca ser o suficiente?</>,
+  pain1 = <>E você já tentou mudar. Prometeu, recomeçou, fez do jeito certo. Mas depois de um tempo… volta. A mesma sensação. O mesmo tipo de escolha. O mesmo desfecho.</>,
+  pain2 = <>Não é porque você não se esforça. <span className="text-foreground">É porque você está sendo fiel a um roteiro invisível.</span></>,
+  pain3 = <>Esse roteiro pode vir de onde <span className="text-foreground">você veio</span>. Do que você aprendeu sobre <span className="text-primary">amor</span>, <span className="text-primary">valor</span> e <span className="text-primary">segurança</span>. Do que você normalizou sem <span className="text-foreground">perceber</span>. <br /> <span className="text-primary">Você não falhou!</span> Você só não sabia que estava carregando um <span className="text-foreground">padrão antigo </span>como se fosse <span className="text-primary">destino</span>.</>,
   imageSrc = "/pain-carta.avif"
 }: PainCartaProps) {
   return (

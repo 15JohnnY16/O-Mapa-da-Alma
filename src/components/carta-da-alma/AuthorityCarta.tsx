@@ -35,7 +35,7 @@ export default function AuthorityCarta({ scrollToForm }: AuthorityProps) {
             <div className="absolute -bottom-8 -right-4 md:-right-8 bg-card border border-primary/20 p-6 rounded-xl shadow-xl max-w-xs backdrop-blur-md">
               <span className="text-4xl text-primary font-serif">“</span>
               <p className="text-sm text-foreground font-medium italic relative -top-4">
-                O problema não era falta de informação. Era falta de reconhecimento.
+                Olá, eu sou a Rafa! <br /> Eu não comecei a estudar astrologia pra prever nada.  Eu comecei pra me conhecer.
               </p>
             </div>
           </div>
@@ -43,19 +43,22 @@ export default function AuthorityCarta({ scrollToForm }: AuthorityProps) {
           {/* Texto História */}
           <div className="space-y-6">
             <p className="text-muted-foreground leading-relaxed">
-              Eu comecei a estudar mapas porque queria entender por que eu repetia os mesmos erros. 
-              <strong className="text-primary"> Relacionamentos que drenavam. Decisões que sabotavam. Dinheiro que escorria pelos dedos.</strong>
+              Quando meu filho mais novo nasceu, o mapa dele mostrou uma concentração enorme de 
+              <span className="text-foreground"> Escorpião</span> e <span className="text-foreground"> Capricórnio</span>.
+              Aquilo não parecia só um detalhe. Parecia um 
+              <span className="text-primary"> código</span>, pedindo
+              <span className="text-primary"> tradução</span>.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Fiz terapia. Li livros. Paguei por mapas técnicos cheios de termos que eu não entendia. Nada tocava fundo. Nada me fazia sentir que alguém realmente me via.
+              Então eu fui estudar para entender isso na prática: no jeito dele sentir, se proteger, se frustrar, se impor, se fechar, se fortalecer. E, quanto mais eu estudava, mais uma coisa simples ficava clara: mapa astral não é um monte de termos bonitos. É uma forma de organizar, com precisão, a essência do que a pessoa já é.
             </p>
             <div className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg">
               <p className="text-foreground font-medium">
-                Até que eu percebi uma coisa: As pessoas não precisam de mais teoria. Elas precisam de alguém que nomeie o que elas sentem.
+                E assim nasceu o Mapa da Alma, uma leitura completa, profunda, escrita para organizar padrões e dar direção, sem horóscopo genérico e sem astrologuês.
               </p>
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              Comecei a escrever o que via nos mapas de amigas. Sem jargão. Só traduzindo os padrões.
+              A Carta da Alma é a versão mais enxuta, com a mesma essência. Ela pega os pontos centrais do seu mapa e devolve com <span className="text-primary">reconhecimento</span>.
             </p>
           </div>
         </div>
@@ -96,30 +99,52 @@ export default function AuthorityCarta({ scrollToForm }: AuthorityProps) {
           </div>
         </div>
 
-        {/* Box Final: Vagas Limitadas (Print 10) */}
-        <div className="bg-gradient-to-r from-primary/80 to-purple-900 rounded-2xl p-8 md:p-12 text-center text-white shadow-2xl mx-auto max-w-3xl transform hover:scale-105 transition-transform duration-300">
-          <div className="flex justify-center mb-4">
-             <Clock className="w-8 h-8 text-white/90" />
-          </div>
-          <h3 className="font-serif text-2xl md:text-3xl font-bold mb-4">
-            Vagas Limitadas Por Semana
-          </h3>
-          <p className="text-white/80 mb-8 leading-relaxed">
-            Para garantir a qualidade da sua Carta personalizada, eu trabalho com um número limitado de pedidos por semana. 
-            Quando esse limite é atingido, os novos pedidos entram em lista de espera.
-          </p>
-          
-          <Button 
-            onClick={scrollToForm}
-            className="bg-white text-primary hover:bg-white/90 font-bold h-12 px-8 rounded-full shadow-lg w-full md:w-auto"
-          >
-            Garantir Minha Carta Agora
-          </Button>
-          <p className="mt-4 text-xs text-white/60 flex items-center justify-center gap-1">
-             ⚡ Solicite hoje e receba em até 48 horas
-          </p>
-        </div>
+        {/* --- BOX FINAL: Vagas Limitadas (Estilo Glassmorphism Premium) --- */}
+        <div className="relative mt-8 md:mt-16 mx-auto max-w-3xl">
+            
+            {/* Glow Externo Forte */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-primary/40 via-purple-600/30 to-primary/20 blur-3xl rounded-[3rem] opacity-70 pointer-events-none" />
+            
+            {/* O Box de "Vidro" */}
+            <div className="relative rounded-3xl border border-white/10 bg-navy/60 shadow-2xl overflow-hidden backdrop-blur-xl p-8 md:p-12 text-center transform hover:scale-[1.02] transition-transform duration-300">
+            
+                {/* Luzes Internas (Blobs para dar profundidade) */}
+                <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-96 h-96 bg-primary/50 blur-[120px] rounded-full pointer-events-none opacity-60" />
+                <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-96 h-96 bg-indigo-900/50 blur-[120px] rounded-full pointer-events-none opacity-70" />
 
+                {/* Conteúdo */}
+                <div className="relative z-10 space-y-8">
+                    
+                    {/* Badge Elegante Substituindo o Ícone Solto */}
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold uppercase tracking-wider backdrop-blur-md shadow-sm">
+                        <Clock className="w-4 h-4 text-primary" /> Alta Demanda
+                    </div>
+                    
+                    <div className="space-y-4">
+                        <h3 className="font-serif text-3xl md:text-5xl font-bold text-white leading-tight drop-shadow-sm">
+                            Vagas Limitadas Por Semana
+                        </h3>
+                        <p className="text-gray-200 max-w-2xl mx-auto text-base md:text-lg leading-relaxed drop-shadow-sm">
+                            Para garantir a qualidade da sua Carta personalizada, eu trabalho com um número limitado de pedidos por semana. Quando esse limite é atingido, os novos pedidos entram em lista de espera.
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col items-center justify-center gap-4">
+                        {/* Botão Responsivo e Alinhado */}
+                        <Button 
+                          onClick={scrollToForm}
+                          size="lg"
+                          className="w-full sm:w-auto h-auto min-h-[56px] py-3 px-4 sm:px-10 bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-full shadow-lg shadow-primary/30 text-base sm:text-lg hover:scale-105 transition-transform flex items-center justify-center whitespace-normal text-center relative z-20"
+                        >
+                          Garantir Minha Carta Agora
+                        </Button>
+                        <p className="text-xs text-white/60 flex items-center justify-center gap-1 font-medium relative z-20">
+                          ⚡ Solicite hoje e receba em até 48 horas
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
       </div>
     </section>
   );

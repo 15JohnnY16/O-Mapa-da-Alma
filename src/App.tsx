@@ -6,11 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ExitPopup from "./components/mapa-da-alma/ExitPopup";
-
 import { LanguageProvider } from "./contexts/LanguageContext";
 import ThankYouPage from "./pages/ThankYouPage";
 import CartaPage from "./pages/CartaPage";
 import WhatsAppButton from "./components/ui/whatsAppButton";
+import FormPage from "./pages/FormPage";
 
 const queryClient = new QueryClient();
 
@@ -61,7 +61,11 @@ const App = () => (
               />
             } />
 
-            {/* 5. ROTA OBRIGADO */}
+            {/* 5. ROTA FORMULARIO */}
+            {/* Acessa: omapadaalma.com/formulario */}
+            <Route path="/formulario" element={<FormPage />} />
+
+            {/* 6. ROTA OBRIGADO */}
             {/* Acessa: omapadaalma.com/obrigado */}
             <Route path="/obrigado" element={<ThankYouPage />} />
 

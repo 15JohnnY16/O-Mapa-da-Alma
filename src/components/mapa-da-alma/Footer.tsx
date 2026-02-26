@@ -34,7 +34,7 @@ const Footer = () => {
             <h4 className="font-medium text-foreground">{t.footer.contactTitle}</h4>
             <div className="space-y-3"> {/* Aumentei levemente o espaço entre os links */}
               <a
-                href="https://wa.me/5500000000000"
+                href="https://wa.me/55061992232186"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group"

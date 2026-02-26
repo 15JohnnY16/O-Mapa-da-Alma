@@ -29,6 +29,7 @@ interface FormProps {
   tipo?: 'venda' | 'gratis';
   publico?: 'adulto' | 'jovem' | 'carreira' | 'relacionamento' | 'dinheiro';
   titulo?: string;
+  compact?: boolean;
 }
 
 // 1. SCHEMA ATUALIZADO (SEM CPF)
@@ -205,7 +206,7 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
   );
 };
 
-export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: FormProps) {
+export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compact = false }: FormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { country } = useLanguage();
   const { toast } = useToast();
@@ -249,12 +250,12 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
     if (currentDate && isValid(currentDate)) {
       setDateInputValue(format(currentDate, 'dd/MM/yyyy'));
       // Age Check
-      if (publico !== 'jovem') {
-        const age = differenceInYears(new Date(), currentDate);
-        if (age < 18) {
-          setShowAgeModal(true);
-        }
-      }
+      // if (publico !== 'jovem') {
+      //   const age = differenceInYears(new Date(), currentDate);
+      //   if (age < 18) {
+      //     setShowAgeModal(true);
+      //   }
+      // }
     }
   }, [form.watch("birthDate")]);
 
@@ -451,7 +452,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
   };
 
   return (
-    <section id="formulario" className="py-16 md:py-28 relative overflow-hidden">
+    <section id="formulario" className={`${compact ? 'py-4 md:py-8' : 'py-16 md:py-28'} relative overflow-hidden`}>
       <div className="absolute inset-0 constellation-pattern opacity-20" />
       <div className="container mx-auto px-4 max-w-xl relative z-10">
 
@@ -680,10 +681,12 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
             <span className="text-green-500">{t.footerSecurity}</span>
           </div>
 
+          {tipo === 'venda' && (
           <div className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground opacity-80">
             <Zap className="w-3 h-3 text-yellow-500" />
             <span>{t.footerConfirm}</span>
           </div>
+          )}
 
           {/* === BADGES INTELIGENTES === */}
           <div className="mt-8 pt-6 border-t border-border/50">
@@ -739,7 +742,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
           </div>
         </div>
 
-        <AlertDialog open={showAgeModal} onOpenChange={setShowAgeModal}>
+        {/* <AlertDialog open={showAgeModal} onOpenChange={setShowAgeModal}>
           <AlertDialogContent className="w-[90%] max-w-md rounded-2xl">
             <AlertDialogHeader>
               <AlertDialogTitle>Atenção</AlertDialogTitle>
@@ -758,7 +761,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo }: Form
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
-        </AlertDialog>
+        </AlertDialog> */}
       </div>
     </section >
   );

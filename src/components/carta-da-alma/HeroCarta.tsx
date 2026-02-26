@@ -6,15 +6,15 @@ interface HeroCartaProps {
   scrollToForm: () => void;
   badge?: string;
   title?: ReactNode;
-  subtitle?: string;
+  subtitle?: ReactNode;
   imageSrc?: string;
 }
 
 export default function HeroCarta({
   scrollToForm,
   badge = "Entrega em até 48 horas",
-  title = <>Você Repete Os Mesmos Padrões Em <span className="text-gradient-gold">Amor, Carreira e Dinheiro</span>?</>,
-  subtitle = "Descubra por que em 48 horas. Receba uma leitura personalizada que nomeia seus padrões com precisão. Sem jargão técnico. Sem inventar sua história.",
+  title = <>A <span className="text-gradient-gold">Carta da Alma</span> coloca em palavras o que você <span className="text-primary">sente.</span></>,
+  subtitle = <><span className="text-primary">Ela</span> é uma leitura autoral, moderna e personalizada. <br /> Não é previsão, é <span className="text-foreground">Tradução</span>. Um texto curto que organiza padrões internos e te dá um próximo passo claro.</>,
   imageSrc = "/hero-carta.jfif"
 }: HeroCartaProps) {
   return (
@@ -29,7 +29,7 @@ export default function HeroCarta({
           {/* === COLUNA 1: TEXTO === */}
           <div className="space-y-6 text-center md:text-left animate-in slide-in-from-bottom-10 duration-700">
             {/* ... Conteúdo do texto (sem alterações) ... */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm mx-auto md:mx-0 shadow-lg shadow-primary/5">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm mx-auto md:mx-36 shadow-lg shadow-primary/5">
               <Sparkles className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-primary">{badge}</span>
             </div>
@@ -42,28 +42,28 @@ export default function HeroCarta({
               {subtitle}
             </p>
 
-            <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+            <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center md:justify-center">
               <Button
                 onClick={scrollToForm}
                 size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold h-14 px-8 rounded-full shadow-lg shadow-primary/20 text-base md:text-lg w-full md:w-auto transition-transform hover:scale-105"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold h-14 px-16 rounded-full shadow-lg shadow-primary/20 text-base md:text-lg w-full md:w-auto transition-transform hover:scale-105"
               >
                 Quero Minha Carta Grátis
               </Button>
             </div>
 
-            <div className="flex flex-wrap gap-4 justify-center md:justify-start pt-4 text-sm text-muted-foreground">
+            <div className="flex flex-wrap gap-4 justify-center md:justify-center text-sm text-muted-foreground">
               <div className="flex items-center gap-1.5 bg-card/50 px-3 py-1 rounded-lg border border-primary/10">
                 <CheckCircle2 className="w-4 h-4 text-green-500" />
-                <span>100% Gratuito</span>
+                <span>100% Grátis</span>
               </div>
               <div className="flex items-center gap-1.5 bg-card/50 px-3 py-1 rounded-lg border border-primary/10">
                 <CheckCircle2 className="w-4 h-4 text-green-500" />
-                <span>Dados Protegidos</span>
+                <span>Personalizada</span>
               </div>
               <div className="flex items-center gap-1.5 bg-card/50 px-3 py-1 rounded-lg border border-primary/10">
                 <CheckCircle2 className="w-4 h-4 text-green-500" />
-                <span>Clareza Imediata</span>
+                <span>Impacto Profundo</span>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CheckCircle, Mail, MessageCircle, ArrowRight, Star, Gift, AlertTriangle } from "lucide-react";
+import { Mail, MessageCircle, Star, Gift, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useSearchParams, useNavigate } from "react-router-dom"; 
@@ -21,19 +21,28 @@ export default function ThankYouPage() {
     venda: {
       title: "Compra Confirmada!",
       subtitle: "Seu Mapa da Alma completo já está sendo preparado.",
+      description: "Em breve você terá em mãos um guia profundo sobre sua verdadeira essência.",
       icon: <Star className="w-12 h-12 md:w-16 md:h-16 text-yellow-500 fill-yellow-500/20" />,
       color: "text-yellow-500",
       bgIcon: "bg-yellow-500/10 border-yellow-500/30",
-      step1: "Você receberá o acesso vitalício no seu e-mail em até 5 dias úteis.",
+      steps: [
+        "Você receberá o acesso vitalício no seu e-mail em até 5 dias úteis.",
+        "Verifique sua caixa de SPAM ou Promoções."
+      ],
       value: 197.00
     },
     amostra: {
-      title: "Solicitação Recebida!",
-      subtitle: "Sua Carta da Alma grátis já está sendo preparada.",
+      title: "Parabéns!",
+      subtitle: "Você acaba de garantir sua Carta da Alma.",
+      description: "Você tomou uma decisão inteligente. A Carta da Alma já ajudou centenas de pessoas a finalmente nomear os padrões que repetiam sem entender por quê. Nas próximas 48 horas, você receberá uma leitura personalizada que vai revelar seus padrões centrais que você vai se reconhecer na hora.",
       icon: <Gift className="w-12 h-12 md:w-16 md:h-16 text-primary" />,
       color: "text-primary",
       bgIcon: "bg-primary/10 border-primary/30",
-      step1: "Sua leitura gratuita chegará em até 5 dias úteis.",
+      steps: [
+        "Verifique a caixa de entrada do email que você informou. Lembre-se de olhar também nas abas de spam e promoções, às vezes a mensagem cai lá.",
+        "Adicione o remetente aos seus contatos para garantir que você receba todos os materiais e atualizações sem perder nada na caixa de entrada.",
+        "Siga as instruções do email para acessar sua Carta da Alma. Você vai receber um link exclusivo com sua leitura completa em até 48 horas."
+      ],
       value: 0.00
     }
   };
@@ -60,9 +69,8 @@ export default function ThankYouPage() {
     // @ts-ignore
     if (window.fbq) {
       if (type === 'venda') {
-        // Evento de COMPRA (Alto Valor)
         // @ts-ignore
-        window.fbq('track', type === 'venda' ? 'Purchase' : 'Lead', { 
+        window.fbq('track', 'Purchase', { 
           currency: "BRL", 
           value: currentContent.value
         });
@@ -73,7 +81,6 @@ export default function ThankYouPage() {
     // @ts-ignore
     if (window.gtag) {
       if (type === 'venda') {
-        // Conversão de Venda
         // @ts-ignore
         window.gtag('event', 'conversion', {
           'send_to': 'AW-17926087733/t_eLCKWmsvEbELXI6eNC', // Substitua pelo Label de Compra
@@ -85,7 +92,6 @@ export default function ThankYouPage() {
   }, [type, token, navigate, currentContent.value]);
 
   // === RENDERIZAÇÃO CONDICIONAL ===
-  // Se não tiver token, mostra erro ou loading (evita mostrar o "Obrigado" indevidamente)
   if (!token || token.length !== 32) {
     return (
       <section className="min-h-screen bg-navy-light flex items-center justify-center p-4">
@@ -108,11 +114,11 @@ export default function ThankYouPage() {
   }
 
   return (
-    <section className="min-h-screen bg-navy-light relative flex items-center justify-center p-4 overflow-hidden">
+    <section className="min-h-screen bg-navy-light relative flex items-center justify-center p-4 py-12 overflow-hidden">
       {/* Background Decorativo */}
       <div className="absolute inset-0 constellation-pattern opacity-20 pointer-events-none" />
       
-      <Card className="relative z-10 max-w-2xl w-full bg-card/90 backdrop-blur-md border-primary/20 p-8 md:p-12 text-center shadow-2xl animate-in fade-in zoom-in duration-500">
+      <Card className="relative z-10 max-w-3xl w-full bg-card/90 backdrop-blur-md border-primary/20 p-8 md:p-12 text-center shadow-2xl animate-in fade-in zoom-in duration-500">
         
         {/* Ícone Dinâmico */}
         <div className="flex justify-center mb-6">
@@ -128,46 +134,47 @@ export default function ThankYouPage() {
         <h1 className="font-serif text-3xl md:text-5xl text-foreground mb-4">
           {currentContent.title}
         </h1>
-        <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg mx-auto">
+        <h2 className="text-xl md:text-2xl font-medium text-foreground mb-4">
           Olá, <span className={currentContent.color}>{userName}</span>! {currentContent.subtitle}
+        </h2>
+        
+        {/* Descrição Principal Adicionada */}
+        <p className="text-base md:text-lg text-muted-foreground mb-8 leading-relaxed max-w-2xl mx-auto">
+          {currentContent.description}
         </p>
 
-        {/* Box de Instruções */}
+        {/* Box de Instruções Dinâmico */}
         <div className="bg-primary/5 border border-primary/10 rounded-xl p-6 mb-8 text-left space-y-4">
-          <h3 className="text-foreground font-medium flex items-center gap-2">
+          <h3 className="text-foreground font-medium flex items-center gap-2 mb-4">
             <Mail className="w-5 h-5 text-primary" />
             Próximos passos:
           </h3>
-          <ul className="space-y-3">
-            <li className="flex items-start gap-3 text-sm md:text-base text-muted-foreground">
-              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0 text-xs font-bold">1</span>
-              <span>{currentContent.step1}</span>
-            </li>
-            <li className="flex items-start gap-3 text-sm md:text-base text-muted-foreground">
-              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0 text-xs font-bold">2</span>
-              <span>Verifique sua caixa de <strong>SPAM</strong> ou <strong>Promoções</strong>.</span>
-            </li>
+          <ul className="space-y-4">
+            {currentContent.steps.map((step, index) => (
+              <li key={index} className="flex items-start gap-3 text-sm md:text-base text-muted-foreground">
+                <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0 text-xs font-bold mt-0.5">
+                  {index + 1}
+                </span>
+                <span dangerouslySetInnerHTML={{ __html: step.replace(/spam e promoções|SPAM ou Promoções/gi, '<strong>$&</strong>') }} />
+              </li>
+            ))}
           </ul>
         </div>
 
         {/* CTAs */}
-        <div className="flex flex-col md:flex-row gap-4 justify-center">
+        <div className="flex flex-col md:flex-row gap-4 justify-center mb-8">
           <Button 
-            className="w-full md:w-auto h-12 text-base gap-2 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20"
+            className="w-full md:w-auto h-12 px-8 text-base gap-2 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20"
             onClick={() => window.open("https://mail.google.com", "_blank")}
           >
             <Mail className="w-4 h-4" />
             Abrir meu E-mail
           </Button>
+        </div>
 
-          <Button 
-            variant="outline"
-            className="w-full md:w-auto h-12 text-base gap-2 border-primary/30 text-foreground hover:bg-primary/5"
-            onClick={() => window.open("https://wa.me/55SEUNUMERO", "_blank")}
-          >
-            <MessageCircle className="w-4 h-4 text-green-500" />
-            Falar no WhatsApp
-          </Button>
+        {/* Rodapé de Suporte */}
+        <div className="pt-6 border-t border-border/50 text-sm text-muted-foreground">
+          Alguma dúvida? Fale com nosso suporte: <a href="mailto:contato@omapadaalma.com" className="text-primary hover:underline font-medium">contato@omapadaalma.com</a>
         </div>
 
       </Card>

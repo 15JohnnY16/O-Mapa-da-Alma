@@ -190,7 +190,7 @@ const FAQSection = ({ type }: FAQSectionProps) => {
           <p className="text-sm md:text-base text-muted-foreground">
             {t.faq.footerText}{" "}
             <a
-              href="https://wa.me/5500000000000"
+              href="https://wa.me/55061992232186"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline font-medium"
