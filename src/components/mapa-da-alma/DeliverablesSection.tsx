@@ -1,7 +1,12 @@
 import { Flame, Moon, Zap, Clock, Target, Compass } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { translations as t } from "@/lib/i18n";
 
 const DeliverablesSection = () => {
+
+  const scrollToForm = () => {
+    document.getElementById("formulario")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const deliverables = [
     {
@@ -109,22 +114,18 @@ const DeliverablesSection = () => {
   ];
 
   return (
-    <section className="py-16 md:py-28 bg-navy-light">
+    <section className="py-12 md:py-12 bg-navy-light">
       <div className="container mx-auto px-4 md:px-16 max-w-6xl">
         {/* Section header */}
         <div className="text-center mb-10 md:mb-16 space-y-4">
           <h2 className="font-serif text-2xl md:text-4xl lg:text-5xl text-foreground">
-            {t.deliverables.titlePrefix} <span className="text-primary">{t.deliverables.titleHighlight}</span>
+            {t.deliverables.titlePrefix}<span className="text-primary">{t.deliverables.titleHighlight}</span>
           </h2>
-          <br className="hidden md:block" />
-          <p className="font-serif text-2xl md:text-3xl lg:text-4xl text-foreground leading-tight">
-            <span className="text-primary">{t.deliverables.subtitleGradient}</span> 
-            <span className="text-muted-foreground">{t.deliverables.subtitleMiddle}</span>
-            <span className="text-foreground">{t.deliverables.subtitleHighlight}</span>
-            <span className="text-muted-foreground">{t.deliverables.subtitleMiddle2}</span>
-            <span className="text-foreground">{t.deliverables.subtitleHighlight2}</span>
-            <span className="text-muted-foreground">{t.deliverables.subtitleSuffix}</span>
-            <span className="text-primary">{t.deliverables.subtitleGradient2}</span>
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+            <span className="text-primary">{t.deliverables.subtitlePrimary}</span>
+            {t.deliverables.subtitleMiddle}
+            <span className="text-foreground">{t.deliverables.subtitleBold}</span>
+            {t.deliverables.subtitleMiddle2}
           </p>
         </div>
 
@@ -153,7 +154,7 @@ const DeliverablesSection = () => {
                 </div>
 
                 {/* Content */}
-                <div className="space-y-2">
+                <div className="space-y-1">
                   <h3 className="font-serif text-lg md:text-xl text-foreground">{item.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
                   {item.listItems && (
@@ -162,7 +163,7 @@ const DeliverablesSection = () => {
                         <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
                           {/* Bolinha dourada */}
                           <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
-                          
+
                           {/* Lógica Inteligente de Ordem */}
                           <span>
                             {point.reverse ? (
@@ -192,16 +193,27 @@ const DeliverablesSection = () => {
           ))}
         </div>
 
-        {/* Summary */}
-        <div className="mt-8 md:mt-10 text-center px-2">
-          <p className="text-base md:text-lg text-foreground leading-relaxed">
-            <span className="text-foreground">{t.deliverables.summaryPrefix}</span> {" "}
-            <span className="text-primary font-semibold">{t.deliverables.summaryMiddle}</span> 
-            <span className="text-foreground">{t.deliverables.summaryMiddle2}</span>
-            <br className="hidden md:block" />
-            <span className="text-primary font-semibold">{t.deliverables.summaryHighlight}</span>{" "}
-            {t.deliverables.summarySuffix}
+        {/* Guarantee */}
+        <div className="mt-8 md:mt-8 text-center space-y-3 max-w-3xl mx-auto">
+          <h3 className="font-serif text-2xl md:text-3xl text-foreground">
+            {t.deliverables.summaryTitle}
+          </h3>
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
+            {t.deliverables.summaryPrefix}
+            <span className="text-primary">{t.deliverables.summaryPrimary}</span>
+            <span className="text-foreground">{t.deliverables.summaryBold}</span>
           </p>
+
+          {/* CTA Button */}
+          <div className="pt-6">
+            <Button
+              onClick={scrollToForm}
+              size="lg"
+              className="text-xl px-20 py-8 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
+            >
+              {t.deliverables.ctaButton}
+            </Button>
+          </div>
         </div>
       </div>
     </section>

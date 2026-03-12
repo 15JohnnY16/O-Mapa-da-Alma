@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Mail, MessageCircle, Star, Gift, AlertTriangle } from "lucide-react";
+import { Mail, Star, Gift, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useSearchParams, useNavigate } from "react-router-dom"; 
@@ -9,8 +9,10 @@ export default function ThankYouPage() {
   const navigate = useNavigate();
   
   // Pega os parâmetros da URL
-  // Exemplo: seite.com/obrigado?name=Joao&tipo=venda
-  const userName = searchParams.get("name") || "Viajante";
+  const fullName = searchParams.get("name") || "Viajante";
+  // Pega apenas o primeiro nome (divide pelo espaço e pega o item 0)
+  const firstName = fullName.split(" ")[0];
+
   const type = searchParams.get("tipo") || "amostra"; // 'venda' ou 'amostra'
   const token = searchParams.get("token") || "";
 
@@ -135,7 +137,7 @@ export default function ThankYouPage() {
           {currentContent.title}
         </h1>
         <h2 className="text-xl md:text-2xl font-medium text-foreground mb-4">
-          Olá, <span className={currentContent.color}>{userName}</span>! {currentContent.subtitle}
+          Olá, <span className={currentContent.color}>{firstName}</span>! {currentContent.subtitle}
         </h2>
         
         {/* Descrição Principal Adicionada */}
@@ -174,7 +176,7 @@ export default function ThankYouPage() {
 
         {/* Rodapé de Suporte */}
         <div className="pt-6 border-t border-border/50 text-sm text-muted-foreground">
-          Alguma dúvida? Fale com nosso suporte: <a href="mailto:contato@omapadaalma.com" className="text-primary hover:underline font-medium">contato@omapadaalma.com</a>
+          Alguma dúvida? Fale com nosso suporte: <a href="mailto:suporte@omapadaalma.com" className="text-primary hover:underline font-medium">contato@omapadaalma.com</a>
         </div>
 
       </Card>

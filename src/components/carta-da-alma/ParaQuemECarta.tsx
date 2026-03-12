@@ -50,7 +50,7 @@ export default function ParaQuemE({
   items = defaultItems
 }: ParaQuemEProps) {
   return (
-    <section className="py-20 md:py-28 bg-navy-light relative overflow-hidden">
+    <section className="py-16 md:py-20 bg-navy-light relative overflow-hidden">
       {/* Background Decorativo suave */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full bg-primary/5 blur-3xl rounded-full pointer-events-none" />
 
@@ -111,7 +111,7 @@ export default function ParaQuemE({
              </div>
              <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-primary" />
-                <span>100% gratuito</span>
+                <span>100% gratuita</span>
              </div>
              <div className="flex items-center gap-2">
                 <Lock className="w-4 h-4 text-blue-500" />

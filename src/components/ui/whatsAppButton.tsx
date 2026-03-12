@@ -7,7 +7,7 @@ type BotStep = { message: string; options: Option[] };
 
 const botFlow: Record<string, BotStep> = {
   start: {
-    message: "Olá! Sou a assistente virtual do Mapa da Alma. ✨ Como posso te ajudar hoje?",
+    message: "Olá! Sou a assistente virtual do Mapa da Alma. Como posso te ajudar hoje?",
     options: [
       { text: "Como funciona a Carta Gratuita?", nextStep: "sobre_carta" },
       { text: "O que vem no Mapa Completo?", nextStep: "sobre_mapa" },

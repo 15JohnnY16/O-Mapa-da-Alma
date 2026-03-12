@@ -67,48 +67,57 @@ const AuthoritySection = () => {
   }, [api]);
 
   return (
-    <section className="py-16 md:py-28 relative overflow-hidden">
+    <section className="py-16 md:py-20 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 constellation-pattern opacity-20" />
 
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
-        {/* Author bio */}
-        <div className="max-w-4xl mx-auto mb-12 md:mb-20">
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8 items-center p-5 md:p-10 rounded-2xl border border-border bg-card/50">
-            {/* Photo placeholder */}
-            <div className="flex justify-center md:justify-start">
-              <div className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/30 flex items-center justify-center shrink-0">
-                <div className="w-24 h-24 md:w-40 md:h-40 rounded-full bg-navy-medium flex items-center justify-center">
-                  <span className="text-2xl md:text-4xl text-primary font-serif">RC</span>
-                </div>
-              </div>
+        {/* Minha História */}
+        <div className="text-center mb-12">
+          <span className="bg-primary/20 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+            Minha História
+          </span>
+          <h2 className="font-serif text-3xl md:text-5xl text-foreground mt-6 mb-12">
+            Como o <span className="text-primary">Mapa da Alma</span> Nasceu?
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
+          {/* Foto + Citação Flutuante */}
+          <div className="relative">
+            <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl relative bg-card">
+              <div className="w-full h-full bg-gradient-to-t from-navy to-navy-light opacity-0" />
+              <img src="Rafa-Cabral.png" alt="Foto da Autora" className="absolute inset-0 w-full h-full object-cover" />
             </div>
 
-            {/* Bio text */}
-            <div className="md:col-span-2 text-center md:text-left space-y-2 md:space-y-3">
-              <div className="space-y-1">
-                <h3 className="font-serif text-xl md:text-2xl text-foreground">
-                  {t.authority.bioName} {" "}
-                  <span className="text-primary font-medium">
-                    {t.authority.bioTitle}
-                  </span>
-                </h3>
-              </div>
-              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                {t.authority.bioDescription} {" "}
-                <span className="text-primary font-medium">
-                  {t.authority.bioGradient}
-                </span>
-                {t.authority.bioDot}
+            {/* Box Flutuante (Citação) */}
+            <div className="absolute -bottom-8 -right-4 md:-right-8 bg-card border border-primary/20 p-5 rounded-xl shadow-xl max-w-xs backdrop-blur-md">
+              <p className="text-sm text-foreground font-medium italic">
+                Oi, eu sou a Rafa! <br /> Pra mim, astrologia nunca foi sobre previsão. Sempre foi sobre clareza, padrão e direção.
               </p>
-              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                {t.authority.bioSuffix}
-              </p>
-              <p className="text-sm md:text-base text-foreground font-medium">
-                {t.authority.bioPromisse}
-                <span className="text-muted-foreground leading-relaxed block md:inline mt-1 md:mt-0">
-                  {t.authority.bioPromisseDesc}
-                </span>
+            </div>
+          </div>
+
+          {/* Texto História */}
+          <div className="space-y-9">
+            <p className="text-muted-foreground leading-relaxed">
+              <span className="text-foreground">Quando meu filho caçula nasceu, abri o mapa dele pela primeira vez.</span>
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              Vi Escorpião e Capricórnio dominando tudo. Não parecia dado técnico. Parecia aviso. Se ninguém traduzir isso, vai virar culpa, medo, dureza.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              Comecei a estudar por causa dele. E acabei me encontrando no processo.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              Sempre fui obcecada pelo comportamento humano. Coaching, psicologia positiva, comportamento organizacional. Nada respondia à pergunta que eu carregava há anos: por que eu nunca cabia no meu próprio signo?
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              A resposta estava na astrologia. Não nos signos isolados. No mapa inteiro. Nos padrões que se repetem. No que você herdou sem pedir. No que você veio fazer e ainda não fez.
+            </p>
+            <div className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg">
+              <p className="text-foreground font-medium">
+                O Mapa da Alma nasceu disso. Da leitura que eu sempre quis receber. E nunca encontrei em lugar nenhum.
               </p>
             </div>
           </div>

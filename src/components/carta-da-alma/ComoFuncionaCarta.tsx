@@ -9,7 +9,7 @@ const steps = [
   {
     icon: Search,
     title: "2. Eu Faço a Leitura do Seu Mapa",
-    desc: "Eu analiso seu mapa com profundidade integrando diferentes abordagens da astrologia (moderna e profunda) pra te entregar uma leitura clara e aplicável."
+    desc: "Eu analiso um ponto central do seu mapa natal e traduzo em linguagem humana, pra te entregar clareza rápida e um próximo passo aplicável."
   },
   {
     icon: Heart,
@@ -19,16 +19,13 @@ const steps = [
   {
     icon: MousePointerClick,
     title: "4. Você Escolhe o Próximo Passo",
-    desc: "Se a Carta da Alma tocar em algo verdadeiro, você pode seguir para o Mapa da Alma. Porque aí não é só “entender”. É se enxergar por inteiro."
+    desc: "Se a Carta fizer sentido, o próximo passo é o Mapa da Alma. Porque aí você não vê só um ponto. Você se enxerga por inteiro, com mais clareza pra agir."
   }
 ];
 
 export default function ComoFuncionaCarta() {
   return (
     <section className="py-20 md:py-28 bg-navy relative overflow-hidden">
-      {/* Background sutil */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
         
         <div className="text-center mb-16 space-y-4">
@@ -74,10 +71,9 @@ export default function ComoFuncionaCarta() {
         </div>
         
         {/* Bottom Callout */}
-        <div className="mt-12 text-center">
+        <div className="mt-8 text-center">
             <p className="inline-flex items-center gap-2 text-sm md:text-base text-primary/80 bg-primary/5 px-6 py-3 rounded-lg border border-primary/10">
-                <Sparkles className="w-5 h-5" />
-                <span className="text-foreground font-semibold">Simples. Rápido. Transformador.</span>
+                <span className="text-foreground font-semibold">Não é Horóscopo. Não é Previsão. É leitura de Padrão e Comportamento.</span>
             </p>
         </div>
 

@@ -9,7 +9,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-12">
       {/* Background with constellation pattern */}
       <div className="absolute inset-0 bg-background constellation-pattern" />
 
@@ -22,56 +22,76 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 text-center max-w-4xl">
-        <div className="space-y-8 animate-fade-in">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-sm text-primary font-medium">{t.hero.badge}</span>
+      <div className="relative z-10 container mx-auto px-4 max-w-7xl">
+        {/* Grid ajustado para 12 colunas e items-stretch para garantir colunas com mesma altura */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch mt-12 lg:mt-0">
+          
+          {/* Left - Text content (Ocupa 7 de 12 colunas, ~60% - Totalmente Centralizado com Flexbox) */}
+          <div className="lg:col-span-7 flex flex-col justify-center space-y-9 animate-fade-in text-center mx-auto">
+            {/* Badge */}
+            <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 mx-auto">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-sm text-primary font-medium">{t.hero.badge}</span>
+            </div>
+
+            {/* Headline */}
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground">
+              {t.hero.headlinePrefix}
+              <span className="text-primary">{t.hero.headlineGradient}</span>
+              {t.hero.headlineSuffix}
+              <span className="text-primary">{t.hero.headlineTime}</span>
+            </h1>
+
+            {/* Subtitle - Paragraph 1 */}
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
+              <span className="text-primary"> {t.hero.subheadlineParagraph1Prefix}</span>
+              {t.hero.subheadlineParagraph1Link}
+              <span className="text-foreground"> {t.hero.subheadlineParagraph1Bold1}</span>
+              {t.hero.subheadlineParagraph1Middle1}
+              <span className="text-foreground"> {t.hero.subheadlineParagraph1Bold2}</span>
+              {t.hero.subheadlineParagraph1Middle2}
+            </p>
+
+            {/* Anti-objection line */}
+            <p className="text-sm sm:text-base text-foreground">
+              {t.hero.antiObjection}
+            </p>
+
+            {/* CTA Button */}
+            <div className="pt-2 flex justify-center">
+              <Button
+                onClick={scrollToForm}
+                size="lg"
+                className="w-full sm:w-auto text-lg px-16 py-7 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
+              >
+                {t.hero.ctaButton}
+              </Button>
+            </div>
+
+            {/* Trust indicators */}
+            <div className="flex flex-wrap justify-center gap-6 pt-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                <span>{t.hero.trust1}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                <span>{t.hero.trust2}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                <span>{t.hero.trust3}</span>
+              </div>
+            </div>
           </div>
 
-          {/* Headline */}
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground">
-            {t.hero.headlinePrefix}{" "}
-            <span className="text-gradient-gold">{t.hero.headlineGradient}</span>
-            {t.hero.headlineSuffix}{" "}
-            <span className="text-primary">{t.hero.headlineTime}</span>
-          </h1>
-
-          {/* Subheadline */}
-          <p className="text-sm sm:text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            {t.hero.subheadlinePrefix}{" "}
-            <span className="text-foreground font-medium">{t.hero.subheadlineHighlight}</span>{" "}
-            {t.hero.subheadlineMiddle}{" "}
-            <span className="text-foreground font-medium">{t.hero.subheadlineHighlight2}</span>
-            {t.hero.subheadlineSuffix}
-          </p>
-
-          {/* CTA Button */}
-          <div className="pt-4">
-            <Button
-              onClick={scrollToForm}
-              size="lg"
-              className="w-full sm:w-auto text-lg px-16 py-7 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
-            >
-              {t.hero.ctaButton}
-            </Button>
-          </div>
-
-          {/* Trust indicators */}
-          <div className="flex flex-wrap justify-center gap-6 pt-8 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              <span>{t.hero.trust1}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              <span>{t.hero.trust2}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              <span>{t.hero.trust3}</span>
-            </div>
+          {/* Right - Image (Ocupa 5 de 12 colunas, ~40% - Flexbox justify-end para alinhar na base) */}
+          <div className="lg:col-span-5 flex flex-col justify-end lg:items-end animate-fade-in pt-8 lg:pt-0">
+            <img
+              src="/Mapa-da-Alma/LP_MAPA_SECAO_01.png"
+              alt="Mapa da Alma"
+              className="w-full max-w-md lg:max-w-xl object-contain drop-shadow-2xl max-h-full"
+            />
           </div>
         </div>
       </div>

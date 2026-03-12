@@ -7,7 +7,7 @@ interface AuthorityProps {
 
 export default function AuthorityCarta({ scrollToForm }: AuthorityProps) {
   return (
-    <section className="py-20 bg-navy-light overflow-hidden">
+    <section className="py-10 bg-navy-light overflow-hidden">
       <div className="container mx-auto px-4 max-w-5xl">
         
         {/* Cabeçalho */}
@@ -28,14 +28,13 @@ export default function AuthorityCarta({ scrollToForm }: AuthorityProps) {
             <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl relative bg-card">
               {/* Placeholder da Foto da Astróloga */}
               <div className="w-full h-full bg-gradient-to-t from-navy to-navy-light opacity-80" />
-              <img src="/images/autoridade-placeholder.jpg" alt="Foto da Autora" className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60" />
+              <img src="/Rafa-Cabral.png" alt="Foto da Autora" className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60" />
             </div>
             
             {/* Box Flutuante (Citação) */}
             <div className="absolute -bottom-8 -right-4 md:-right-8 bg-card border border-primary/20 p-6 rounded-xl shadow-xl max-w-xs backdrop-blur-md">
-              <span className="text-4xl text-primary font-serif">“</span>
-              <p className="text-sm text-foreground font-medium italic relative -top-4">
-                Olá, eu sou a Rafa! <br /> Eu não comecei a estudar astrologia pra prever nada.  Eu comecei pra me conhecer.
+              <p className="text-sm text-foreground font-medium italic">
+                Olá, eu sou a Rafa! <br /> Eu não estudei astrologia pra prever futuro. Eu estudei pra me entender de verdade.
               </p>
             </div>
           </div>
@@ -43,58 +42,53 @@ export default function AuthorityCarta({ scrollToForm }: AuthorityProps) {
           {/* Texto História */}
           <div className="space-y-6">
             <p className="text-muted-foreground leading-relaxed">
-              Quando meu filho mais novo nasceu, o mapa dele mostrou uma concentração enorme de 
-              <span className="text-foreground"> Escorpião</span> e <span className="text-foreground"> Capricórnio</span>.
-              Aquilo não parecia só um detalhe. Parecia um 
-              <span className="text-primary"> código</span>, pedindo
-              <span className="text-primary"> tradução</span>.
+              Quando meu filho nasceu, eu lembro como se fosse hoje. Ele dormia, a casa estava em silêncio, e eu abri o mapa dele pela primeira vez com aquela curiosidade de mãe que quer entender o próprio filho antes de qualquer coisa.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Então eu fui estudar para entender isso na prática: no jeito dele sentir, se proteger, se frustrar, se impor, se fechar, se fortalecer. E, quanto mais eu estudava, mais uma coisa simples ficava clara: mapa astral não é um monte de termos bonitos. É uma forma de organizar, com precisão, a essência do que a pessoa já é.
+              Foi aí que eu vi uma concentração enorme de Escorpião e Capricórnio. Não parecia um detalhe técnico. Parecia um aviso. Um código. Como se o mapa dissesse: tem um jeito muito específico de sentir aqui. E se ninguém traduzir isso, vai virar ruído, culpa, medo, dureza. Eu comecei a estudar por causa disso. Pra entender na prática. O jeito dele sentir, se proteger, se frustrar, se impor, se fechar… e até o jeito de se fortalecer.
             </p>
             <div className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg">
               <p className="text-foreground font-medium">
-                E assim nasceu o Mapa da Alma, uma leitura completa, profunda, escrita para organizar padrões e dar direção, sem horóscopo genérico e sem astrologuês.
+                E assim nasceu o Mapa da Alma. Uma leitura completa e profunda, escrita pra organizar seus padrões e te dar direção de verdade, sem horóscopo genérico e sem astrologuês.
               </p>
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              A Carta da Alma é a versão mais enxuta, com a mesma essência. Ela pega os pontos centrais do seu mapa e devolve com <span className="text-primary">reconhecimento</span>.
+              A Carta da Alma veio depois, como a versão mais enxuta da mesma essência. Ela pega um ponto central do seu mapa e te devolve reconhecimento, clareza e um próximo passo.
             </p>
           </div>
         </div>
 
         {/* Depoimentos Rápidos */}
-        <div className="grid md:grid-cols-2 gap-4 mb-16">
-          <div className="bg-white text-navy p-4 rounded-xl shadow-md flex gap-4 items-start">
+        <div className="grid md:grid-cols-2 gap-4 mb-12">
+          <div className="bg-white text-navy p-4 rounded-xl shadow-md flex gap-4 items-center">
             <div className="bg-red-100 p-2 rounded-full shrink-0">
               <Heart className="w-5 h-5 text-red-500 fill-red-500" />
             </div>
-            <p className="text-sm italic">"Uma amiga leu e chorou. Finalmente alguém tinha colocado em palavras o que ela sentia há anos."</p>
+            <p className="text-sm italic">Uma amiga leu e chorou. Finalmente alguém tinha colocado em palavras o que ela sentia há anos.</p>
           </div>
-          <div className="bg-white text-navy p-4 rounded-xl shadow-md flex gap-4 items-start">
+          <div className="bg-white text-navy p-2 rounded-xl shadow-md flex gap-4 items-center">
             <div className="bg-green-100 p-2 rounded-full shrink-0">
               <User className="w-5 h-5 text-green-600" />
             </div>
-            <p className="text-sm italic">"Outra pessoa mostrou o texto pro terapeuta. Ele disse que não precisava de mais nada. Que ali já tinha tudo."</p>
+            <p className="text-sm italic">Minha sobrinha mostrou o Mapa da Alma pro terapeuta. Ele disse que não precisava de mais nada. Que ali já tinha tudo que ele precisava saber sobre ela.</p>
           </div>
         </div>
 
         {/* Box Roxo/Navy de Conclusão */}
-        <div className="bg-navy border border-primary/30 rounded-2xl p-8 text-center shadow-2xl mb-12">
+        <div className="bg-navy border border-primary/30 rounded-2xl p-2 text-center shadow-2xl mb-8 py-2">
           <p className="text-lg text-foreground font-medium leading-relaxed">
-            Eu percebi que tinha algo diferente ali. <span className="text-primary">Não era adivinhação. Era tradução.</span> <br/>
-            Eu estava pegando o que estava escondido no mapa e transformando em espelho.
+            Eu percebi que tinha algo diferente ali. <span className="text-yellow-100">Não era adivinhação. </span> <span className="text-primary">Era tradução.</span> <br/>
+            Eu colocava o padrão em linguagem humana, até a pessoa pensar: <span className="text-primary">"Caramba... é isso!"</span>
           </p>
         </div>
 
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-5">
           <p className="text-foreground">
-            A Carta da Alma nasceu disso. Da vontade de entregar clareza real para quem está cansado de repetir.
+            A Carta da Alma nasceu pra isso: Te dar um primeiro encaixe. Um ponto só.<span className="text-primary">Mas o ponto certo.</span>
           </p>
-          <div className="p-3 border border-primary/20 bg-primary/5 rounded-xl">
+          <div className="p-2 border border-primary/20 bg-primary/5 rounded-xl">
              <p className="text-primary font-serif text-lg">
-               Porque você não precisa de mais informação. <br/>
-               Você precisa de reconhecimento que ativa decisão.
+               Se você chegou até aqui e sentiu um “é isso!” peça sua <span className="text-foreground">Carta Grátis Agora.</span>
              </p>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import Footer from "@/components/mapa-da-alma/Footer";
 import HeroCarta from "@/components/carta-da-alma/HeroCarta";
 import PainCarta from "@/components/carta-da-alma/PainCarta";
@@ -9,6 +9,7 @@ import ComoFuncionaCarta from "@/components/carta-da-alma/ComoFuncionaCarta";
 import AuthorityCarta from "@/components/carta-da-alma/AuthorityCarta";
 import FormSection from "@/components/mapa-da-alma/FormSection";
 import FAQSection from "@/components/mapa-da-alma/FAQSection";
+import PanoramaCarta from "@/components/carta-da-alma/PanoramaCarta";
 import { Lock, Scale, BatteryCharging, Repeat, Milestone, Brain, Tag, ArrowUpToLine, Activity } from "lucide-react";
 
 // Definição dos temas disponíveis
@@ -25,16 +26,30 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
     formRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  useEffect(() => {
+    let tituloAba = "Carta da Alma";
+
+    if (theme === 'carreira') tituloAba = "Carta da Alma | Carreira";
+    if (theme === 'relacionamento') tituloAba = "Carta da Alma | Relacionamento";
+    if (theme === 'dinheiro') tituloAba = "Carta da Alma | Dinheiro";
+
+    document.title = tituloAba;
+
+    return () => {
+      document.title = "Mapa da Alma";
+    };
+  }, [theme]);
+
   const content = {
     padrao: {
       hero: {
-        imageSrc: "/hero-carta.jfif"
+        imageSrc: "/Carta-da-Alma/Padrao/hero-carta.jfif"
       },
       pain: {
-        imageSrc: "/pain-carta.png"
+        imageSrc: "/Carta-da-Alma/Padrao/pain-carta.png"
       },
       solution: {
-        imageSrc: "/solution-carta.png"
+        imageSrc: "/Carta-da-Alma/Padrao/solution-carta.png"
       },
       paraQuemE: undefined
     },
@@ -52,7 +67,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
           </>
         ),
         subtitle: "Receba uma leitura gratuita que nomeia os padrões profissionais que você repete sem perceber. Em 48 horas, sem compromisso.",
-        imageSrc: "/hero-carta-carreira.png"
+        imageSrc: "/Carta-da-Alma/Carreira/hero-carta-carreira.png"
       },
       pain: {
         title: <span className="whitespace-nowrap">O Teto Que <span className="text-primary">Ninguém Te Contou</span> Que Existe</span>,
@@ -60,7 +75,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
         pain1: <>Não é falta de competência. Não é síndrome do impostor que vai passar com mais autoestima. É algo mais profundo operando: você carrega um <strong className="text-foreground">teto invisível herdado </strong>sobre quanto sucesso você pode ter sem sentir que está traindo quem veio antes.</>,
         pain2: <i><strong className="text-foreground">Gerações de mulheres na sua família que não tiveram permissão para brilhar, que trabalharam dobrado para ganhar metade, que aprenderam a se fazer pequenas para caber.</strong></i>,
         pain3: <>E você herdou essa lealdade como se fosse sua. Por isso você chega perto de ultrapassar esse limite e o corpo trava. Como se crescer demais fosse perigoso. Como se você <strong className="text-primary">não merecesse ocupar esse espaço.</strong></>,
-        imageSrc: "/pain-carta-carreira.png"
+        imageSrc: "/Carta-da-Alma/Carreira/pain-carta-carreira.png"
       },
       solution: {
         title: <>A Clareza Que <span className="text-primary">Destranca Sua Carreira</span></>,
@@ -68,7 +83,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
         boxHighlight: <>A Carta da Alma mostra exatamente onde está esse bloqueio e como destravar. Não é sobre "acreditar mais em você". É sobre entender a raiz do padrão e reprogramar de dentro para fora.</>,
         text2: <>Em até 48 horas após o preenchimento do formulário, você recebe um áudio personalizado de até 15 minutos revelando: </>,
         ctaText: <>Receber Minha Clareza Agora</>,
-        imageSrc: "/solution-carta-carreira.png",
+        imageSrc: "/Carta-da-Alma/Carreira/solution-carta-carreira.png",
         bottomHighlight: <>Quando você entende que o problema não é você, mas o que você herdou, <strong className="text-primary">tudo muda</strong>. Você para de se culpar. Para de achar que precisa ser mais forte, mais disciplinada, mais corajosa. E começa a negociar com confiança real. A delegar sem culpa. A crescer sem sentir que está traindo alguém. Porque agora você sabe: <strong className="text-primary">esse espaço sempre foi seu</strong>.</>
       },
       paraQuemE: {
@@ -86,7 +101,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
         badge: "Amor e Relacionamentos",
         title: <>Descubra os Padrões <span className="text-gradient-gold">Invisíveis</span> Que Você Repete no <span className="text-gradient-gold">Amor</span></>,
         subtitle: "Receba uma leitura gratuita e personalizada que nomeia com precisão o que você sente mas nunca conseguiu explicar. Sem jargão técnico. Sem inventar sua história. Em até 48 horas.",
-        imageSrc: "/hero-carta-relacionamento.png"
+        imageSrc: "/Carta-da-Alma/Relacionamento/hero-carta-relacionamento.png"
       },
       pain: {
         title: <>A Lealdade Fantasma Que Você Carrega <span className="text-primary">Sem Saber</span></>,
@@ -94,7 +109,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
         pain1: <>Parece que você carrega um <strong className="text-foreground">imã para o tipo errado de amor</strong>. E não é falta de disciplina. Não é porque você não quer mudar. Não é porque você é difícil demais ou exigente demais.</>,
         pain2: <>É porque você carrega <strong className="text-foreground">lealdades invisíveis herdadas da sua árvore genealógica</strong>. Você repete dinâmicas que nunca viveu diretamente, mas que foram transmitidas como verdades sobre como o amor funciona.<strong className="text-primary block mt-2"></strong>Como se você tivesse uma missão inconsciente de completar histórias inacabadas de gerações anteriores.</>,
         pain3: <>E enquanto essas <strong className="text-primary mt-2">lealdades fantasmas operarem abaixo da sua consciência</strong>, você vai continuar escolhendo o mesmo tipo. Vai continuar se traindo em silêncio. Vai continuar se perguntando por que sempre bate no mesmo lugar.</>,
-        imageSrc: "/pain-carta-relacionamento.png"
+        imageSrc: "/Carta-da-Alma/Relacionamento/pain-carta-relacionamento.png"
       },
       solution: {
         title: <>O Reconhecimento Que Finalmente <span className="text-primary">Te Liberta</span>.</>,
@@ -104,7 +119,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
                         <span className="block mt-2"></span>Você tem <strong className="text-primary">clareza sobre o que fazer diferente</strong> nos primeiros encontros.</>,
         text2: <>Não é descrição genérica de horóscopo. É <strong className="text-foreground">espelho emocional</strong> que nomeia exatamente o que você sente mas nunca conseguiu explicar.</>,
         ctaText: <>Quero Minha Carta Gratuita Agora</>,
-        imageSrc: "/solution-carta-relacionamento.png",
+        imageSrc: "/Carta-da-Alma/Relacionamento/solution-carta-relacionamento.png",
         bottomHighlight: <><strong className="text-primary flex flex-col items-center">Imagina ter paz em um relacionamento em vez de ansiedade constante</strong><strong className="text-primary text-center mt-2 flex flex-col items-center"></strong>Imagina parar de desperdiçar meses em relacionamentos que você já sabe que não vão funcionar. Essa clareza existe. E ela começa com reconhecimento real.</>,
       },
       paraQuemE: {
@@ -122,7 +137,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
         badge: "Prosperidade Financeira",
         title: <>Descubra O Padrão Que <span className="text-gradient-gold">Te Trava</span> Com <strong className="text-gradient-gold">Dinheiro</strong></>,
         subtitle: "Você trabalha, se esforça, mas o dinheiro nunca fica de verdade. Receba sua Carta da Alma gratuita e entenda por que você repete o mesmo ciclo financeiro, sem pagar nada para descobrir.",
-        imageSrc: "/hero-carta-dinheiro.png"
+        imageSrc: "/Carta-da-Alma/Dinheiro/hero-carta-dinheiro.png"
       },
       pain: {
         title: <>O <span className="text-primary">Teto Invisível</span> Que Ninguém Te Contou</>,
@@ -130,7 +145,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
         pain1: <><strong className="text-foreground">O Ciclo Que Nunca Para</strong><span className="block mt-2"></span>Chega uma grana e logo depois vem um gasto inesperado. Você consegue crescer até certo ponto, mas nunca passa disso.</>,
         pain2: <><strong className="text-foreground">A Culpa Que Não É Sua</strong><span className="block mt-2"></span>Você se culpa. Acha que é falta de disciplina, que você é ruim com dinheiro, que deveria se esforçar mais. Mas a verdade é outra.</>,
         pain3: <><strong className="text-foreground">Uma Herança Invisível</strong><span className="block mt-2"></span>Esse teto não é seu. Você herdou. É uma lealdade invisível que vem da sua árvore genealógica, uma crença sobre dinheiro que passou de geração em geração.</>,
-        imageSrc: "/pain-carta-dinheiro.png"
+        imageSrc: "/Carta-da-Alma/Dinheiro/pain-carta-dinheiro.png"
       },
       solution: {
         title: <><span className="text-primary">Clareza </span>Que Quebra O <span className="text-primary">Ciclo</span></>,
@@ -138,7 +153,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
         boxHighlight: <><strong className="text-foreground">Reconhecimento Que Transforma</strong><span className="block mt-2"></span>Quando você lê e reconhece o padrão, quando finalmente entende que não é falha sua, mas herança genealógica, algo muda.</>,
         text2: <><strong className="text-foreground">Decisões Financeiras Com Clareza</strong><span className="block mt-2"></span>Você para de lutar contra si mesma e começa a tomar decisões com clareza. Você vê onde está se traindo e o que fazer diferente agora.</>,
         ctaText: <span>Quero Minha Carta Gratuita Agora</span>,
-        imageSrc: "/solution-carta-dinheiro.png",
+        imageSrc: "/Carta-da-Alma/Dinheiro/solution-carta-dinheiro.png",
         bottomHighlight: <span>É a primeira vez que alguém conecta os pontos entre o que você herdou e o que você repete com dinheiro hoje. E entrega isso em linguagem humana, sem jargão técnico, em até 48 horas. De graça."</span>
       },
       paraQuemE: {
@@ -163,6 +178,17 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
         <HeroCarta scrollToForm={scrollToForm} {...currentContent.hero} />
         
         <PainCarta {...currentContent.pain} />
+
+        <PanoramaCarta 
+          scrollToFormCarta={() => {
+            // Sua função que rola a página até o form
+            document.getElementById("formulario")?.scrollIntoView({ behavior: "smooth" });
+          }}
+          navigateToMapa={() => {
+            // Redireciona a pessoa para a página de vendas oficial do Mapa
+            window.location.href = "/"; 
+          }}
+        />
 
         <SolutionCarta scrollToForm={scrollToForm} {...currentContent.solution} />
         

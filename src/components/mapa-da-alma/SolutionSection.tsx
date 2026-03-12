@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Sparkles, FileText, Map, Clock } from "lucide-react";
 import { translations as t } from "@/lib/i18n";
 
 const SolutionSection = () => {
@@ -17,71 +16,54 @@ const SolutionSection = () => {
         {/* Section header */}
         <div className="text-center mb-16 space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5">
-            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span className="text-sm text-primary font-medium">{t.solution.badge}</span>
           </div>
 
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground">
-            {t.solution.headlinePrefix}{" "}
-            <span className="text-gradient-gold">{t.solution.headlineGradient}</span>
+            {t.solution.headlinePrefix}
+            <span className="text-primary">{t.solution.headlineGradient}</span>
           </h2>
         </div>
 
         {/* Main content */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left: Description */}
-          <div className="space-y-8">
-            <ul className="space-y-4 md:space-y-6">
-              <li className="flex items-start gap-3">
-                <span className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="w-2 h-2 rounded-full bg-primary" />
-                </span>
-                <div>
-                  <p>
-                    <span className="text-lg text-muted-foreground">{t.solution.feature1}</span>
-                    <span className="text-primary font-medium">{t.solution.feature1Gradient}</span>
-                    <span className="text-lg text-muted-foreground">{t.solution.feature1Dot}</span>
-                  </p>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="w-2 h-2 rounded-full bg-primary" />
-                </span>
-                <div>
-                  <p>
-                  <span className="text-lg text-muted-foreground">{t.solution.feature2}</span>
-                  <span className="text-foreground font-medium">{t.solution.feature2Highlight}</span>
-                  <span className="text-lg text-muted-foreground">{t.solution.feature2Middle}</span>
-                  <span className="text-primary font-medium">{t.solution.feature2Gradient}</span>
-                  <span className="text-lg text-muted-foreground">{t.solution.feature2Dot}</span>
-                  </p>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="w-2 h-2 rounded-full bg-primary" />
-                </span>
-                <div>
-                  <p>
-                    <span className="text-lg text-muted-foreground">{t.solution.feature3}</span>
-                    <span className="text-foreground font-medium">{t.solution.feature3Highlight}</span>
-                    <span className="text-lg text-muted-foreground">{t.solution.feature3Dot}</span>
-                  </p>
-                </div>
-              </li>
-            </ul>
+          <div className="space-y-6 text-center">
+            {/* Paragraph 1 */}
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
+              <span className="text-primary">{t.solution.paragraph1Prefix}</span>
+              {t.solution.paragraph1Primary}
+              <span className="text-foreground">{t.solution.paragraph1Middle}</span>
+              {t.solution.paragraph1Suffix}
+            </p>
 
-            <div className="bg-card border border-primary/20 rounded-xl p-4 md:p-6 mb-8 md:mb-12 text-center relative overflow-hidden">
+            {/* Paragraph 2 */}
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
+              {t.solution.paragraph2Prefix}
+              <span className="text-foreground">{t.solution.paragraph2Bold}</span>
+              {t.solution.paragraph2Middle}
+              <span className="text-primary">{t.solution.paragraph2Primary}</span>
+            </p>
+
+            {/* Paragraph 3 */}
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
+              {t.solution.paragraph3Prefix}
+              <span className="text-foreground">{t.solution.paragraph3Bold}</span>
+              {t.solution.paragraph3Middle}
+              <span className="text-primary">{t.solution.paragraph3Primary}</span>
+            </p>
+
+            {/* Quote box */}
+            <div className="bg-card border border-primary/20 rounded-xl p-4 md:p-6 text-center relative overflow-hidden">
               <p className="text-foreground font-medium italic text-sm md:text-lg relative z-10">
                 {t.solution.quote}
               </p>
             </div>
           </div>
 
-          {/* Right: Visual representation */}
+          {/* Right: Mandala */}
           <div className="relative flex flex-col items-center">
-            {/* Animated Chart Container */}
             <div className="relative w-full aspect-square max-w-[260px] md:max-w-[400px] mx-auto pointer-events-none select-none">
               <img src="/chart-layer-1.webp" alt="Birth Chart Layer 1" className="w-full h-full absolute top-0 left-0 animate-animatedchartlayer1 opacity-40" loading="lazy" />
               <img src="/chart-layer-2.webp" alt="Birth Chart Layer 2" className="w-full h-full absolute top-0 left-0 animate-animatedchartlayer2 mix-blend-screen opacity-70" loading="lazy" />
@@ -92,17 +74,16 @@ const SolutionSection = () => {
           </div>
         </div>
 
-        <div className="flex justify-center">
-            {/* CTA Button */}
-            <Button
-              onClick={scrollToForm}
-              size="lg"
-              className="text-lg px-16 py-7 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
-            >
-              {t.solution.ctaButton}
-            </Button>
-
-          </div>
+        {/* CTA Button */}
+        <div className="flex justify-center pt-12">
+          <Button
+            onClick={scrollToForm}
+            size="lg"
+            className="text-xl px-20 py-8 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
+          >
+            {t.solution.ctaButton}
+          </Button>
+        </div>
       </div>
     </section>
   );

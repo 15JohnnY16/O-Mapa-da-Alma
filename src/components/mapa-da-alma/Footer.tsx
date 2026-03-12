@@ -46,7 +46,7 @@ const Footer = () => {
                 WhatsApp
               </a>
               <a
-                href="mailto:contato@omapadaalma.com"
+                href="mailto:suporte@omapadaalma.com"
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group"
               >
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">

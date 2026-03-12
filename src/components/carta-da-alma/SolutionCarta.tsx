@@ -16,35 +16,34 @@ interface SolutionCartaProps {
 export default function SolutionCarta({
   scrollToForm,
   // TEXTOS PADRÃO (GERAIS PARA A ROTA PRINCIPAL)
-  badge = "A Solução",
-  title = <>A Clareza Que <span className="text-primary">Quebra Seus Ciclos</span></>,
-  text1 = <>Existe um jeito de parar de repetir as mesmas histórias, <span className="text-foreground">sem se culpar</span>. Sem tentar mudar só na <span className="text-primary">força</span>. Sem viver de promessa de <span className="text-primary">"agora vai"</span>. Sem fingir que <span className="text-primary">"querer muito"</span> resolve.</>,
+  badge = "Um Recorte do Seu Mapa",
+  title = <>A Clareza Que <span className="text-primary">Destrava o Primeiro Nó</span></>,
+  text1 = <>A <span className="text-primary">Carta</span> não foi feita pra te deixar <span className="text-foreground">"motivada".</span> <span className="text-primary"> Ela</span> foi feita para te deixar <span className="text-foreground">lúcida, </span> de um jeito <span className="text-primary"> simples e direto.</span></>,
   boxHighlight = (
     <>
       <strong className="text-primary mb-2 flex items-center">
         A Carta da Alma revela o seu padrão central.
       </strong>
-      Ela traduz seu mapa astral em <span className="text-foreground">linguagem humana</span>, mostra onde você <span className="text-foreground">se repete</span>, combinando <span className="text-primary">astrologia humanizada</span> + <span className="text-primary">astrogenealogia</span> + <span className="text-primary">psicologia arquetípica</span> e te entrega um próximo passo <span className="text-foreground">prático</span> para começar a <span className="text-foreground">escolher diferente</span>.
+      Ela mostra onde você se <span className="text-foreground">repete,</span> porque isso pega tanto e qual é o <span className="text-foreground">próximo passo</span> mais simples pra começar a <span className="text-primary">escolher diferente.</span>
     </>
   ),
-  text2 = <>Sem jargão técnico. Sem horóscopo genérico. Sem inventar sua história. Só reconhecimento <span className="text-foreground">real</span>, <span className="text-foreground">claro</span>, <span className="text-foreground">direto</span> e <span className="text-foreground">útil</span>.</>,
+  text2 = <> Sem <span className="text-primary">astrologuês.</span> Sem <span className="text-primary">horóscopo genérico.</span> Sem <span className="text-foreground">inventar a </span> <span className="text-primary">sua história.</span> É um <span className="text-primary">recorte.</span> Um <span className="text-primary">ponto central.</span> Só que <span className="text-foreground">certeiro...</span></>,
   ctaText = <>Quero Minha Carta Agora</>,
-  imageSrc = "/solution-carta.png",
+  imageSrc = "/Carta-da-Alma/Padrao/solution-carta.png",
   bottomHighlight = (
     <>
-      Quando você enxerga o padrão, <span className="text-foreground">você para de brigar consigo mesma</span>.<br />E começa a fazer escolhas com <span className="text-primary">mais consciência</span>, <span className="text-primary">mais presença</span> e <span className="text-primary">menos autoengano</span>.<br />A mudança começa quando a <span className="text-foreground">clareza</span> vira <span className="text-foreground">ação</span>.
+      Quando você enxerga o padrão, <span className="text-foreground">você para de brigar consigo mesma.</span><br />E começa a fazer escolhas com <span className="text-primary">mais consciência.</span><br />A <span className="text-primary">mudança</span> começa quando a <span className="text-foreground">clareza</span> vira <span className="text-primary">ação</span>.
     </>
   )
 }: SolutionCartaProps) {
 
   return (
-    <section className="py-20 md:py-28 bg-navy-light relative overflow-hidden">
+    <section className="py-8 md:py-10 bg-navy-light relative overflow-hidden">
       <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 blur-[100px] rounded-full pointer-events-none" />
-
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
 
         {/* Título Centralizado com Badge */}
-        <div className="text-center mb-16 flex flex-col items-center">
+        <div className="text-center mb-12 flex flex-col items-center">
           <div className="inline-block px-4 py-1.5 rounded-full border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider mb-6 bg-primary/5">
             {badge}
           </div>
@@ -58,7 +57,6 @@ export default function SolutionCarta({
 
           {/* Coluna da Esquerda */}
           <div className="space-y-8 animate-in slide-in-from-left duration-700">
-
             <p className="text-lg text-muted-foreground leading-relaxed">
               {text1}
             </p>
@@ -67,7 +65,6 @@ export default function SolutionCarta({
             <div className="bg-card border border-primary/20 p-6 md:p-8 rounded-xl shadow-lg relative overflow-hidden group hover:border-primary/40 transition-colors">
               <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
               <div className="absolute -right-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all" />
-
               <div className="relative z-10 text-muted-foreground leading-relaxed text-base md:text-lg">
                 {boxHighlight}
               </div>
@@ -86,14 +83,12 @@ export default function SolutionCarta({
                 {ctaText}
               </Button>
             </div>
-
           </div>
 
           {/* Coluna da Direita (Imagem) - CORRIGIDA */}
           <div className="relative w-full md:w-4/5 md:mx-auto aspect-square md:aspect-[4/5] group animate-in slide-in-from-right duration-700 delay-200 group">
             {/* Moldura decorativa */}
             <div className="absolute top-4 -right-4 w-full h-full border-2 border-primary/20 rounded-2xl hidden md:block transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
-
             <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-card">
               <img
                 src={imageSrc}
@@ -103,19 +98,17 @@ export default function SolutionCarta({
               <div className="absolute inset-0 bg-navy/20 mix-blend-multiply pointer-events-none" />
             </div>
           </div>
-
         </div>
 
         {/* Box Largo Inferior */}
         <div className="relative mt-12 animate-in slide-in-from-bottom duration-700 delay-300">
           <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-navy rounded-2xl blur opacity-30" />
-          <div className="relative bg-gradient-to-br from-card to-navy border border-primary/20 rounded-2xl p-8 md:p-8 text-center md:text-left shadow-2xl">
+          <div className="relative bg-gradient-to-br from-card to-navy border border-primary/20 rounded-2xl p-6 md:p-4 text-center md:text-left shadow-2xl">
             <p className="justify-center text-center md:text-xl text-muted-foreground leading-relaxed">
               {bottomHighlight}
             </p>
           </div>
         </div>
-
       </div>
     </section>
   );

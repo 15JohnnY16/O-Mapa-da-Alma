@@ -103,7 +103,7 @@ const FAQSection = ({ type }: FAQSectionProps) => {
     },
     {
       question: "Quanto tempo leva para receber?",
-      answer: "A Carta da Alma é personalizada e entregue em até 5 dias úteis após a confirmação dos seus dados. Não é um texto automático, cada carta passa por análise cuidadosa e escrita personalizada. Você recebe através do contato que compartilhar conosco em um arquivo no formato PDF.",
+      answer: "A Carta da Alma é personalizada e entregue em até 2 dias úteis após a confirmação dos seus dados. Não é um texto automático, cada carta passa por análise cuidadosa e escrita personalizada. Você recebe através do contato que compartilhar conosco em um arquivo no formato PDF.",
     },
     {
       question: "O que exatamente eu preciso fornecer?",
@@ -123,7 +123,7 @@ const FAQSection = ({ type }: FAQSectionProps) => {
     },
     {
       question: "Qual a diferença entre a Carta da Alma e o Mapa da Alma completo?",
-      answer: "A Carta da Alma é uma introdução gratuita que traz os principais destaques do seu mapa, seus dons naturais, desafios centrais e/ou um direcionamento inicial. É como um \"resumo executivo\" da sua jornada.\n\nO Mapa da Alma (completo e pago) é um livro personalizado de mais de 40 páginas com análise profunda de todas as áreas da sua vida (trabalho, dinheiro, saúde, relacionamentos), identificação de padrões repetitivos, análise da sua Espiral dos 30 Anos e um plano prático de 90 dias. É o mergulho completo.",
+      answer: "A Carta da Alma é um recorte gratuito e certeiro. Ela pega um ponto central do seu mapa, geralmente o padrão que mais está ativo agora, traduz em linguagem humana e te entrega reconhecimento, clareza e um próximo passo possível. É curta e vai direto ao que está te travando.\n\nO Mapa da Alma é o material completo e pago. É um livro personalizado com mais de 40 páginas que abre o desenho inteiro da sua vida: amor, carreira, dinheiro, família, energia e escolhas. Ele conecta padrões repetitivos, aprofunda sua Espiral dos 30 anos e termina com um plano prático de 90 dias, pra você não ficar só no “entendi”, mas saber o que fazer com isso.",
     },
     {
       question: "Não sei minha hora exata de nascimento. Posso fazer mesmo assim?",

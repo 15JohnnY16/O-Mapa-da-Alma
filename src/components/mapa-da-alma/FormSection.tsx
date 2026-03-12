@@ -459,9 +459,6 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
         <div className="p-5 md:p-10 rounded-3xl border border-primary/30 bg-card/80 backdrop-blur-sm shadow-2xl">
 
           <div className="text-center mb-6 md:mb-8 space-y-3 md:space-y-4">
-            <div className="w-12 h-12 md:w-16 md:h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center text-primary">
-              <Sparkles className="w-6 h-6 md:w-8 md:h-8" />
-            </div>
             <h2 className="font-serif text-2xl md:text-3xl text-foreground">
               {titulo ? <span className="text-primary">{titulo}</span> : <>{t.headerTitlePrefix}</>}
             </h2>
@@ -664,7 +661,11 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
               )}
 
               <Button type="submit" size="lg" disabled={isSubmitting} className="w-full h-14 md:h-auto text-lg md:py-6 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300 rounded-xl md:rounded-lg mt-6">
-                {isSubmitting ? t.submitButtonLoading : t.submitButton}
+                {isSubmitting
+                  ? t.submitButtonLoading
+                  : tipo === 'gratis'
+                    ? "Quero Receber Minha Carta"
+                    : t.submitButton}
               </Button>
             </form>
           </Form>
