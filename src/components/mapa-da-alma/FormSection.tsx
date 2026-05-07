@@ -431,7 +431,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
         } else {
           const token = result.token || '';
           setTimeout(() => {
-            window.location.href = `https://omapadaalma.com/obrigado?tipo=carta&name=${encodeURIComponent(data.name)}&token=${token}`;
+            window.location.href = `https://omapadaalma.com/obrigado-carta.html`;
           }, 1500);
         }
         form.reset();
