@@ -429,7 +429,6 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
         if (tipo === 'venda' && result.paymentUrl) {
           setTimeout(() => { window.location.href = result.paymentUrl; }, 1500);
         } else {
-          const token = result.token || '';
           setTimeout(() => {
             window.location.href = `https://omapadaalma.com/obrigado-carta.html`;
           }, 1500);
