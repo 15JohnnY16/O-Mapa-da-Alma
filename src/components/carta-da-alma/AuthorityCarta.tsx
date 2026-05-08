@@ -25,18 +25,19 @@ export default function AuthorityCarta({ scrollToForm }: AuthorityProps) {
           
           {/* Foto + Citação Flutuante */}
           <div className="relative">
+            <div className="relative">
             <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl relative bg-card">
-              {/* Placeholder da Foto da Astróloga */}
-              <div className="w-full h-full bg-gradient-to-t from-navy to-navy-light opacity-80" />
-              <img src="/Rafa-Cabral.png" alt="Foto da Autora" className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60" />
+              <div className="w-full h-full bg-gradient-to-t from-navy to-navy-light opacity-0" />
+              <img src="Rafa-Cabral.png" alt="Foto da Autora" className="absolute inset-0 w-full h-full object-cover" />
             </div>
-            
+
             {/* Box Flutuante (Citação) */}
-            <div className="absolute -bottom-8 -right-4 md:-right-8 bg-card border border-primary/20 p-6 rounded-xl shadow-xl max-w-xs backdrop-blur-md">
+            <div className="absolute -bottom-8 -right-4 md:-right-8 bg-card border border-primary/20 p-5 rounded-xl shadow-xl max-w-xs backdrop-blur-md">
               <p className="text-sm text-foreground font-medium italic">
-                Olá, eu sou a Rafa! <br /> Eu não estudei astrologia pra prever futuro. Eu estudei pra me entender de verdade.
+                Oi, eu sou a Rafa! <br /> Pra mim, astrologia nunca foi sobre previsão. Sempre foi sobre clareza, padrão e direção.
               </p>
             </div>
+          </div>
           </div>
 
           {/* Texto História */}
@@ -49,12 +50,9 @@ export default function AuthorityCarta({ scrollToForm }: AuthorityProps) {
             </p>
             <div className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg">
               <p className="text-foreground font-medium">
-                E assim nasceu o Mapa da Alma. Uma leitura completa e profunda, escrita pra organizar seus padrões e te dar direção de verdade, sem horóscopo genérico e sem astrologuês.
+                Foi dessa busca que nasceu a base do meu trabalho. O Mapa da Alma veio primeiro. A Carta da Alma nasceu depois, como uma versão mais direta, enxuta e imediata dessa mesma essência.
               </p>
             </div>
-            <p className="text-muted-foreground leading-relaxed">
-              A Carta da Alma veio depois, como a versão mais enxuta da mesma essência. Ela pega um ponto central do seu mapa e te devolve reconhecimento, clareza e um próximo passo.
-            </p>
           </div>
         </div>
 
@@ -71,25 +69,6 @@ export default function AuthorityCarta({ scrollToForm }: AuthorityProps) {
               <User className="w-5 h-5 text-green-600" />
             </div>
             <p className="text-sm italic">Minha sobrinha mostrou o Mapa da Alma pro terapeuta. Ele disse que não precisava de mais nada. Que ali já tinha tudo que ele precisava saber sobre ela.</p>
-          </div>
-        </div>
-
-        {/* Box Roxo/Navy de Conclusão */}
-        <div className="bg-navy border border-primary/30 rounded-2xl p-2 text-center shadow-2xl mb-8 py-2">
-          <p className="text-lg text-foreground font-medium leading-relaxed">
-            Eu percebi que tinha algo diferente ali. <span className="text-yellow-100">Não era adivinhação. </span> <span className="text-primary">Era tradução.</span> <br/>
-            Eu colocava o padrão em linguagem humana, até a pessoa pensar: <span className="text-primary">"Caramba... é isso!"</span>
-          </p>
-        </div>
-
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-5">
-          <p className="text-foreground">
-            A Carta da Alma nasceu pra isso: Te dar um primeiro encaixe. Um ponto só.<span className="text-primary">Mas o ponto certo.</span>
-          </p>
-          <div className="p-2 border border-primary/20 bg-primary/5 rounded-xl">
-             <p className="text-primary font-serif text-lg">
-               Se você chegou até aqui e sentiu um “é isso!” peça sua <span className="text-foreground">Carta Grátis Agora.</span>
-             </p>
           </div>
         </div>
 
@@ -114,12 +93,12 @@ export default function AuthorityCarta({ scrollToForm }: AuthorityProps) {
                         <Clock className="w-4 h-4 text-primary" /> Alta Demanda
                     </div>
                     
-                    <div className="space-y-4">
-                        <h3 className="font-serif text-3xl md:text-5xl font-bold text-white leading-tight drop-shadow-sm">
+                    <div className="space-y-5">
+                        <h3 className="font-serif text-3xl md:text-4xl font-bold text-white leading-tight drop-shadow-sm text-nowrap">
                             Vagas Limitadas Por Semana
                         </h3>
                         <p className="text-gray-200 max-w-2xl mx-auto text-base md:text-lg leading-relaxed drop-shadow-sm">
-                            Para garantir a qualidade da sua Carta personalizada, eu trabalho com um número limitado de pedidos por semana. Quando esse limite é atingido, os novos pedidos entram em lista de espera.
+                            Para garantir a qualidade da sua Carta personalizada, eu atendo um <strong className="text-foreground">número limitado de pedidos por semana</strong>. Quando esse limite é atingido, os novos pedidos entram em lista de espera.
                         </p>
                     </div>
 
@@ -132,8 +111,8 @@ export default function AuthorityCarta({ scrollToForm }: AuthorityProps) {
                         >
                           Garantir Minha Carta Agora
                         </Button>
-                        <p className="text-xs text-white/60 flex items-center justify-center gap-1 font-medium relative z-20">
-                          ⚡ Solicite hoje e receba em até 48 horas
+                        <p className="text-ls text-white/60 flex items-center justify-center gap-1 font-medium relative z-20">
+                          ⚡ Solicite hoje e receba em até <strong className="text-foreground">48 horas</strong>
                         </p>
                     </div>
                 </div>

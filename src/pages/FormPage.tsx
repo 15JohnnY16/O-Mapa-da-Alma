@@ -29,7 +29,7 @@ export default function FormPage() {
     if (isVenda && isJovem) setTituloForm("Mapa Astral Jovem Completo");
     else if (isVenda && !isJovem) setTituloForm("Seu Mapa da Alma Completo");
     else if (!isVenda && isJovem) setTituloForm("Amostra Grátis - Jovem");
-    else setTituloForm("Sua Amostra Grátis");
+    else setTituloForm("Sua Carta Grátis Começa Aqui!");
 
   }, []);
 

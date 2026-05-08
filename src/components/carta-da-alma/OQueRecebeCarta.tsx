@@ -9,22 +9,22 @@ const benefits = [
   {
     icon: Target,
     title: "Padrões Nomeados com Exatidão",
-    desc: "Você não vai ler descrições genéricas. Você vai ver o seu jeito de funcionar, onde você se repete, onde se protege demais e onde se sabota sem perceber."
+    desc: <>Você não vai ler descrições genéricas. Você vai ver o seu jeito de funcionar, <span className="text-foreground">onde você se repete,</span> onde se protege demais e onde se sabota sem perceber.</>
   },
   {
     icon: MessageCircle,
     title: "Linguagem Humana (de Verdade)",
-    desc: "Nada de termos que você precise “traduzir”. É como conversar com alguém que te entende, coloca em palavras o que você sente e te devolve isso com carinho e precisão."
+    desc: <>Nada de termos que você precise “traduzir”. É <span className="text-foreground">como conversar com alguém que te entende,</span> coloca em palavras o que você sente e te devolve isso com carinho e precisão.</>
   },
   {
     icon: Clock,
     title: "Clareza em até 48 Horas",
-    desc: "Você envia seus dados e em até 48 horas você recebe uma leitura personalizada escrita, direta ao ponto. Sem enrolação. Só o que importa agora."
+    desc: <>Você envia seus dados e em até 48 horas você recebe uma leitura personalizada escrita, <span className="text-foreground">direta ao ponto.</span> Sem enrolação. Só o que importa agora.</>
   },
   {
     icon: ListTodo,
     title: "Um Próximo Passo Prático",
-    desc: "No final, você recebe um passo simples para aplicar de imediato. Não é gratidão genérica. É um micro-ritual/ação de 7 dias para mudar o que você já reconheceu."
+    desc: <>No final, você recebe <span className="text-foreground">um passo simples para aplicar de imediato.</span> Não é gratidão genérica. É um micro-ritual/ação de 7 dias para mudar o que você já reconheceu.</>
   }
 ];
 
@@ -35,10 +35,10 @@ export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
 
         <div className="text-center mb-16">
           <h2 className="font-serif text-3xl md:text-5xl text-foreground">
-            O Que Você Recebe na <span className="text-primary">Carta da Alma</span>?
+            O Que Você Recebe na <span className="text-primary">Carta da Alma?</span>
           </h2>
           <p className="text-muted-foreground mt-4 text-lg">
-            Uma leitura curta e personalizada do seu mapa natal. Um ponto central, clareza e um próximo passo. Sem horóscopo genérico e sem astrologuês.
+            Uma leitura curta e personalizada do seu mapa natal. <span className="text-foreground">Um ponto central, clareza e um próximo passo.</span> <br /> <span className="text-primary">Sem horóscopo genérico e sem astrologuês.</span>
           </p>
         </div>
 
@@ -101,7 +101,7 @@ export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
               </Button>
 
               <p className="text-lx text-muted-foreground/70 mt-2">
-                Entrega em até 48h. Se fizer sentido, <span className="text-foreground">no final tem o caminho pro </span><span className="text-primary">Mapa completo.</span>
+                <span className="text-foreground">Entrega em até 48h. Se fizer sentido, no final tem o caminho pro Mapa completo.</span>
               </p>
             </div>
           </div>

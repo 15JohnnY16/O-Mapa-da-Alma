@@ -14,7 +14,7 @@ export default function HeroCarta({
   scrollToForm,
   badge = "Entrega em até 48 horas",
   title = <>A <span className="text-gradient-gold">Carta da Alma</span> coloca em palavras o que você <span className="text-primary">sente.</span></>,
-  subtitle = <>A <span className="text-primary">Carta da Alma</span> é um recorte do seu <span className="text-primary">mapa natal, </span>escrito como uma amiga sincera. <span className="text-foreground">Sem astrologuês,</span> ela te mostra um <span className="text-primary">ponto central</span> que fica mais forte nesta fase da <span className="text-foreground">sua vida,</span> te entrega <span className="text-primary">clareza</span> e um próximo passo simple.</>,
+  subtitle = <>A Carta da Alma é um recorte do seu <span className="text-primary">mapa natal, </span>escrito como uma amiga sincera. <span className="text-foreground">Sem astrologuês,</span> ela te mostra um ponto central que fica mais forte nesta fase da sua vida, te entrega <span className="text-primary">clareza</span> e um <span className="text-foreground">próximo passo simples.</span></>,
   imageSrc = "/Carta-da-Alma/Padrao/hero-carta.jfif"
 }: HeroCartaProps) {
   return (
@@ -27,9 +27,9 @@ export default function HeroCarta({
         <div className="grid md:grid-cols-2 gap-12 items-center">
 
           {/* === COLUNA 1: TEXTO === */}
-          <div className="space-y-6 text-center md:text-left animate-in slide-in-from-bottom-10 duration-700">
+          <div className="space-y-6 text-center mx-auto animate-in slide-in-from-bottom-10 duration-700">
             {/* ... Conteúdo do texto (sem alterações) ... */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm mx-auto md:mx-36 shadow-lg shadow-primary/5">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm mx-auto shadow-lg shadow-primary/5">
               <span className="text-sm font-medium text-primary">{badge}</span>
             </div>
 
@@ -37,11 +37,11 @@ export default function HeroCarta({
               {title}
             </h1>
 
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg mx-auto md:mx-0">
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg mx-auto">
               {subtitle}
             </p>
 
-            <div className="flex flex-wrap gap-2 justify-center md:justify-center">
+            <div className="flex flex-wrap gap-2 justify-center pt-1">
               <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-semibold bg-primary/10 border border-primary/25 text-primary tracking-wide">
                 Não é mapa astral comum
               </span>
@@ -60,7 +60,7 @@ export default function HeroCarta({
               </Button>
             </div>
 
-            <div className="flex flex-wrap gap-4 justify-center md:justify-center text-sm text-muted-foreground">
+            <div className="flex flex-wrap gap-4 justify-center md:justify-center text-sm text-muted-foreground pt-1">
               <div className="flex items-center gap-1.5 bg-card/50 px-3 py-1 rounded-lg border border-primary/10">
                 <CheckCircle2 className="w-4 h-4 text-green-500" />
                 <span>100% Grátis</span>
@@ -94,15 +94,6 @@ export default function HeroCarta({
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90 pointer-events-none" />
-
-              <div className="absolute bottom-6 left-6 right-6 bg-card/90 backdrop-blur-md p-5 rounded-xl border border-primary/20 shadow-lg z-20">
-                <div className="flex items-center gap-4">
-                  <div>
-                    <p className="text-base font-bold text-foreground">Reconhecimento Imediato</p>
-                    <p className="text-sm text-muted-foreground">Você recebe uma leitura curta, direta e feita pra você.</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 

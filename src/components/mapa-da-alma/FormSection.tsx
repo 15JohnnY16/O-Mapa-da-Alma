@@ -223,7 +223,6 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
   const hourRef = useRef<HTMLInputElement>(null);
   const minuteRef = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
-  // cpfRef REMOVIDO
   const phoneRef = useRef<any>(null);
   const childNameRef = useRef<HTMLInputElement>(null);
 
@@ -458,14 +457,18 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
         <div className="p-5 md:p-10 rounded-3xl border border-primary/30 bg-card/80 backdrop-blur-sm shadow-2xl">
 
           <div className="text-center mb-6 md:mb-8 space-y-3 md:space-y-4">
-            <h2 className="font-serif text-2xl md:text-3xl text-foreground">
-              {titulo ? <span className="text-primary">{titulo}</span> : <>{t.headerTitlePrefix}</>}
+            <h2 className="font-serif text-2xl md:text-3xl text-primary">
+              {titulo
+                ? <span className="text-primary">{titulo}</span>
+                : tipo === 'gratis'
+                  ? "Sua Carta Grátis Começa Aqui!"
+                  : <>{t.headerTitlePrefix}</>}
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
               {publico === 'jovem'
                 ? "Preencha os dados do responsável e da criança."
                 : tipo === 'gratis'
-                  ? "Preencha seus dados para receber sua amostra gratuita diretamente no seu e-mail ou WhatsApp."
+                  ? "Preencha seus dados abaixo. Leva menos de 1 minuto e é com essas informações que sua leitura será feita de forma individual e personalizada."
                   : t.headerSubtitle
               }
             </p>

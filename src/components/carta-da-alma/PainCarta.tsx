@@ -12,11 +12,11 @@ interface PainCartaProps {
 }
 
 export default function PainCarta({
-  title = <>O Que Você Repete <span className="text-primary">Não é Fraqueza.</span> É um Padrão Que Ainda Não Foi <span className="text-primary">Nomeado.</span></>,
-  description = <>Tem hora que parece que a vida muda <span className="text-foreground">por fora,</span> <span className="text-primary"> mas por dentro a história é a mesma.</span> <br /> Você <span className="text-foreground">tenta de novo, escolhe diferente, promete que agora vai...</span> e quando vê, <span className="text-primary">está no mesmo ponto.</span></>,
+  title = <>O Que Você Repete Não é Fraqueza. É um Padrão Que Ainda <span className="text-primary">Não Foi Nomeado.</span></>,
+  description = <>Tem hora que parece que a vida muda por fora, mas por dentro a história é a mesma. <br /> Você <span className="text-foreground">tenta de novo, escolhe diferente, promete que agora vai...</span> e quando vê, <span className="text-primary">está no mesmo ponto.</span></>,
   pain1 = <>No <span className="text-primary">Amor,</span> muda de pessoa e a sensação se <span className="text-foreground">repete.</span><br />Na <span className="text-primary">Carreira,</span> você até cresce, mas trave sempre no <span className="text-foreground">mesmo ponto.</span><br /> No <span className="text-primary">Dinheiro,</span> você corre atrás... e fica aquela impressão de que <span className="text-foreground">nunca fecha.</span> </>,
-  pain2 = <>A <span className="text-primary">Carta da Alma</span> existe para uma missão <span className="texto-foreground">bem específica.</span> Pegar <span className="text-foreground">o ponto</span> que está mais forte nesta fase da sua <span className="text-primary">vida,</span> dar <span className="text-foreground">nome pra ele</span> e mostrar como ele <span className="text-primary">te puxa pelos bastidores.</span></>,
-  pain3 = <>E aqui vai a parte mais <span className="text-foreground">importante.</span> <span className="text-primary"> A Carta</span> não é o <span className="text-primary">Mapa completo.</span> Ela <span className="text-foreground">ilumina um ponto central com precisão.</span> <span className="text-primary"> O Mapa abre o desenho inteiro,</span> com todas as áreas e camadas que a <span className="text-primary">Carta</span> não cobre.</>,
+  pain2 = <>A <span className="text-primary">Carta da Alma</span> existe para uma missão bem específica. <span className="text-foreground">Pegar o ponto que está mais forte</span> nesta fase da sua vida, dar nome pra ele e mostrar como ele influencia silenciosamente o que você <span className="text-foreground">sente, escolhe e/ou repete.</span></>,
+  pain3 = <>E aqui vai a parte <span className="text-foreground">mais importante.</span> <span className="text-primary"> A Carta não é o Mapa completo.</span> Ela <span className="text-foreground">ilumina um ponto central</span> com precisão. <span className="text-primary"> O Mapa abre o desenho inteiro,</span> com todas as áreas e camadas que a Carta não cobre.</>,
   imageSrc = "/Carta-da-Alma/Padrao/pain-carta.avif"
 }: PainCartaProps) {
   return (
@@ -75,8 +75,8 @@ export default function PainCarta({
             Só pra ficar claro: a{" "}
             <span className="text-primary font-semibold">Carta</span> é um recorte curto com{" "}
             <span className="text-foreground">1 padrão central.</span> O{" "}
-            <span className="text-primary font-semibold">Mapa da Alma</span> é o livro completo, com mais de{" "}
-            <span className="text-foreground">40 páginas,</span> pra você se enxergar por inteiro.
+            <span className="text-primary font-semibold">Mapa da Alma</span> é o livro completo, com {" "}
+            <span className="text-foreground">mais de 40 páginas,</span> pra você se enxergar por inteiro.
           </p>
         </div>
 

@@ -9,7 +9,7 @@ const ExitPopup = () => {
   const isJovem = location.pathname.includes('jovem');
   // Se for jovem vai para /jovem-amostra, se não vai para /amostra
   // O final "#formulario" é o que faz a mágica da rolagem
-  const destinoUrl = isJovem ? '/jovem-amostra#formulario' : '/amostra#formulario';
+  const destinoUrl = isJovem ? '/jovem-carta#formulario' : '/carta#formulario';
 
   useEffect(() => {
     // Função que detecta a saída do mouse
@@ -46,20 +46,19 @@ const ExitPopup = () => {
       <div className="popup-content">
         <button className="close-btn" onClick={() => setIsVisible(false)}>×</button>
         
-        <h2 className="popup-title">Espere! Não vá embora ainda...</h2>
+        <h2 className="popup-title">Não saia sem a sua Carta gratuita.</h2>
         
         <p className="popup-text">
-          Sinto que sua ancestralidade tem uma mensagem urgente para você hoje.
-          Você pode não estar pronto para o Mapa Completo agora, mas não ignore os sinais.
+          Se o Mapa completo ainda não faz sentido para você agora, comece pela <span className="text-primary">Carta da Alma</span>.
         </p>
 
         <p className="popup-subtext">
-          Receba uma análise preliminar da sua Carta Ancestral <strong>gratuitamente</strong>.
+          Ela é <span className="text-primary">gratuita</span> e pode te mostrar, com clareza, o que hoje está pedindo atenção no seu mapa.
         </p>
 
         {/* Substitua '/sua-nova-pagina' pelo link da página nova que você criou */}
         <a href={destinoUrl} className="popup-button">
-          Quero Ler Minha Carta Grátis
+          Quero Minha Carta Gratuita
         </a>
         
         <p className="popup-footer" onClick={() => setIsVisible(false)}>
@@ -134,7 +133,7 @@ const ExitPopup = () => {
 
         .popup-footer {
           margin-top: 15px;
-          font-size: 12px;
+          font-size: 15px;
           color: #666;
           cursor: pointer;
           text-decoration: underline;
@@ -142,12 +141,12 @@ const ExitPopup = () => {
 
         .close-btn {
           position: absolute;
-          top: 10px;
+          top: 1px;
           right: 15px;
           background: none;
           border: none;
           color: #666;
-          font-size: 30px;
+          font-size: 35px;
           cursor: pointer;
         }
 

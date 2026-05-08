@@ -179,7 +179,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
         
         <PainCarta {...currentContent.pain} />
 
-        <PanoramaCarta 
+        {/* <PanoramaCarta 
           scrollToFormCarta={() => {
             // Sua função que rola a página até o form
             document.getElementById("formulario")?.scrollIntoView({ behavior: "smooth" });
@@ -188,7 +188,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
             // Redireciona a pessoa para a página de vendas oficial do Mapa
             window.location.href = "/"; 
           }}
-        />
+        /> */}
 
         <SolutionCarta scrollToForm={scrollToForm} {...currentContent.solution} />
         
@@ -201,9 +201,9 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
         
         <div ref={formRef}>
           <FormSection 
-            tipo="gratis" 
-            titulo="Solicitar Minha Carta Gratuita" 
-            publico="adulto" 
+            tipo="gratis"
+            titulo="Sua Carta Grátis Começa Aqui!"
+            publico="adulto"
           />
         </div>
 

@@ -23,21 +23,21 @@ const defaultItems = [
   {
     icon: RefreshCcw,
     title: <strong className="text-foreground">Percebe Repetição nos Relacionamentos</strong>,
-    desc: <><span className="text-primary">Você já sentiu que algumas histórias seguem um roteiro parecido?</span> <br />Se isso acontece com você, a carta ajuda a nomear o padrão e fazer perguntas mais certeiras.</>,
+    desc: <>Você já sentiu que algumas histórias seguem um <span className="text-primary">roteiro parecido?</span> <br />Se isso acontece com você, a carta ajuda a nomear o padrão e fazer perguntas mais certeiras.</>,
     color: "text-red-400",
     bg: "bg-red-400/10"
   },
   {
     icon: Lock,
     title: <strong className="text-foreground">Sente Travas em Carreira ou Dinheiro</strong>,
-    desc: <><span className="text-primary">Você percebe ciclos de “vai e volta”, indecisão, ou dificuldade de sustentar constância?</span> <br />A carta organiza esses sinais e aponta um próximo passo prático.</>,
+    desc: <>Você percebe ciclos de <span className="text-primary">“vai e volta”,</span> indecisão, ou dificuldade de sustentar constância? <br />A carta organiza esses sinais e aponta um próximo passo prático.</>,
     color: "text-amber-400",
     bg: "bg-amber-400/10"
   },
   {
     icon: BatteryWarning,
     title: <strong className="text-foreground">Tem a Sensação de Carregar Tudo Sozinha</strong>,
-    desc: <><span className="text-primary">Você se vê assumindo muito, resolvendo tudo, ou ficando sem espaço para você?</span> <br />A carta te ajuda a identificar o padrão por trás disso e o ponto de ajuste.</>,
+    desc: <>Você se vê assumindo muito, resolvendo tudo, ou ficando <span className="text-primary">sem espaço para você?</span> <br />A carta te ajuda a identificar o padrão por trás disso e o ponto de ajuste.</>,
     color: "text-blue-400",
     bg: "bg-blue-400/10"
   }

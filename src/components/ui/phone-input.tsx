@@ -58,7 +58,7 @@ const PhoneInput = React.forwardRef<
     return (
         <RPNInput.default
             ref={ref}
-            className={cn("flex", className)}
+            className={cn("flex items-stretch", className)}
             flagComponent={FlagComponent}
             countrySelectComponent={CountrySelect}
             inputComponent={InputComponent}
@@ -85,7 +85,7 @@ PhoneInput.displayName = "PhoneInput";
 
 const InputComponent = React.forwardRef<HTMLInputElement, React.ComponentProps<"input"> & { prefix?: string }>(
     ({ className, prefix, ...props }, ref) => (
-        <div className={cn("flex items-center rounded-e-lg rounded-s-none border border-input bg-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2", className)}>
+        <div className={cn("flex items-center rounded-e-lg rounded-s-none border border-input bg-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 h-full", className)}>
             {prefix && (
                 <span className="pl-3 text-muted-foreground text-sm select-none">
                     {prefix}
@@ -129,7 +129,7 @@ const CountrySelect = ({
                 <Button
                     type="button"
                     variant={"outline"}
-                    className={cn("flex gap-1 rounded-e-none rounded-s-lg px-3 bg-card border-border text-foreground hover:bg-accent hover:text-accent-foreground")}
+                    className={cn("flex gap-1 rounded-e-none rounded-s-lg px-3 h-full bg-card border-border text-foreground hover:bg-accent hover:text-accent-foreground")}
                     disabled={disabled}
                 >
                     <FlagComponent country={value} countryName={value} />

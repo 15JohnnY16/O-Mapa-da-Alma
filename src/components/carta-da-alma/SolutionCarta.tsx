@@ -18,21 +18,21 @@ export default function SolutionCarta({
   // TEXTOS PADRÃO (GERAIS PARA A ROTA PRINCIPAL)
   badge = "Um Recorte do Seu Mapa",
   title = <>A Clareza Que <span className="text-primary">Destrava o Primeiro Nó</span></>,
-  text1 = <>A <span className="text-primary">Carta</span> não foi feita pra te deixar <span className="text-foreground">"motivada".</span> <span className="text-primary"> Ela</span> foi feita para te deixar <span className="text-foreground">lúcida, </span> de um jeito <span className="text-primary"> simples e direto.</span></>,
+  text1 = <>A <span className="text-primary">Carta</span> não foi feita pra te deixar <span className="text-foreground">"motivada".</span> Ela foi feita para te deixar <span className="text-foreground">lúcida, </span> de um jeito simples e direto.</>,
   boxHighlight = (
     <>
       <strong className="text-primary mb-2 flex items-center">
         A Carta da Alma revela o seu padrão central.
       </strong>
-      Ela mostra onde você se <span className="text-foreground">repete,</span> porque isso pega tanto e qual é o <span className="text-foreground">próximo passo</span> mais simples pra começar a <span className="text-primary">escolher diferente.</span>
+      Ela mostra o que está mais latente no seu mapa, porque isso <span className="text-foreground">ganha força agora</span> e qual é o próximo passo mais simples <span className="text-primary">para lidar com isso</span> de um jeito diferente.
     </>
   ),
-  text2 = <> Sem <span className="text-primary">astrologuês.</span> Sem <span className="text-primary">horóscopo genérico.</span> Sem <span className="text-foreground">inventar a </span> <span className="text-primary">sua história.</span> É um <span className="text-primary">recorte.</span> Um <span className="text-primary">ponto central.</span> Só que <span className="text-foreground">certeiro...</span></>,
+  text2 = <><span className="text-foreground">Sem astrologuês. Sem horóscopo genérico.</span> É um recorte. Um ponto central. <span className="text-primary">Só que certeiro!</span></>,
   ctaText = <>Quero Minha Carta Agora</>,
   imageSrc = "/Carta-da-Alma/Padrao/solution-carta.png",
   bottomHighlight = (
     <>
-      Quando você enxerga o padrão, <span className="text-foreground">você para de brigar consigo mesma.</span><br />E começa a fazer escolhas com <span className="text-primary">mais consciência.</span><br />A <span className="text-primary">mudança</span> começa quando a <span className="text-foreground">clareza</span> vira <span className="text-primary">ação</span>.
+      Quando você enxerga o padrão, <span className="text-foreground">você para de brigar consigo mesma.</span><br />E começa a fazer escolhas com mais consciência.<br /><span className="text-foreground">A mudança começa quando a clareza vira ação.</span>
     </>
   )
 }: SolutionCartaProps) {

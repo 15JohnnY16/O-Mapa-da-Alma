@@ -4,12 +4,12 @@ const steps = [
   {
     icon: FileText,
     title: "1. Você Envia Seus Dados",
-    desc: "Preenche um formulário rápido com data, hora e cidade de nascimento. Só isso."
+    desc: "Preenche um formulário rápido (em menos de 1 minuto) com data, hora e cidade de nascimento. Só isso."
   },
   {
     icon: Search,
     title: "2. Eu Faço a Leitura do Seu Mapa",
-    desc: "Eu analiso um ponto central do seu mapa natal e traduzo em linguagem humana, pra te entregar clareza rápida e um próximo passo aplicável."
+    desc: "Eu analiso um ponto central do seu mapa natal e traduzo isso com clareza, sem astrologuês nem horóscopo genérico, para te entregar direção e um próximo passo aplicável."
   },
   {
     icon: Heart,
@@ -33,10 +33,10 @@ export default function ComoFuncionaCarta() {
             Passo a Passo Simples
           </div>
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground">
-            Como Funciona a <span className="text-primary">Carta da Alma</span>?
+            Como Funciona a <span className="text-primary">Carta da Alma?</span>
           </h2>
           <p className="text-muted-foreground max-w-3xl mx-auto text-lg">
-            Um processo simples em 4 etapas feito pra te dar clareza real sobre você, sem enrolação.
+            Um processo simples e rápido feito pra te dar clareza real sobre você, sem enrolação.
           </p>
         </div>
 

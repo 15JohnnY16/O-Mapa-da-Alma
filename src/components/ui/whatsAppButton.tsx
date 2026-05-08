@@ -1,123 +1,106 @@
 import { useState, useEffect, useRef } from "react";
-import { MessageCircle, X, Send, ChevronRight, User } from "lucide-react";
-
-// --- FLUXO DE CONVERSA DO BOT ---
-type Option = { text: string; nextStep?: string; isWhatsappRedirect?: boolean; waMessage?: string };
-type BotStep = { message: string; options: Option[] };
-
-const botFlow: Record<string, BotStep> = {
-  start: {
-    message: "Olá! Sou a assistente virtual do Mapa da Alma. Como posso te ajudar hoje?",
-    options: [
-      { text: "Como funciona a Carta Gratuita?", nextStep: "sobre_carta" },
-      { text: "O que vem no Mapa Completo?", nextStep: "sobre_mapa" },
-      { text: "Dúvidas sobre Prazo/Pagamento", nextStep: "suporte" },
-      { text: "Falar com um atendente", nextStep: "falar_humano" }
-    ]
-  },
-  sobre_carta: {
-    message: "A Carta Gratuita é um resumo inicial do seu Mapa Astral. Nela você descobre seu Sol, Lua e Ascendente! Enviamos diretamente para você. 🌙",
-    options: [
-      { text: "Como eu peço a minha?", nextStep: "pedir_carta" },
-      { text: "Voltar ao início", nextStep: "start" }
-    ]
-  },
-  pedir_carta: {
-    message: "É super simples! Basta preencher o formulário no nosso site informando seus dados de nascimento. Quer ajuda com isso?",
-    options: [
-      { text: "Sim, me ajude no WhatsApp", nextStep: "falar_humano", waMessage: "Olá! Gostaria de ajuda para pedir minha Carta Gratuita." },
-      { text: "Não, obrigado(a).", nextStep: "start" }
-    ]
-  },
-  sobre_mapa: {
-    message: "O Mapa Completo é uma análise profunda feita artesanalmente. Ele mostra seus potenciais, desafios, vida amorosa, carreira e propósito de vida! 🌌",
-    options: [
-      { text: "Quero fazer o meu!", nextStep: "falar_humano", waMessage: "Olá! Quero garantir meu Mapa da Alma Completo." },
-      { text: "Voltar ao início", nextStep: "start" }
-    ]
-  },
-  suporte: {
-    message: "Nosso prazo de entrega para análises completas é de até 5 dias úteis. Aceitamos PIX e Cartão em até 12x. Ficou com mais alguma dúvida? 💳",
-    options: [
-      { text: "Sim, quero falar no WhatsApp", nextStep: "falar_humano", waMessage: "Olá! Tenho uma dúvida sobre prazos e pagamentos." },
-      { text: "Não, voltar ao início", nextStep: "start" }
-    ]
-  },
-  falar_humano: {
-    message: "Perfeito! Vou te transferir para um de nossos especialistas no WhatsApp. Clique no botão abaixo para iniciar a conversa: 👇",
-    options: [
-      { text: "👉 Ir para o WhatsApp", isWhatsappRedirect: true, waMessage: "Olá! Vim pelo site e gostaria de atendimento." },
-      { text: "Cancelar e voltar", nextStep: "start" }
-    ]
-  }
-};
+import { MessageCircle, X, Send, User } from "lucide-react";
 
 // Tipos para o Histórico de Chat
-type ChatMessage = { id: string; sender: 'bot' | 'user'; text: string; isOptions?: boolean; options?: Option[] };
+type ChatMessage = { id: string; sender: 'bot' | 'user'; text: string };
 
 export default function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   
-  // Estados do Chatbot
+  // Estados do Chatbot IA
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  
+  // Contador de mensagens (A Trava de Vendas)
+  const [messageCount, setMessageCount] = useState(0);
+  const MAX_MESSAGES = 10;
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const phoneNumber = "55061992232186";
-
-  // Inicia o chat quando abre a janela pela primeira vez
+  // Mensagem inicial de boas-vindas
   useEffect(() => {
     if (isOpen && messages.length === 0) {
-      loadStep('start');
+      setMessages([{
+        id: "welcome",
+        sender: "bot",
+        text: "Olá! Sou a assistente virtual do Mapa da Alma. Como posso te ajudar hoje?"
+      }]);
     }
   }, [isOpen]);
 
-  // Rola para o final do chat sempre que uma nova mensagem entra
+  // Rola para o final do chat
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, isTyping]);
 
-  const loadStep = (stepKey: string) => {
-    const step = botFlow[stepKey];
-    if (!step) return;
-
-    // Remove as opções da mensagem anterior (para não ficarem botões velhos na tela)
-    setMessages(prev => prev.map(msg => ({ ...msg, isOptions: false })));
-
-    setIsTyping(true);
+  // FUNÇÃO MÁGICA: Transforma links de texto em botões clicáveis
+  const renderTextWithLinks = (text: string) => {
+    // Procura por qualquer coisa que comece com http:// ou https://
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = text.split(urlRegex);
     
-    // Simula o tempo de digitação do bot (800ms)
-    setTimeout(() => {
-      setMessages(prev => [
-        ...prev,
-        { id: Date.now().toString(), sender: 'bot', text: step.message, isOptions: true, options: step.options }
-      ]);
+    return parts.map((part, index) => {
+      if (part.match(urlRegex)) {
+        return (
+          <a 
+            key={index} 
+            href={part} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-blue-200 hover:text-white underline font-bold transition-colors"
+          >
+            {part}
+          </a>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
+
+  // Envia a mensagem para o seu PHP na HostGator
+  const handleSendMessage = async () => {
+    if (!inputText.trim() || isTyping || messageCount >= MAX_MESSAGES) return;
+
+    const userMessage = inputText.trim();
+    setInputText(""); // Limpa o campo
+    
+    // Adiciona a mensagem do usuário na tela
+    setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'user', text: userMessage }]);
+    setMessageCount(prev => prev + 1);
+    setIsTyping(true);
+
+    try {
+      const response = await fetch("https://omapadaalma.com/api/chat_ia.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ mensagem: userMessage })
+      });
+
+      const data = await response.json();
+
+      // --- SIMULADOR DE DIGITAÇÃO HUMANA ---
+      // Cria um tempo de espera aleatório entre 3000ms (3s) e 5000ms (5s)
+      const tempoDeEspera = Math.floor(Math.random() * 2000) + 3000;
+      await new Promise(resolve => setTimeout(resolve, tempoDeEspera));
+      // -----------------------------------------------------------
+
+      if (data.resposta) {
+        setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'bot', text: data.resposta }]);
+      } else {
+        setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'bot', text: "Desculpe, a conexão falhou por um instante. Pode repetir?" }]);
+      }
+    } catch (error) {
+      console.error("Erro ao chamar IA:", error);
+      setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'bot', text: "Houve uma pequena falha na minha conexão. Tente novamente!" }]);
+    } finally {
       setIsTyping(false);
-    }, 800);
-  };
-
-  const handleOptionClick = (option: Option) => {
-    // 1. Adiciona a escolha do usuário na tela
-    setMessages(prev => [
-      ...prev.map(msg => ({ ...msg, isOptions: false })), // Esconde as opções antigas
-      { id: Date.now().toString(), sender: 'user', text: option.text }
-    ]);
-
-    // 2. Verifica se é para redirecionar ou continuar o fluxo
-    if (option.isWhatsappRedirect) {
-      setTimeout(() => handleOpenWhatsapp(option.waMessage || "Olá! Vim pelo site."), 500);
-    } else if (option.nextStep) {
-      loadStep(option.nextStep);
     }
-  };
-
-  const handleOpenWhatsapp = (message: string) => {
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
-    setIsOpen(false);
   };
 
   return (
@@ -151,8 +134,6 @@ export default function WhatsAppButton() {
             
             {messages.map((msg) => (
               <div key={msg.id} className={`flex flex-col gap-2 ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
-                
-                {/* Balão de Mensagem */}
                 <div className={`flex gap-2 max-w-[85%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                   
                   {/* Avatar */}
@@ -160,36 +141,15 @@ export default function WhatsAppButton() {
                     {msg.sender === 'user' ? <User className="w-4 h-4 text-white" /> : <MessageCircle className="w-4 h-4 text-primary" />}
                   </div>
 
-                  {/* Texto */}
-                  <div className={`p-3 text-sm shadow-sm ${
+                  {/* Texto (AGORA COM A FUNÇÃO DE LINK) */}
+                  <div className={`p-3 text-sm shadow-sm whitespace-pre-wrap break-words ${
                     msg.sender === 'user' 
                       ? 'bg-primary text-primary-foreground rounded-2xl rounded-tr-none' 
                       : 'bg-card border border-primary/10 text-muted-foreground rounded-2xl rounded-tl-none'
                   }`}>
-                    {msg.text}
+                    {renderTextWithLinks(msg.text)}
                   </div>
                 </div>
-
-                {/* Botões de Opção (Só aparecem na última mensagem do bot se houver) */}
-                {msg.isOptions && msg.options && (
-                  <div className="flex flex-col gap-2 mt-2 w-full pl-10">
-                    <p className="text-[11px] text-muted-foreground mb-1 uppercase tracking-wider font-semibold">Escolha uma opção:</p>
-                    {msg.options.map((opt, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => handleOptionClick(opt)}
-                        className={`text-left text-xs md:text-sm py-2.5 px-4 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-between group border ${
-                          opt.isWhatsappRedirect 
-                            ? 'bg-[#25D366] hover:bg-[#20bd5a] text-white border-transparent' 
-                            : 'bg-white hover:bg-gray-50 text-gray-800 border-gray-200' // FIX: Cor do texto alterada para cinza escuro
-                        }`}
-                      >
-                        <span className="font-medium">{opt.text}</span>
-                        {!opt.isWhatsappRedirect && <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" />}
-                      </button>
-                    ))}
-                  </div>
-                )}
               </div>
             ))}
 
@@ -210,20 +170,53 @@ export default function WhatsAppButton() {
             <div ref={messagesEndRef} />
           </div>
           
-          {/* Rodapé Falso */}
-          <div className="p-3 bg-card border-t border-border flex items-center gap-2">
-             <div className="flex-1 bg-navy-light/20 border border-border/50 text-xs px-3 py-2.5 rounded-full text-muted-foreground flex items-center">
-               Escolha uma das opções acima...
-             </div>
-             <div className="w-9 h-9 rounded-full bg-primary/50 flex items-center justify-center cursor-not-allowed">
-                <Send className="w-4 h-4 text-white" />
-             </div>
-          </div>
+          {/* Rodapé Dinâmico */}
+          {messageCount >= MAX_MESSAGES ? (
+            <div className="p-4 bg-card border-t border-border flex flex-col gap-2 items-center text-center animate-in fade-in zoom-in duration-300">
+              <p className="text-sm font-bold text-primary">Chegou a hora de dar o próximo passo.</p>
+              <p className="text-xs text-muted-foreground mb-1">
+                {typeof window !== 'undefined' && window.location.pathname.includes('/carta')
+                  ? "Preencha seus dados para receber sua leitura gratuita."
+                  : "Para se aprofundar de verdade, você precisa do seu mapa completo."}
+              </p>
+              <button 
+                onClick={() => {
+                  setIsOpen(false);
+                  const currentUrl = window.location.href.split('#')[0];
+                  window.location.href = currentUrl + '#formulario';
+                }}
+                className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
+              >
+                {typeof window !== 'undefined' && window.location.pathname.includes('/carta') 
+                  ? "Fazer minha Carta da Alma" 
+                  : "Fazer meu Mapa da Alma"}
+              </button>
+            </div>
+          ) : (
+            <div className="p-3 bg-card border-t border-border flex items-center gap-2">
+              <input
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                placeholder="Escreva sua dúvida..."
+                className="flex-1 bg-navy-light/10 border border-border text-sm px-4 py-2.5 rounded-full text-foreground outline-none focus:border-primary/50 transition-colors"
+                disabled={isTyping}
+              />
+              <button 
+                onClick={handleSendMessage}
+                disabled={!inputText.trim() || isTyping}
+                className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0 disabled:opacity-50 hover:bg-primary/90 transition-colors cursor-pointer"
+              >
+                <Send className="w-4 h-4 text-white relative -left-[1px] top-[1px]" />
+              </button>
+            </div>
+          )}
 
         </div>
       )}
 
-      {/* Botão Flutuante (Permanece Igual) */}
+      {/* Botão Flutuante */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         onMouseEnter={() => setIsHovered(true)}
