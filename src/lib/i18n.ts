@@ -203,10 +203,10 @@ export const translations = {
         subtitleForeground: "Mapa da Alma",
         subtitleSuffix: " completo, escrito exclusivamente para você!",
         quantoVale: "QUANTO VALE",
-        oldPrice: "De R$ 597,00",
-        newPrice: "6x de R$ 33,96",
+        oldPrice: "De R$ 97,00",
+        newPrice: "2x de R$ 23,50",
         installmentsPrefix: "ou",
-        installmentsHighlight: "R$ 197 à vista",
+        installmentsHighlight: "R$ 47 à vista",
         cta: "Quero Meu Mapa Agora",
         security: "Pagamento 100% Seguro",
         badges: {
