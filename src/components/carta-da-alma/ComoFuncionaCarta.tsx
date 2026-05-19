@@ -8,7 +8,7 @@ const steps = [
   },
   {
     icon: Search,
-    title: "2. Eu Faço a Leitura do Seu Mapa",
+    title: "2. Eu Faço o Seu Mapa",
     desc: "Eu analiso um ponto central do seu mapa natal e traduzo isso com clareza, sem astrologuês nem horóscopo genérico, para te entregar direção e um próximo passo aplicável."
   },
   {

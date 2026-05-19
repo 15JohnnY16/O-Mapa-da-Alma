@@ -12,7 +12,7 @@ interface HeroCartaProps {
 
 export default function HeroCarta({
   scrollToForm,
-  badge = "Entrega em até 48 horas",
+  badge = "Entrega em até 24 horas",
   title = <>A <span className="text-gradient-gold">Carta da Alma</span> coloca em palavras o que você <span className="text-primary">sente.</span></>,
   subtitle = <>A Carta da Alma é um recorte do seu <span className="text-primary">mapa natal, </span>escrito como uma amiga sincera. <span className="text-foreground">Sem astrologuês,</span> ela te mostra um ponto central que fica mais forte nesta fase da sua vida, te entrega <span className="text-primary">clareza</span> e um <span className="text-foreground">próximo passo simples.</span></>,
   imageSrc = "/Carta-da-Alma/Padrao/hero-carta.jfif"

@@ -10,7 +10,6 @@ interface LegalModalProps {
 const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Fecha com ESC
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsOpen(false);
@@ -19,7 +18,6 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
-  // Impede scroll do fundo quando aberto
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -28,7 +26,6 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
     }
   }, [isOpen]);
 
-  // Conteúdos (Você pode substituir pelos seus textos reais depois)
   const getContent = () => {
     switch (type) {
       case "privacy":
@@ -36,7 +33,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
           <div className="space-y-6">
             <p className="font-bold text-foreground">O Mapa da Alma (RFJM LTDA)</p>
             <p>A RFJM LTDA, com sede em Brasília/DF, responsável pelo produto O Mapa da Alma, respeita sua privacidade e trata seus dados pessoais com segurança e transparência, conforme a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
-            <p>Ao acessar este site e/ou adquirir o Mapa da Alma, você concorda com esta Política.</p>
+            <p>Ao acessar este site e/ou adquirir o Mapa da Alma, você concorda com esta Política. O serviço é destinado a maiores de 18 anos.</p>
 
             <div className="space-y-2">
               <h4 className="font-bold text-foreground">1. Quem controla seus dados</h4>
@@ -50,12 +47,12 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
             <div className="space-y-3">
               <h4 className="font-bold text-foreground">2. Quais dados coletamos</h4>
               <p>Coletamos apenas os dados necessários para produção do material, entrega, suporte, pagamento e melhorias do site, podendo incluir:</p>
-              
+
               <div className="pl-2 space-y-2">
                 <p><strong className="text-foreground">a) Dados de identificação e contato:</strong> Nome completo, E-mail, WhatsApp, Gênero (quando informado).</p>
                 <p><strong className="text-foreground">b) Dados para personalização do Mapa da Alma:</strong> Data, horário e cidade/UF de nascimento.</p>
-                <p><strong className="text-foreground">c) Dados para pagamento:</strong> Informações necessárias para processar pagamento via Asaas (status, identificação do pedido). O CPF pode ser solicitado para viabilizar pagamento via boleto.</p>
-                <p className="text-xs italic bg-primary/5 p-2 rounded border border-primary/20">Importante: pagamentos são processados pela Asaas. Em regra, não armazenamos dados completos de cartão.</p>
+                <p><strong className="text-foreground">c) Dados para pagamento:</strong> Informações necessárias para processar pagamento via Mercado Pago (status, identificação do pedido). O CPF pode ser solicitado para viabilizar pagamento via boleto.</p>
+                <p className="text-xs italic bg-primary/5 p-2 rounded border border-primary/20">Importante: pagamentos são processados pelo Mercado Pago. Em regra, não armazenamos dados completos de cartão.</p>
                 <p><strong className="text-foreground">d) Dados de navegação e marketing:</strong> Endereço IP, tipo de dispositivo, cookies e identificadores (Google Analytics e Meta Pixel).</p>
               </div>
             </div>
@@ -66,7 +63,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
                 <li>Produzir o Mapa da Alma (personalização);</li>
                 <li>Entregar o material digital e comunicar status;</li>
                 <li>Prestar suporte, garantia e reembolso;</li>
-                <li>Processar pagamento via Asaas e prevenir fraudes;</li>
+                <li>Processar pagamento via Mercado Pago e prevenir fraudes;</li>
                 <li>Cumprir obrigações legais;</li>
                 <li>Analisar desempenho do site (Google Analytics);</li>
                 <li>Mensurar anúncios e otimizar campanhas (Meta Pixel), quando aplicável;</li>
@@ -89,8 +86,11 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
               <h4 className="font-bold text-foreground">5. Com quem compartilhamos seus dados</h4>
               <p>Podemos compartilhar dados apenas quando necessário com:</p>
               <ul className="list-disc pl-5 space-y-1">
-                <li><strong>Asaas:</strong> Processamento de pagamento, boleto e antifraude;</li>
-                <li>Serviços de e-mail e atendimento;</li>
+                <li><strong>Mercado Pago:</strong> Processamento de pagamento e antifraude;</li>
+                <li><strong>Anthropic (Claude API):</strong> Geração do conteúdo personalizado do Mapa da Alma a partir dos dados natais informados;</li>
+                <li><strong>Supabase:</strong> Armazenamento seguro do mapa gerado e dados de acesso;</li>
+                <li><strong>N8N:</strong> Orquestração interna dos fluxos de automação;</li>
+                <li>Serviços de e-mail e atendimento (incluindo WhatsApp para entrega);</li>
                 <li><strong>Google Analytics:</strong> Métricas de navegação;</li>
                 <li><strong>Meta (Meta Pixel):</strong> Mensuração de anúncios e conversões;</li>
                 <li>Hospedagem e segurança do site;</li>
@@ -107,7 +107,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
 
             <div className="space-y-2">
               <h4 className="font-bold text-foreground">7. Por quanto tempo guardamos seus dados</h4>
-              <p>Mantemos seus dados pelo tempo necessário para produção, entrega, suporte, garantia de 7 dias e cumprimento de obrigações legais. Após esse período, podem ser excluídos ou anonimizados.</p>
+              <p>Mantemos seus dados por até 5 (cinco) anos após o último contato ou encerramento do serviço, conforme obrigações fiscais e legais brasileiras. Após esse período, os dados serão excluídos ou anonimizados.</p>
             </div>
 
             <div className="space-y-2">
@@ -123,28 +123,37 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
                 <li>Correção de dados;</li>
                 <li>Exclusão (quando aplicável);</li>
                 <li>Informação sobre compartilhamentos;</li>
-                <li>Revogação do consentimento.</li>
+                <li>Revogação do consentimento;</li>
+                <li>Revisão humana de decisões automatizadas (ver seção 10).</li>
               </ul>
+              <p>Responderemos às solicitações em até 15 (quinze) dias úteis.</p>
             </div>
 
             <div className="space-y-2">
-              <h4 className="font-bold text-foreground">10. Transferência internacional</h4>
-              <p>Ferramentas como Google Analytics e Meta podem envolver tratamento em servidores fora do Brasil. Adotamos medidas para que o tratamento seja compatível com a LGPD.</p>
+              <h4 className="font-bold text-foreground">10. Decisão automatizada por inteligência artificial</h4>
+              <p>O Mapa da Alma é produzido com auxílio de inteligência artificial (Anthropic/Claude API), a partir dos dados natais informados pelo cliente. Antes de ser entregue, <strong className="text-foreground">cada mapa passa obrigatoriamente por revisão humana da responsável pelo produto (Rafaela Cabral)</strong>, que avalia o conteúdo, pode solicitar ajustes e só autoriza o envio após aprovação. Nenhum mapa é entregue sem essa etapa.</p>
+              <p>Conforme o art. 20 da LGPD, o titular também pode solicitar revisão adicional pelo canal oficial: <a href="mailto:contato@omapadaalma.com" className="text-primary hover:underline">contato@omapadaalma.com</a>.</p>
             </div>
 
             <div className="space-y-2">
-              <h4 className="font-bold text-foreground">11. Atualizações desta Política</h4>
+              <h4 className="font-bold text-foreground">11. Transferência internacional</h4>
+              <p>Ferramentas como Google Analytics, Meta e Anthropic podem envolver tratamento em servidores fora do Brasil. Adotamos medidas para que o tratamento seja compatível com a LGPD.</p>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-bold text-foreground">12. Atualizações desta Política</h4>
               <p>Esta Política pode ser atualizada para refletir melhorias ou mudanças legais. A versão vigente será sempre a publicada nesta página.</p>
             </div>
 
             <div className="space-y-2">
-              <h4 className="font-bold text-foreground">12. Contato</h4>
+              <h4 className="font-bold text-foreground">13. Contato</h4>
               <p>Canal oficial para privacidade e suporte: <a href="mailto:contato@omapadaalma.com" className="text-primary hover:underline">contato@omapadaalma.com</a></p>
             </div>
 
             <p className="text-xs text-muted-foreground pt-4 border-t border-white/10">Última atualização: 29/01/2026</p>
           </div>
         );
+
       case "refund":
         return (
           <div className="space-y-6">
@@ -158,7 +167,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
 
             <div className="space-y-2">
               <h4 className="font-bold text-foreground">2. Como solicitar o reembolso</h4>
-              <p>Para solicitar, envie um e-mail para <a href="mailto:contato@omapadaalma.com" className="text-primary hover:underline">contato@omapadaalma.com</a> com o assunto: <strong>“Reembolso O Mapa da Alma”</strong> e informe:</p>
+              <p>Para solicitar, envie um e-mail para <a href="mailto:contato@omapadaalma.com" className="text-primary hover:underline">contato@omapadaalma.com</a> com o assunto: <strong>"Reembolso O Mapa da Alma"</strong> e informe:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Nome completo;</li>
                 <li>E-mail utilizado na compra;</li>
@@ -175,6 +184,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
                 <li>As informações do pedido permitirem identificar a compra.</li>
               </ul>
               <p>Não exigimos justificativa detalhada, nem condicionamos o reembolso à revisão do conteúdo.</p>
+              <p className="text-xs italic bg-primary/5 p-2 rounded border border-primary/20">Após a confirmação do reembolso, o acesso ao material digital será revogado automaticamente.</p>
             </div>
 
             <div className="space-y-2">
@@ -209,6 +219,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
             <p className="text-xs text-muted-foreground pt-4 border-t border-white/10">Última atualização: 29/01/2026</p>
           </div>
         );
+
       case "terms":
         return (
           <div className="space-y-6">
@@ -216,7 +227,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
 
             <div className="space-y-2">
               <h4 className="font-bold text-foreground">1. Aceite dos Termos</h4>
-              <p>Ao acessar este site e/ou adquirir o produto O Mapa da Alma, o cliente declara que leu, compreendeu e concorda com estes Termos de Uso. Caso não concorde, recomenda-se não utilizar o site nem realizar a compra.</p>
+              <p>Ao acessar este site e/ou adquirir o produto O Mapa da Alma, o cliente declara que leu, compreendeu e concorda com estes Termos de Uso. O serviço é destinado exclusivamente a maiores de 18 anos. Caso não concorde, recomenda-se não utilizar o site nem realizar a compra.</p>
             </div>
 
             <div className="space-y-2">
@@ -226,7 +237,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
 
             <div className="space-y-2">
               <h4 className="font-bold text-foreground">3. O que é o Mapa da Alma</h4>
-              <p>O Mapa da Alma é um produto digital de leitura personalizada baseada em astrologia aplicada ao autoconhecimento, elaborada a partir dos dados informados pelo cliente. O material é entregue em formato digital e tem caráter reflexivo, educativo e orientativo, com foco em clareza, direcionamento e plano prático.</p>
+              <p>O Mapa da Alma é um produto digital de leitura personalizada baseada em astrologia aplicada ao autoconhecimento, elaborada a partir dos dados informados pelo cliente com auxílio de inteligência artificial. O material é entregue em formato digital e tem caráter reflexivo, educativo e orientativo, com foco em clareza, direcionamento e plano prático.</p>
             </div>
 
             <div className="space-y-2">
@@ -254,7 +265,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
             <div className="space-y-2">
               <h4 className="font-bold text-foreground">7. Prazo e forma de entrega</h4>
               <p>Após o envio dos dados necessários e a confirmação do pagamento, o Mapa da Alma será produzido e entregue em até 5 (cinco) dias úteis, salvo comunicação diferente no momento da compra.</p>
-              <p>A entrega é realizada em formato digital (ex.: PDF ou link equivalente) para o e-mail informado pelo cliente e/ou canal indicado no momento da compra.</p>
+              <p>A entrega é realizada por meio de link autenticado com acesso exclusivo, enviado para o e-mail informado pelo cliente e/ou canal indicado no momento da compra.</p>
             </div>
 
             <div className="space-y-2">
@@ -303,10 +314,11 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
               <h4 className="font-bold text-foreground">13. Legislação e foro</h4>
               <p>Estes Termos são regidos pelas leis brasileiras. Fica eleito o foro da comarca de Brasília/DF, com renúncia a qualquer outro, por mais privilegiado que seja, para dirimir eventuais controvérsias.</p>
             </div>
-            
+
             <p className="text-xs text-muted-foreground pt-4 border-t border-white/10">Última atualização: 29/01/2026</p>
           </div>
         );
+
       default:
         return null;
     }
@@ -320,27 +332,22 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
 
   return (
     <>
-      {/* O Botão/Link que abre o modal */}
-      <button 
-        onClick={() => setIsOpen(true)} 
+      <button
+        onClick={() => setIsOpen(true)}
         className="text-muted-foreground hover:text-primary transition-colors text-xs md:text-sm underline decoration-muted-foreground/30 hover:decoration-primary underline-offset-4"
       >
         {triggerText}
       </button>
 
-      {/* O Modal */}
       {isOpen && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-          {/* Fundo Escuro */}
-          <div 
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" 
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
             onClick={() => setIsOpen(false)}
           />
-          
-          {/* Caixa de Conteúdo */}
+
           <div className="relative bg-card border border-primary/20 w-full max-w-2xl max-h-[80vh] rounded-2xl shadow-2xl flex flex-col animate-in fade-in zoom-in-95 duration-200">
-            
-            {/* Cabeçalho */}
+
             <div className="flex items-center justify-between p-6 border-b border-border bg-card/50 rounded-t-2xl">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-full bg-primary/10">
@@ -348,7 +355,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
                 </div>
                 <h3 className="font-serif text-xl text-foreground">{title}</h3>
               </div>
-              <button 
+              <button
                 onClick={() => setIsOpen(false)}
                 className="p-2 hover:bg-white/10 rounded-full transition-colors text-muted-foreground hover:text-foreground"
               >
@@ -356,14 +363,12 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
               </button>
             </div>
 
-            {/* Conteúdo com Scroll */}
             <div className="p-6 overflow-y-auto text-muted-foreground text-sm leading-relaxed space-y-4 custom-scrollbar">
               {getContent()}
             </div>
 
-            {/* Rodapé do Modal */}
             <div className="p-4 border-t border-border bg-card/50 rounded-b-2xl flex justify-end">
-              <button 
+              <button
                 onClick={() => setIsOpen(false)}
                 className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
               >

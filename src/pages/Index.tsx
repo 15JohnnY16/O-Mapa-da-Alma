@@ -37,6 +37,15 @@ const Index = ({ tipo = 'venda', publico = 'adulto', titulo }: IndexProps) => {
     }
   }, [location]); // Executa toda vez que a URL muda
 
+    useEffect(() => {
+    window.dataLayer = window.dataLayer || [];
+    (window.dataLayer as any[]).push({
+      event: 'view_content',
+      content_name: 'Mapa da Alma',
+      content_type: 'product'
+    });
+  }, []);
+
   return (
     <main className="min-h-screen bg-background">
       <HeroSection />

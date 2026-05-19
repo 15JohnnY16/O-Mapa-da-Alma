@@ -107,7 +107,7 @@ export default function ParaQuemE({
           <div className="flex flex-wrap justify-center gap-4 md:gap-8 text-xs md:text-sm text-muted-foreground opacity-80">
              <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-500" />
-                <span>Entrega em até 48 horas</span>
+                <span>Entrega em até 24 horas</span>
              </div>
              <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-primary" />

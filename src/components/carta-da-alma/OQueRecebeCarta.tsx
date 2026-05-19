@@ -18,8 +18,8 @@ const benefits = [
   },
   {
     icon: Clock,
-    title: "Clareza em até 48 Horas",
-    desc: <>Você envia seus dados e em até 48 horas você recebe uma leitura personalizada escrita, <span className="text-foreground">direta ao ponto.</span> Sem enrolação. Só o que importa agora.</>
+    title: "Clareza em até 24 Horas",
+    desc: <>Você envia seus dados e em até 24 horas você recebe uma leitura personalizada escrita, <span className="text-foreground">direta ao ponto.</span> Sem enrolação. Só o que importa agora.</>
   },
   {
     icon: ListTodo,
@@ -38,7 +38,7 @@ export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
             O Que Você Recebe na <span className="text-primary">Carta da Alma?</span>
           </h2>
           <p className="text-muted-foreground mt-4 text-lg">
-            Uma leitura curta e personalizada do seu mapa natal. <span className="text-foreground">Um ponto central, clareza e um próximo passo.</span> <br /> <span className="text-primary">Sem horóscopo genérico e sem astrologuês.</span>
+            Uma leitura curta e personalizada do seu mapa natal. <span className="text-foreground">Um ponto central, clareza e um próximo passo.</span> <br /> <span className="text-white">Sem horóscopo genérico e sem astrologuês.</span>
           </p>
         </div>
 
@@ -101,7 +101,7 @@ export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
               </Button>
 
               <p className="text-lx text-muted-foreground/70 mt-2">
-                <span className="text-foreground">Entrega em até 48h. Se fizer sentido, no final tem o caminho pro Mapa completo.</span>
+                <span className="text-foreground">Entrega em até 24h. Se fizer sentido, no final tem o caminho pro Mapa completo.</span>
               </p>
             </div>
           </div>

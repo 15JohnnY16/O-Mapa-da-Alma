@@ -24,10 +24,10 @@ export default function SolutionCarta({
       <strong className="text-primary mb-2 flex items-center">
         A Carta da Alma revela o seu padrão central.
       </strong>
-      Ela mostra o que está mais latente no seu mapa, porque isso <span className="text-foreground">ganha força agora</span> e qual é o próximo passo mais simples <span className="text-primary">para lidar com isso</span> de um jeito diferente.
+      Ela mostra o que está mais latente no seu mapa, porque isso <span className="text-foreground">ganha força agora</span> e qual é o próximo passo mais simples <span className="text-white">para lidar com isso</span> de um jeito diferente.
     </>
   ),
-  text2 = <><span className="text-foreground">Sem astrologuês. Sem horóscopo genérico.</span> É um recorte. Um ponto central. <span className="text-primary">Só que certeiro!</span></>,
+  text2 = <><span className="text-foreground">Sem astrologuês. Sem horóscopo genérico.</span> É um recorte. Um ponto central. <span className="text-white">Só que certeiro!</span></>,
   ctaText = <>Quero Minha Carta Agora</>,
   imageSrc = "/Carta-da-Alma/Padrao/solution-carta.png",
   bottomHighlight = (

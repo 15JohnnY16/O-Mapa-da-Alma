@@ -112,7 +112,7 @@ export default function AuthorityCarta({ scrollToForm }: AuthorityProps) {
                           Garantir Minha Carta Agora
                         </Button>
                         <p className="text-ls text-white/60 flex items-center justify-center gap-1 font-medium relative z-20">
-                          ⚡ Solicite hoje e receba em até <strong className="text-foreground">48 horas</strong>
+                          ⚡ Solicite hoje e receba em até <strong className="text-foreground">24 horas</strong>
                         </p>
                     </div>
                 </div>

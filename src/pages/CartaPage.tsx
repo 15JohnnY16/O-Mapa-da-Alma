@@ -40,6 +40,15 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
     };
   }, [theme]);
 
+    useEffect(() => {
+    window.dataLayer = window.dataLayer || [];
+    (window.dataLayer as any[]).push({
+      event: 'view_content',
+      content_name: 'Carta da Alma',
+      content_type: 'product'
+    });
+  }, []);
+
   const content = {
     padrao: {
       hero: {
@@ -66,7 +75,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
             na Carreira
           </>
         ),
-        subtitle: "Receba uma leitura gratuita que nomeia os padrões profissionais que você repete sem perceber. Em 48 horas, sem compromisso.",
+        subtitle: "Receba uma leitura gratuita que nomeia os padrões profissionais que você repete sem perceber. Em 24 horas, sem compromisso.",
         imageSrc: "/Carta-da-Alma/Carreira/hero-carta-carreira.png"
       },
       pain: {
@@ -81,7 +90,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
         title: <>A Clareza Que <span className="text-primary">Destranca Sua Carreira</span></>,
         text1: <>Existe uma maneira de quebrar esse teto sem precisar se matar de trabalhar mais. Sem forçar confiança que você não sente. Sem fingir que basta "querer muito" para conseguir.</>,
         boxHighlight: <>A Carta da Alma mostra exatamente onde está esse bloqueio e como destravar. Não é sobre "acreditar mais em você". É sobre entender a raiz do padrão e reprogramar de dentro para fora.</>,
-        text2: <>Em até 48 horas após o preenchimento do formulário, você recebe um áudio personalizado de até 15 minutos revelando: </>,
+        text2: <>Em até 24 horas após o preenchimento do formulário, você recebe um áudio personalizado de até 15 minutos revelando: </>,
         ctaText: <>Receber Minha Clareza Agora</>,
         imageSrc: "/Carta-da-Alma/Carreira/solution-carta-carreira.png",
         bottomHighlight: <>Quando você entende que o problema não é você, mas o que você herdou, <strong className="text-primary">tudo muda</strong>. Você para de se culpar. Para de achar que precisa ser mais forte, mais disciplinada, mais corajosa. E começa a negociar com confiança real. A delegar sem culpa. A crescer sem sentir que está traindo alguém. Porque agora você sabe: <strong className="text-primary">esse espaço sempre foi seu</strong>.</>
@@ -100,7 +109,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
       hero: {
         badge: "Amor e Relacionamentos",
         title: <>Descubra os Padrões <span className="text-gradient-gold">Invisíveis</span> Que Você Repete no <span className="text-gradient-gold">Amor</span></>,
-        subtitle: "Receba uma leitura gratuita e personalizada que nomeia com precisão o que você sente mas nunca conseguiu explicar. Sem jargão técnico. Sem inventar sua história. Em até 48 horas.",
+        subtitle: "Receba uma leitura gratuita e personalizada que nomeia com precisão o que você sente mas nunca conseguiu explicar. Sem jargão técnico. Sem inventar sua história. Em até 24 horas.",
         imageSrc: "/Carta-da-Alma/Relacionamento/hero-carta-relacionamento.png"
       },
       pain: {
@@ -154,7 +163,7 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
         text2: <><strong className="text-foreground">Decisões Financeiras Com Clareza</strong><span className="block mt-2"></span>Você para de lutar contra si mesma e começa a tomar decisões com clareza. Você vê onde está se traindo e o que fazer diferente agora.</>,
         ctaText: <span>Quero Minha Carta Gratuita Agora</span>,
         imageSrc: "/Carta-da-Alma/Dinheiro/solution-carta-dinheiro.png",
-        bottomHighlight: <span>É a primeira vez que alguém conecta os pontos entre o que você herdou e o que você repete com dinheiro hoje. E entrega isso em linguagem humana, sem jargão técnico, em até 48 horas. De graça."</span>
+        bottomHighlight: <span>É a primeira vez que alguém conecta os pontos entre o que você herdou e o que você repete com dinheiro hoje. E entrega isso em linguagem humana, sem jargão técnico, em até 24 horas. De graça."</span>
       },
       paraQuemE: {
         title: <>A Carta da Alma É Para <span className="text-primary">Para Você Que...</span></>,

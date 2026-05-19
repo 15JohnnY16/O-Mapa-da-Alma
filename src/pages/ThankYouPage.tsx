@@ -40,7 +40,7 @@ export default function ThankYouPage() {
       color: "text-primary",
       bgIcon: "bg-primary/10 border-primary/30",
       steps: [
-        "Sua Carta da Alma está sendo preparada. Você receberá sua leitura personalizada em até 48 horas. Pode ficar tranquilo(a), ela virá!",
+        "Sua Carta da Alma está sendo preparada. Você receberá sua leitura personalizada em até 24 horas. Pode ficar tranquilo(a), ela virá!",
         "Às vezes o email pode cair em spam ou promoções, então vale ficar de olho nessas pastas também.",
         "Para garantir que nada se perca, adicione nosso remetente à sua lista de contatos."
       ],
@@ -236,7 +236,7 @@ export default function ThankYouPage() {
           >
             Não precisa fazer nada agora. Seu email já está registrado e sua{' '}
             {type === 'venda' ? 'Mapa' : 'Carta'} está a caminho — fique de olho nas próximas{' '}
-            {type === 'venda' ? '5 dias úteis' : '48 horas'}.
+            {type === 'venda' ? '5 dias úteis' : '24 horas'}.
           </div>
         </div>
 

@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, Lock, Fingerprint, ShieldCheck, Zap, User, Baby, ExternalLink, Infinity, Scroll, Percent, Ticket } from "lucide-react";
+import { Sparkles, Lock, Fingerprint, ShieldCheck, Zap, User, Baby, ExternalLink, Infinity, Scroll, Percent, Ticket, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translations as t } from "@/lib/i18n";
 import { format, isValid, differenceInYears } from "date-fns";
@@ -75,6 +76,7 @@ type FormData = {
 const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) => {
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
+  const [showHourTip, setShowHourTip] = useState(false);
   const valuesRef = useRef({ hours: "", minutes: "" });
 
   const { toast } = useToast();
@@ -178,13 +180,19 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
   return (
     <div className="flex items-center gap-2">
       <div className="relative flex-1">
+        {showHourTip && (
+          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-50 w-72 rounded-lg border-2 border-yellow-400 bg-yellow-50 px-4 py-3 shadow-lg text-sm text-yellow-900 text-center leading-snug animate-in fade-in slide-in-from-bottom-2">
+            <span className="font-semibold">A hora exata é o que torna seu Mapa irrepetível.</span> Ela revela seu Ascendente e suas casas. Vale conferir na sua certidão de nascimento.
+          </div>
+        )}
         <Input
           type="text"
           placeholder="08"
           className="bg-background/50 border-border focus:border-primary text-center px-1"
           value={hours}
           onChange={handleHourChange}
-          onBlur={handleBlur}
+          onBlur={(e) => { setShowHourTip(false); handleBlur(); }}
+          onFocus={() => setShowHourTip(true)}
           ref={hourRef}
           maxLength={2}
         />
@@ -719,7 +727,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
                     {tipo === 'venda' ? "Análise Personalizada" : "Análise Personalizada"}
                   </h4>
                   <p className="text-[10px] text-muted-foreground hidden md:block mt-1">
-                    {tipo === 'venda' ? "Entrega em até 5 dias úteis" : "Entrega em até 5 dias úteis"}
+                    {tipo === 'venda' ? "Entrega em até 24 horas" : "Entrega em até 24 horas"}
                   </p>
                 </div>
               </div>
