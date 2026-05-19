@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Sparkles, Lock, Fingerprint, ShieldCheck, Zap, User, Baby, ExternalLink, Infinity, Scroll, Percent, Ticket, Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
+import LegalModal from "./LegalModal";
 import { translations as t } from "@/lib/i18n";
 import { format, isValid, differenceInYears } from "date-fns";
 import { PlacesAutocomplete } from "@/components/ui/places-autocomplete";
@@ -54,6 +55,10 @@ const createFormSchema = (t: Translations, tipo: string = 'venda', publico: stri
   coupon: z.string().optional(),
 
   fax_check: z.string().optional(),
+
+  consentimento: z.boolean().refine(val => val === true, {
+    message: "Você precisa aceitar a Política de Privacidade e os Termos de Uso para continuar.",
+  }),
 });
 
 // 2. TIPO ATUALIZADO (SEM CPF)
@@ -70,6 +75,7 @@ type FormData = {
   longitude?: string;
   coupon?: string;
   fax_check?: string;
+  consentimento: boolean;
 };
 
 // --- COMPONENTE DE HORA (MANTIDO IGUAL) ---
@@ -249,6 +255,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
       latitude: "",
       longitude: "",
       fax_check: "",
+      consentimento: false,
     },
   });
 
@@ -669,6 +676,29 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
                   )}
                 </>
               )}
+
+              <FormField control={form.control} name="consentimento" render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 pt-2">
+                  <FormControl>
+                    <input
+                      type="checkbox"
+                      id="consentimento"
+                      checked={field.value}
+                      onChange={field.onChange}
+                      className="mt-0.5 h-4 w-4 rounded border-border text-primary focus:ring-primary cursor-pointer accent-primary"
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <span className="text-xs text-muted-foreground leading-relaxed">
+                      Li e concordo com a{" "}
+                      <LegalModal triggerText="Política de Privacidade" title="Política de Privacidade" type="privacy" />{" "}
+                      e os{" "}
+                      <LegalModal triggerText="Termos de Uso" title="Termos de Uso" type="terms" />.
+                    </span>
+                    <FormMessage />
+                  </div>
+                </FormItem>
+              )} />
 
               <Button type="submit" size="lg" disabled={isSubmitting} className="w-full h-14 md:h-auto text-lg md:py-6 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300 rounded-xl md:rounded-lg mt-6">
                 {isSubmitting

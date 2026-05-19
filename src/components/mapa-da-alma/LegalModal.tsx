@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import { X, ShieldCheck, FileText, RefreshCcw } from "lucide-react";
 
 interface LegalModalProps {
@@ -333,13 +334,14 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
   return (
     <>
       <button
+        type="button"
         onClick={() => setIsOpen(true)}
         className="text-muted-foreground hover:text-primary transition-colors text-xs md:text-sm underline decoration-muted-foreground/30 hover:decoration-primary underline-offset-4"
       >
         {triggerText}
       </button>
 
-      {isOpen && (
+      {isOpen && ReactDOM.createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
           <div
             className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
@@ -356,6 +358,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
                 <h3 className="font-serif text-xl text-foreground">{title}</h3>
               </div>
               <button
+                type="button"
                 onClick={() => setIsOpen(false)}
                 className="p-2 hover:bg-white/10 rounded-full transition-colors text-muted-foreground hover:text-foreground"
               >
@@ -369,6 +372,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
 
             <div className="p-4 border-t border-border bg-card/50 rounded-b-2xl flex justify-end">
               <button
+                type="button"
                 onClick={() => setIsOpen(false)}
                 className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
               >
@@ -376,7 +380,8 @@ const LegalModal: React.FC<LegalModalProps> = ({ triggerText, title, type }) => 
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
