@@ -438,7 +438,8 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
       const result = await response.json();
 
       if (result.status === 'success') {
-        toast({ title: t.successTitle, description: tipo === 'venda' ? "Redirecionando..." : "Solicitação recebida!" });
+        const descMsg = result.desconto ? ` Cupom aplicado: ${result.desconto} OFF!` : '';
+        toast({ title: t.successTitle, description: tipo === 'venda' ? `Redirecionando...${descMsg}` : "Solicitação recebida!" });
 
         if (tipo === 'venda' && result.paymentUrl) {
           setTimeout(() => { window.location.href = result.paymentUrl; }, 1500);
