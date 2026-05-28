@@ -451,6 +451,10 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
         form.reset();
         setDateInputValue("");
       }
+      else if (result.status === 'ja_tem_acesso') {
+        toast({ title: "Você já tem acesso!", description: "Redirecionando para o seu Mapa da Alma..." });
+        setTimeout(() => { window.location.href = result.mapa_url; }, 2000);
+      }
       else if (result.status === 'ignored') {
         console.log("Bot detectado e ignorado.");
         // Não faz nada, não redireciona, não mostra erro. O bot fica no vácuo.
