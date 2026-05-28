@@ -455,6 +455,9 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
         toast({ title: "Você já tem acesso!", description: "Redirecionando para o seu Mapa da Alma..." });
         setTimeout(() => { window.location.href = result.mapa_url; }, 2000);
       }
+      else if (result.status === 'cupom_invalido') {
+        toast({ variant: "destructive", title: "Cupom inválido", description: "Este cupom não existe ou já expirou." });
+      }
       else if (result.status === 'ignored') {
         console.log("Bot detectado e ignorado.");
         // Não faz nada, não redireciona, não mostra erro. O bot fica no vácuo.
