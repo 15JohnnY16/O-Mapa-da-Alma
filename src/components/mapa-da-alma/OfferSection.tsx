@@ -16,7 +16,9 @@ const OfferSection = () => {
         <div className="text-center mb-8 space-y-4">
           <h2 className="font-serif text-2xl md:text-4xl lg:text-5xl text-foreground leading-tight">
             {t.offer.headlinePrefix}
+            <br />
             <span className="text-primary">{t.offer.headlinePrimary}</span>
+            <br />
             {t.offer.headlineMiddle}
             <span className="text-primary">{t.offer.headlinePrimary2}</span>
           </h2>

@@ -38,24 +38,12 @@ const DeliverablesSection = () => {
       description: t.deliverables.card2Desc,
       listItems: [
         {
-          text: t.deliverables.card2Feature,
           highlight: t.deliverables.card2FeatureGradient,
-          reverse: true,
+          text: t.deliverables.card2Feature,
         },
         {
-          text: t.deliverables.card2Feature2,
           highlight: t.deliverables.card2Feature2Gradient,
-          reverse: true,
-        },
-        {
-          text: t.deliverables.card2Feature3,
-          highlight: t.deliverables.card2Feature3Gradient,
-          reverse: true,
-        },
-        {
-          text: t.deliverables.card2Feature4,
-          highlight: t.deliverables.card2Feature4Gradient,
-          reverse: true,
+          text: t.deliverables.card2Feature2,
         }
       ],
       featured: true,
@@ -78,10 +66,6 @@ const DeliverablesSection = () => {
           highlight: t.deliverables.card3Feature3Gradient,
           text: t.deliverables.card3Feature3,
           reverse: true,
-        },
-        {
-          highlight: t.deliverables.card3Feature4Gradient,
-          text: t.deliverables.card3Feature4,
         }
       ],
     },
@@ -91,23 +75,11 @@ const DeliverablesSection = () => {
       description: t.deliverables.card4Desc,
       listItems: [
         {
-          highlight: t.deliverables.card4FeatureGradient,
-          text: t.deliverables.card4Feature,
-          reverse: true,
-        },
-        {
           highlight: t.deliverables.card4Feature2Gradient,
           text: t.deliverables.card4Feature2,
           reverse: true,
           text2: t.deliverables.card4Feature2Middle,
           highlight2: t.deliverables.card4Feature2Gradient2,
-        },
-        {
-          highlight: t.deliverables.card4Feature3Gradient,
-          text: t.deliverables.card4Feature3,
-          reverse: true,
-          text2: t.deliverables.card4Feature3Middle,
-          highlight2: t.deliverables.card4Feature3Gradient2,
         },
       ],
     },
@@ -209,7 +181,7 @@ const DeliverablesSection = () => {
             <Button
               onClick={scrollToForm}
               size="lg"
-              className="text-xl px-20 py-8 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
+              className="w-full sm:w-auto whitespace-normal text-base sm:text-xl px-6 sm:px-20 py-6 sm:py-8 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
             >
               {t.deliverables.ctaButton}
             </Button>
