@@ -23,11 +23,11 @@ const HeroSection = () => {
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 max-w-7xl">
-        {/* Grid ajustado para 12 colunas e items-stretch para garantir colunas com mesma altura */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch mt-12 lg:mt-0">
-          
-          {/* Left - Text content (Ocupa 7 de 12 colunas, ~60% - Totalmente Centralizado com Flexbox) */}
-          <div className="lg:col-span-7 flex flex-col justify-center space-y-9 animate-fade-in text-center mx-auto">
+        {/* Grid 12 colunas. Mobile: título → imagem → resto (via row-start). Desktop: texto à esquerda, imagem à direita. */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center mt-12 lg:mt-0">
+
+          {/* Bloco 1: Badge + Headline (topo esquerdo no desktop, 1º no mobile) */}
+          <div className="lg:col-span-7 lg:col-start-1 lg:row-start-1 flex flex-col justify-end space-y-6 lg:space-y-9 animate-fade-in text-center mx-auto">
             {/* Badge */}
             <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 mx-auto">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
@@ -41,7 +41,19 @@ const HeroSection = () => {
               {t.hero.headlineSuffix}
               <span className="text-primary">{t.hero.headlineTime}</span>
             </h1>
+          </div>
 
+          {/* Imagem: direita no desktop (span 2 linhas), logo após o título no mobile */}
+          <div className="lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:row-span-2 flex flex-col justify-center lg:justify-end lg:items-end animate-fade-in">
+            <img
+              src="/Mapa-da-Alma/hero-nova.jpeg"
+              alt="Mapa da Alma"
+              className="w-full max-w-xs sm:max-w-md lg:max-w-xl object-contain drop-shadow-2xl max-h-full mx-auto"
+            />
+          </div>
+
+          {/* Bloco 2: Subtítulo + CTA + Trust (abaixo do título no desktop, por último no mobile) */}
+          <div className="lg:col-span-7 lg:col-start-1 lg:row-start-2 flex flex-col justify-start space-y-6 lg:space-y-9 animate-fade-in text-center mx-auto">
             {/* Subtitle - Paragraph 1 */}
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
               <span className="text-primary"> {t.hero.subheadlineParagraph1Prefix}</span>
@@ -62,7 +74,7 @@ const HeroSection = () => {
               <Button
                 onClick={scrollToForm}
                 size="lg"
-                className="w-full sm:w-auto text-lg px-16 py-7 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
+                className="w-full sm:w-auto whitespace-normal text-base sm:text-lg px-6 sm:px-16 py-6 sm:py-7 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
               >
                 {t.hero.ctaButton}
               </Button>
@@ -83,15 +95,6 @@ const HeroSection = () => {
                 <span>{t.hero.trust3}</span>
               </div>
             </div>
-          </div>
-
-          {/* Right - Image (Ocupa 5 de 12 colunas, ~40% - Flexbox justify-end para alinhar na base) */}
-          <div className="lg:col-span-5 flex flex-col justify-end lg:items-end animate-fade-in pt-8 lg:pt-0">
-            <img
-              src="/Mapa-da-Alma/LP_MAPA_SECAO_01.png"
-              alt="Mapa da Alma"
-              className="w-full max-w-md lg:max-w-xl object-contain drop-shadow-2xl max-h-full"
-            />
           </div>
         </div>
       </div>
