@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import LoginModal from "@/components/mapa-da-alma/LoginModal";
 import HeroSection from "@/components/mapa-da-alma/HeroSection";
 import PainSection from "@/components/mapa-da-alma/PainSection";
 import SolutionSection from "@/components/mapa-da-alma/SolutionSection";
@@ -47,7 +48,8 @@ const Index = ({ tipo = 'venda', publico = 'adulto', titulo }: IndexProps) => {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background overflow-x-hidden">
+      <LoginModal />
       <HeroSection />
       <PainSection />
       <SolutionSection />
