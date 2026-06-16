@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Debug/test artifacts
+.playwright-mcp/
+/hero-desktop.png
+/hero-mobile-2.png
+/hero-nova-check.png
+/mobile-hero-check.png
