@@ -31,7 +31,7 @@ const SolutionSection = () => {
           {/* Left: Description */}
           <div className="space-y-6 text-center">
             {/* Paragraph 1 */}
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed text-justify">
               <span className="text-primary">{t.solution.paragraph1Prefix}</span>
               {t.solution.paragraph1Primary}
               <span className="text-foreground">{t.solution.paragraph1Middle}</span>
@@ -39,7 +39,7 @@ const SolutionSection = () => {
             </p>
 
             {/* Paragraph 2 */}
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed text-justify">
               {t.solution.paragraph2Prefix}
               <span className="text-foreground">{t.solution.paragraph2Bold}</span>
               {t.solution.paragraph2Middle}
@@ -47,7 +47,7 @@ const SolutionSection = () => {
             </p>
 
             {/* Paragraph 3 */}
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed text-justify">
               {t.solution.paragraph3Prefix}
               <span className="text-foreground">{t.solution.paragraph3Bold}</span>
               {t.solution.paragraph3Middle}
@@ -79,7 +79,7 @@ const SolutionSection = () => {
           <Button
             onClick={scrollToForm}
             size="lg"
-            className="text-xl px-20 py-8 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
+            className="w-full sm:w-auto whitespace-normal text-base sm:text-xl px-6 sm:px-20 py-6 sm:py-8 bg-primary text-primary-foreground hover:bg-primary/90 glow-gold glow-gold-hover transition-all duration-300"
           >
             {t.solution.ctaButton}
           </Button>
