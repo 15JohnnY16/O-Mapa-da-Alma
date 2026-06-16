@@ -1,6 +1,5 @@
 import { useRef, useEffect } from "react";
 import Footer from "@/components/mapa-da-alma/Footer";
-import LoginModal from "@/components/mapa-da-alma/LoginModal";
 import HeroCarta from "@/components/carta-da-alma/HeroCarta";
 import PainCarta from "@/components/carta-da-alma/PainCarta";
 import SolutionCarta from "@/components/carta-da-alma/SolutionCarta";
@@ -182,7 +181,6 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
 
   return (
     <div className="min-h-screen bg-navy text-foreground overflow-x-hidden selection:bg-primary/30">
-      <LoginModal />
       <main>
         {/* Componentes recebem os textos dinâmicos (ou undefined para usar o padrão) */}
         <HeroCarta scrollToForm={scrollToForm} {...currentContent.hero} />

@@ -23,9 +23,13 @@ dist-ssr
 *.sln
 *.sw?
 
+# Deploy artifact
+deploy.zip
+
 # Debug/test artifacts
 .playwright-mcp/
 /hero-desktop.png
 /hero-mobile-2.png
 /hero-nova-check.png
 /mobile-hero-check.png
+/prod-check.png
