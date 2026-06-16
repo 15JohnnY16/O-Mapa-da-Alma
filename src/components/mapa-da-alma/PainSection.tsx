@@ -52,6 +52,8 @@ const PainSection = () => {
             {t.pain.storyParagraph2Middle}
             <span className="text-foreground">{t.pain.storyParagraph2Bold2}</span>
             {t.pain.storyParagraph2Middle2}
+            <span className="text-white">{t.pain.storyParagraph2White}</span>
+            {t.pain.storyParagraph2Middle3}
             <span className="text-primary">{t.pain.storyParagraph2Underline}</span>
           </p>
 
@@ -81,12 +83,16 @@ const PainSection = () => {
           ))}
         </div>
 
-        {/* Highlight box - Fechamento */}
-        <div className="mt-8 md:mt-16 p-5 md:p-6 rounded-2xl border border-primary/20 bg-primary/5 text-center mx-auto max-w-5xl">
-          <p className="text-[17px] md:text-lg text-foreground font-medium leading-relaxed tracking-tight">
+        {/* Highlight box - Fechamento (quote destacado) */}
+        <div className="relative mt-8 md:mt-16 px-6 py-10 md:px-12 md:py-14 rounded-2xl border border-primary/30 bg-primary/5 text-center mx-auto max-w-4xl">
+          {/* Aspas decorativas */}
+          <span className="absolute top-2 left-5 md:top-3 md:left-8 font-serif text-6xl md:text-7xl text-primary/30 leading-none select-none pointer-events-none">
+            &ldquo;
+          </span>
+          <p className="relative z-10 font-serif italic text-xl sm:text-2xl md:text-3xl text-foreground leading-relaxed">
             {t.pain.highlightPrefix}
-            <span className="text-primary whitespace-nowrap">{t.pain.highlightHighlight1}</span>
-            <span className="text-foreground whitespace-nowrap">{t.pain.highlightHighlight1Suffix}</span><br />
+            <span className="text-primary">{t.pain.highlightHighlight1}</span>
+            <span className="text-primary">{t.pain.highlightHighlight1Suffix}</span>
             {t.pain.highlightMiddle}
             <span className="text-primary">{t.pain.highlightHighlight2}</span>
           </p>
