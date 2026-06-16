@@ -117,12 +117,14 @@ const AuthoritySection = () => {
             </p>
             <div className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg">
               <p className="text-foreground font-medium">
-                O Mapa da Alma nasceu disso. Da leitura que eu sempre quis receber. E nunca encontrei em lugar nenhum.
+                O Mapa da Alma nasceu disso. Da leitura que eu sempre quis receber e que nunca existiu até eu criar.
               </p>
             </div>
           </div>
         </div>
 
+        {/* Seção de depoimentos oculta até ter depoimentos reais. Trocar false por true para reativar. */}
+        {false && (<>
         {/* Testimonials header */}
         <div className="text-center mb-8 md:mb-10">
           <h2 className="font-serif text-2xl md:text-4xl text-foreground">
@@ -193,6 +195,7 @@ const AuthoritySection = () => {
             </CarouselContent>
           </Carousel>
         </div>
+        </>)}
       </div>
     </section>
   );
