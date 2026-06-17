@@ -76,8 +76,8 @@ export default function PainCarta({
           </span>
           <p className="relative font-serif italic text-lg md:text-2xl text-white leading-relaxed pt-6 md:pt-8 pl-4 md:pl-8 text-justify">
             Só pra ficar claro: a{" "}
-            <span className="text-primary">Carta</span> é um recorte curto com{" "}
-            <span className="text-primary">1 padrão central</span>. O{" "}
+            <span className="text-primary">Carta</span> é uma leitura de{" "}
+            <span className="text-primary">2 páginas</span>, focada em um padrão central. O{" "}
             <span className="text-primary">Mapa da Alma</span> é o livro completo, com{" "}
             <span className="text-primary">mais de 40 páginas</span>, pra você se enxergar por inteiro.
           </p>
