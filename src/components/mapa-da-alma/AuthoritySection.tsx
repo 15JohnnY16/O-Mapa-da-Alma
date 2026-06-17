@@ -87,7 +87,7 @@ const AuthoritySection = () => {
           <div className="relative">
             <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl relative bg-card">
               <div className="w-full h-full bg-gradient-to-t from-navy to-navy-light opacity-0" />
-              <img src="Rafa-Cabral.png" alt="Foto da Autora" className="absolute inset-0 w-full h-full object-cover" />
+              <img src="Rafa-Cabral2.png" alt="Foto da Autora" className="absolute inset-0 w-full h-full object-cover" />
             </div>
 
             {/* Box Flutuante (Citação) */}
