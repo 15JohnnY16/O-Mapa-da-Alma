@@ -52,13 +52,13 @@ export default function CartaPage({ theme = 'padrao' }: CartaPageProps) {
   const content = {
     padrao: {
       hero: {
-        imageSrc: "/Carta-da-Alma/Padrao/hero-carta.jfif"
+        imageSrc: "/LP_Carta_Hero.png"
       },
       pain: {
-        imageSrc: "/Carta-da-Alma/Padrao/pain-carta.png"
+        imageSrc: "/LP_Carta_2rd.png"
       },
       solution: {
-        imageSrc: "/Carta-da-Alma/Padrao/solution-carta.png"
+        imageSrc: "/LP_Carta_3rd.png"
       },
       paraQuemE: undefined
     },

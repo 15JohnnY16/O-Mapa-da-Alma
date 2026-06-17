@@ -12,7 +12,7 @@ interface PainCartaProps {
 }
 
 export default function PainCarta({
-  title = <>O Que Você Repete Não é Fraqueza. É um Padrão Que Ainda <span className="text-primary">Não Foi Nomeado.</span></>,
+  title = <>O que você repete não é fraqueza. É um Padrão que ainda <span className="text-primary">não foi nomeado.</span></>,
   description = <>Tem hora que parece que a vida muda por fora, mas por dentro a história é a mesma. <br /> Você <span className="text-foreground">tenta de novo, escolhe diferente, promete que agora vai...</span> e quando vê, está no mesmo ponto.</>,
   pain1 = <>No <span className="text-primary">Amor,</span> muda de pessoa e a sensação se <span className="text-foreground">repete.</span><br />Na <span className="text-primary">Carreira,</span> você até cresce, mas trave sempre no <span className="text-foreground">mesmo ponto.</span><br /> No <span className="text-primary">Dinheiro,</span> você corre atrás... e fica aquela impressão de que <span className="text-foreground">nunca fecha.</span> </>,
   pain2 = <>A <span className="text-primary">Carta da Alma</span> existe para uma missão bem específica. <span className="text-foreground">Pegar o ponto que está mais forte</span> nesta fase da sua vida, dar nome pra ele e mostrar como ele influencia silenciosamente o que você <span className="text-foreground">sente, escolhe e/ou repete.</span></>,
@@ -50,33 +50,36 @@ export default function PainCarta({
           {/* Textos Laterais (Boxes) */}
           <div className="space-y-6">
             <div className="bg-card border-l-4 border-primary p-6 rounded-r-xl shadow-lg">
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed text-justify">
                 {pain1}
               </p>
             </div>
 
             <div className="bg-card/50 border border-white/5 p-6 rounded-xl">
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed text-justify">
                 {pain2}
               </p>
             </div>
 
             <div className="bg-primary/10 border border-primary/20 p-6 rounded-xl">
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed text-justify">
                 {pain3}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Clareza sobre os produtos */}
-        <div className="mt-12 border-t border-white/5 pt-1 text-center max-w-2xl mx-auto">
-          <p className="text-sm text-muted-foreground leading-relaxed">
+        {/* Clareza sobre os produtos (destaque tipo citação) */}
+        <div className="relative mt-12 max-w-3xl mx-auto rounded-2xl border border-primary/20 bg-card/40 shadow-lg p-8 md:p-12">
+          <span className="absolute top-3 left-6 font-serif text-6xl md:text-7xl text-primary/40 leading-none select-none pointer-events-none">
+            &ldquo;
+          </span>
+          <p className="relative font-serif italic text-lg md:text-2xl text-white leading-relaxed pt-6 md:pt-8 pl-4 md:pl-8 text-justify">
             Só pra ficar claro: a{" "}
-            <span className="text-primary font-semibold">Carta</span> é um recorte curto com{" "}
-            <span className="text-foreground">1 padrão central.</span> O{" "}
-            <span className="text-primary font-semibold">Mapa da Alma</span> é o livro completo, com {" "}
-            <span className="text-foreground">mais de 40 páginas,</span> pra você se enxergar por inteiro.
+            <span className="text-primary">Carta</span> é uma leitura de{" "}
+            <span className="text-primary">2 páginas</span>, focada em um padrão central. O{" "}
+            <span className="text-primary">Mapa da Alma</span> é o livro completo, com{" "}
+            <span className="text-primary">mais de 40 páginas</span>, pra você se enxergar por inteiro.
           </p>
         </div>
 

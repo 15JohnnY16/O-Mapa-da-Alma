@@ -22,7 +22,7 @@ export default function ThankYouPage() {
   const content = {
     venda: {
       title: "Recebemos o pedido do seu Mapa da Alma!",
-      subtitle: "Parabéns por escolher se conhecer melhor. Essa decisão já diz muito sobre você. Sua Carta da Alma vai revelar os padrões que moldam sua vida e finalmente colocar palavras no que você sempre sentiu.",
+      subtitle: "Parabéns por escolher se conhecer melhor. Essa decisão já diz muito sobre você. Seu Mapa da Alma vai revelar os padrões que moldam sua vida e finalmente colocar palavras no que você sempre sentiu.",
       icon: <Gift className="w-12 h-12 md:w-16 md:h-16 text-primary" />,
       color: "text-primary",
       bgIcon: "bg-primary/10 border-primary/30",
@@ -158,8 +158,7 @@ export default function ThankYouPage() {
                 <span key="full">
                   {beforeHighlight}
                   <br />
-                  <span className="text-gradient-gold">{highlight}</span>
-                  {afterHighlight}
+                  <span className="text-gradient-gold">{highlight}{afterHighlight}</span>
                 </span>
               ) : null;
             }
@@ -176,7 +175,7 @@ export default function ThankYouPage() {
             boxShadow: '0 0 30px hsl(43 56% 52% / 0.05), inset 0 1px 0 hsl(43 56% 52% / 0.08)',
           }}
         >
-          <p className="text-sm md:text-base leading-relaxed" style={{ color: 'hsl(43 56% 72%)' }}>
+          <p className="text-sm md:text-base leading-relaxed text-justify" style={{ color: 'hsl(43 56% 72%)' }}>
             <strong className="text-foreground">Parabéns por escolher se conhecer melhor.</strong>{' '}
             {currentContent.subtitle.replace('Parabéns por escolher se conhecer melhor. ', '')}
           </p>
@@ -228,14 +227,14 @@ export default function ThankYouPage() {
 
           {/* Nota final dentro do painel */}
           <div
-            className="mt-5 rounded-lg p-4 text-xs md:text-sm leading-relaxed text-muted-foreground"
+            className="mt-5 rounded-lg p-4 text-xs md:text-sm leading-relaxed text-justify text-muted-foreground"
             style={{
               background: 'hsl(220 25% 9% / 0.7)',
               border: '1px solid hsl(220 15% 20% / 0.6)',
             }}
           >
-            Não precisa fazer nada agora. Seu email já está registrado e sua{' '}
-            {type === 'venda' ? 'Mapa' : 'Carta'} está a caminho — fique de olho nas próximas{' '}
+            Não precisa fazer nada agora. Seu email já está registrado e{' '}
+            {type === 'venda' ? 'seu Mapa' : 'sua Carta'} está a caminho. Fique de olho nas próximas{' '}
             {type === 'venda' ? '5 dias úteis' : '24 horas'}.
           </div>
         </div>
@@ -255,7 +254,7 @@ export default function ThankYouPage() {
         {/* Rodapé de Suporte */}
         <div className="text-center text-xs md:text-sm text-muted-foreground/70">
           Alguma dúvida? Fale com nosso suporte:{' '}
-          <a href="mailto:suporte@omapadaalma.com" className="text-primary/80 hover:text-primary hover:underline font-medium transition-colors">
+          <a href="mailto:contato@omapadaalma.com" className="text-primary/80 hover:text-primary hover:underline font-medium transition-colors">
             contato@omapadaalma.com
           </a>
         </div>

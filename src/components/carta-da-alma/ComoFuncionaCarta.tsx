@@ -25,7 +25,7 @@ const steps = [
 
 export default function ComoFuncionaCarta() {
   return (
-    <section className="py-20 md:py-28 bg-navy relative overflow-hidden">
+    <section className="pt-8 md:pt-10 pb-20 md:pb-28 bg-navy relative overflow-hidden">
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
         
         <div className="text-center mb-16 space-y-4">
@@ -33,7 +33,7 @@ export default function ComoFuncionaCarta() {
             Passo a Passo Simples
           </div>
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground">
-            Como Funciona a <span className="text-primary">Carta da Alma?</span>
+            Como funciona a <span className="text-primary">Carta da Alma?</span>
           </h2>
           <p className="text-muted-foreground max-w-3xl mx-auto text-lg">
             Um processo simples e rápido feito pra te dar clareza real sobre você, sem enrolação.
@@ -62,7 +62,7 @@ export default function ComoFuncionaCarta() {
                 <h3 className="font-serif text-xl text-foreground mb-3 leading-tight">
                   {step.title.split(". ")[1]} {/* Remove o número do título pois já temos a bolinha */}
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed text-justify">
                   {step.desc}
                 </p>
               </div>

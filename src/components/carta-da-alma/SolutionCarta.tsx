@@ -17,7 +17,7 @@ export default function SolutionCarta({
   scrollToForm,
   // TEXTOS PADRÃO (GERAIS PARA A ROTA PRINCIPAL)
   badge = "Um Recorte do Seu Mapa",
-  title = <>A Clareza Que <span className="text-primary">Destrava o Primeiro Nó</span></>,
+  title = <>A clareza que <span className="text-primary">destrava o primeiro nó.</span></>,
   text1 = <>A <span className="text-primary">Carta</span> não foi feita pra te deixar <span className="text-foreground">"motivada".</span> Ela foi feita para te deixar <span className="text-foreground">lúcida, </span> de um jeito simples e direto.</>,
   boxHighlight = (
     <>
@@ -32,7 +32,9 @@ export default function SolutionCarta({
   imageSrc = "/Carta-da-Alma/Padrao/solution-carta.png",
   bottomHighlight = (
     <>
-      Quando você enxerga o padrão, <span className="text-foreground">você para de brigar consigo mesma.</span><br />E começa a fazer escolhas com mais consciência.<br /><span className="text-foreground">A mudança começa quando a clareza vira ação.</span>
+      <span className="block text-balance">Quando você enxerga o padrão, <span className="text-foreground">você para de brigar consigo mesma.</span></span>
+      <span className="block text-balance">E começa a fazer escolhas com mais consciência.</span>
+      <span className="block text-balance text-foreground">A mudança começa quando a clareza vira ação.</span>
     </>
   )
 }: SolutionCartaProps) {
@@ -50,6 +52,18 @@ export default function SolutionCarta({
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight">
             {title}
           </h2>
+
+          {/* === IMAGEM MOBILE: aparece logo após o título === */}
+          <div className="relative md:hidden w-full max-w-xs mt-8 aspect-[4/5]">
+            <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-card">
+              <img
+                src={imageSrc}
+                alt="Clareza da Carta da Alma"
+                className="w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-navy/20 mix-blend-multiply pointer-events-none" />
+            </div>
+          </div>
         </div>
 
         {/* Grid Principal */}
@@ -57,7 +71,7 @@ export default function SolutionCarta({
 
           {/* Coluna da Esquerda */}
           <div className="space-y-8 animate-in slide-in-from-left duration-700">
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed text-justify">
               {text1}
             </p>
 
@@ -65,12 +79,12 @@ export default function SolutionCarta({
             <div className="bg-card border border-primary/20 p-6 md:p-8 rounded-xl shadow-lg relative overflow-hidden group hover:border-primary/40 transition-colors">
               <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
               <div className="absolute -right-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all" />
-              <div className="relative z-10 text-muted-foreground leading-relaxed text-base md:text-lg">
+              <div className="relative z-10 text-muted-foreground leading-relaxed text-base md:text-lg text-justify">
                 {boxHighlight}
               </div>
             </div>
 
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed text-justify">
               {text2}
             </p>
 
@@ -86,7 +100,7 @@ export default function SolutionCarta({
           </div>
 
           {/* Coluna da Direita (Imagem) - CORRIGIDA */}
-          <div className="relative w-full md:w-4/5 md:mx-auto aspect-square md:aspect-[4/5] group animate-in slide-in-from-right duration-700 delay-200 group">
+          <div className="relative hidden md:block w-full md:w-4/5 md:mx-auto aspect-square md:aspect-[4/5] group animate-in slide-in-from-right duration-700 delay-200 group">
             {/* Moldura decorativa */}
             <div className="absolute top-4 -right-4 w-full h-full border-2 border-primary/20 rounded-2xl hidden md:block transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
             <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-card">

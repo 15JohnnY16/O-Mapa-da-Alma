@@ -34,8 +34,10 @@ const ExitPopup = () => {
     };
   }, []);
 
-  // TRAVA DE SEGURANÇA: Não mostrar se já estiver nas páginas de amostra
-  if (location.pathname.includes('amostra')) {
+  // TRAVA DE SEGURANÇA: Não mostrar onde a Carta já é a oferta principal.
+  // O popup oferece a Carta gratuita — não faz sentido em cima da própria
+  // página da Carta (/carta, /carta-*, /jovem-carta) nem nas amostras.
+  if (location.pathname.includes('amostra') || location.pathname.includes('carta')) {
     return null;
   }
 
@@ -62,7 +64,7 @@ const ExitPopup = () => {
         </a>
         
         <p className="popup-footer" onClick={() => setIsVisible(false)}>
-          Não, prefiro continuar repetindo padrões.
+          Agora não, obrigada.
         </p>
       </div>
 

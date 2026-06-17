@@ -37,7 +37,20 @@ export default function HeroCarta({
               {title}
             </h1>
 
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg mx-auto">
+            {/* === IMAGEM MOBILE: aparece logo após o título === */}
+            <div className="relative md:hidden group animate-in zoom-in duration-1000 delay-200 max-w-xs mx-auto">
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 to-purple-500/30 rounded-2xl blur-2xl opacity-40" />
+              <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden border border-primary/20 shadow-2xl bg-card/50 backdrop-blur-sm">
+                <img
+                  src={imageSrc}
+                  alt="Tema da Carta"
+                  className="w-full h-full object-cover object-top opacity-90"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90 pointer-events-none" />
+              </div>
+            </div>
+
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg mx-auto text-justify">
               {subtitle}
             </p>
 
