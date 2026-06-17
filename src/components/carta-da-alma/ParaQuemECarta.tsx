@@ -57,14 +57,14 @@ export default function ParaQuemE({
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
         
         {/* Header da Seção */}
-        <div className="text-center mb-16 space-y-4">
+        <div className="text-center mb-8 md:mb-16 space-y-4">
           <div className="inline-block px-4 py-1.5 rounded-full bg-primary/20 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
             Para Quem É
           </div>
           <h2 className="font-serif text-3xl md:text-5xl text-foreground leading-tight">
             {title}
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-justify md:text-center">
             {subtitle}
           </p>
         </div>
