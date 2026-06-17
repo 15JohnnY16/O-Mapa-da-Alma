@@ -33,7 +33,7 @@ export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
     <section className="py-16 bg-navy-medium relative">
       <div className="container mx-auto px-4 max-w-5xl relative z-10">
 
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 md:mb-16">
           <h2 className="font-serif text-3xl md:text-5xl text-foreground">
             O que você recebe na <span className="text-primary">Carta da Alma?</span>
           </h2>
@@ -87,8 +87,8 @@ export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
                 <h3 className="font-serif text-3xl md:text-5xl font-bold text-navy-dark leading-tight">
                   Pronta para se Reconhecer <br /> Sem Desculpas?
                 </h3>
-                <p className="text-muted-foreground max-w-3xl mx-auto text-lg leading-relaxed">
-                  E se a <span className="text-primary">Carta</span> fizer sentido, o próximo passo é o <span className="text-primary">Mapa da Alma.</span> <br /> Porque aí você não vê só um ponto. <span className="text-foreground">Você se enxerga por inteiro.</span>
+                <p className="text-muted-foreground max-w-3xl mx-auto text-lg leading-relaxed text-justify">
+                  E se a <span className="text-primary">Carta</span> fizer sentido, o próximo passo é o <span className="text-primary">Mapa da Alma.</span> Porque aí você não vê só um ponto. <span className="text-foreground">Você se enxerga por inteiro.</span>
                 </p>
               </div>
 
@@ -98,7 +98,7 @@ export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
                 size="lg"
                 className="w-full sm:w-auto h-auto min-h-[56px] py-3 px-4 sm:px-10 bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-full shadow-lg shadow-primary/20 text-base sm:text-lg hover:scale-105 transition-transform flex items-center justify-center whitespace-normal text-center mx-auto"
               >
-                <Mail className="w-5 h-5 mr-2 flex-shrink-0" />
+                <Mail className="hidden sm:inline-block w-5 h-5 sm:mr-2 flex-shrink-0" />
                 <span>Quero minha Carta da Alma</span>
               </Button>
 
