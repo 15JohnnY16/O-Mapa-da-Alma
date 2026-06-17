@@ -46,11 +46,11 @@ const defaultItems = [
 export default function ParaQuemE({ 
   scrollToForm, 
   title = <>A Carta da Alma é <span className="text-primary">para você que...</span></>,
-  subtitle = <span className="whitespace-nowrap">Quer clareza sobre padrões que se repetem, sem rótulos, sem invenção e sem jargão.</span>,
+  subtitle = <span>Quer clareza sobre padrões que se repetem, sem rótulos, sem invenção e sem jargão.</span>,
   items = defaultItems
 }: ParaQuemEProps) {
   return (
-    <section className="py-16 md:py-20 bg-navy-light relative overflow-hidden">
+    <section className="pt-8 md:pt-10 pb-16 md:pb-20 bg-navy-light relative overflow-hidden">
       {/* Background Decorativo suave */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full bg-primary/5 blur-3xl rounded-full pointer-events-none" />
 
@@ -78,7 +78,7 @@ export default function ParaQuemE({
               <div className={`w-14 h-14 rounded-xl ${item.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                 <item.icon className={`w-7 h-7 ${item.color}`} />
               </div>
-              
+
               <h3 className="font-serif text-xl text-foreground mb-4 group-hover:text-primary transition-colors">
                 {item.title}
               </h3>

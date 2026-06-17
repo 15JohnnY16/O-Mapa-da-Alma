@@ -32,7 +32,9 @@ export default function SolutionCarta({
   imageSrc = "/Carta-da-Alma/Padrao/solution-carta.png",
   bottomHighlight = (
     <>
-      Quando você enxerga o padrão, <span className="text-foreground">você para de brigar consigo mesma.</span><br />E começa a fazer escolhas com mais consciência.<br /><span className="text-foreground">A mudança começa quando a clareza vira ação.</span>
+      <span className="block text-balance">Quando você enxerga o padrão, <span className="text-foreground">você para de brigar consigo mesma.</span></span>
+      <span className="block text-balance">E começa a fazer escolhas com mais consciência.</span>
+      <span className="block text-balance text-foreground">A mudança começa quando a clareza vira ação.</span>
     </>
   )
 }: SolutionCartaProps) {
@@ -50,6 +52,18 @@ export default function SolutionCarta({
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight">
             {title}
           </h2>
+
+          {/* === IMAGEM MOBILE: aparece logo após o título === */}
+          <div className="relative md:hidden w-full max-w-xs mt-8 aspect-[4/5]">
+            <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-card">
+              <img
+                src={imageSrc}
+                alt="Clareza da Carta da Alma"
+                className="w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-navy/20 mix-blend-multiply pointer-events-none" />
+            </div>
+          </div>
         </div>
 
         {/* Grid Principal */}
@@ -86,7 +100,7 @@ export default function SolutionCarta({
           </div>
 
           {/* Coluna da Direita (Imagem) - CORRIGIDA */}
-          <div className="relative w-full md:w-4/5 md:mx-auto aspect-square md:aspect-[4/5] group animate-in slide-in-from-right duration-700 delay-200 group">
+          <div className="relative hidden md:block w-full md:w-4/5 md:mx-auto aspect-square md:aspect-[4/5] group animate-in slide-in-from-right duration-700 delay-200 group">
             {/* Moldura decorativa */}
             <div className="absolute top-4 -right-4 w-full h-full border-2 border-primary/20 rounded-2xl hidden md:block transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
             <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-card">

@@ -30,15 +30,17 @@ const benefits = [
 
 export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
   return (
-    <section className="py-16 bg-navy relative">
+    <section className="py-16 bg-navy-medium relative">
       <div className="container mx-auto px-4 max-w-5xl relative z-10">
 
         <div className="text-center mb-16">
           <h2 className="font-serif text-3xl md:text-5xl text-foreground">
             O que você recebe na <span className="text-primary">Carta da Alma?</span>
           </h2>
-          <p className="text-muted-foreground mt-4 text-lg">
-            Uma leitura curta e personalizada do seu mapa natal. <span className="text-foreground">Um ponto central, clareza e um próximo passo.</span> <br /> <span className="text-white">Sem horóscopo genérico e sem astrologuês.</span>
+          <p className="text-muted-foreground mt-4 text-lg max-w-2xl mx-auto">
+            <span className="block text-balance">Uma leitura curta e personalizada do seu mapa natal.</span>
+            <span className="block text-balance text-foreground">Um ponto central, clareza e um próximo passo.</span>
+            <span className="block text-balance text-white">Sem horóscopo genérico e sem astrologuês.</span>
           </p>
         </div>
 

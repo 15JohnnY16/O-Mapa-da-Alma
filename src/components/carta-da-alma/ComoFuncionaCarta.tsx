@@ -25,7 +25,7 @@ const steps = [
 
 export default function ComoFuncionaCarta() {
   return (
-    <section className="py-20 md:py-28 bg-navy relative overflow-hidden">
+    <section className="pt-8 md:pt-10 pb-20 md:pb-28 bg-navy relative overflow-hidden">
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
         
         <div className="text-center mb-16 space-y-4">
