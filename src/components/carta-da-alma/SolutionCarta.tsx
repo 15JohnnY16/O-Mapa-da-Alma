@@ -17,7 +17,7 @@ export default function SolutionCarta({
   scrollToForm,
   // TEXTOS PADRÃO (GERAIS PARA A ROTA PRINCIPAL)
   badge = "Um Recorte do Seu Mapa",
-  title = <>A Clareza Que <span className="text-primary">Destrava o Primeiro Nó</span></>,
+  title = <>A clareza que <span className="text-primary">destrava o primeiro nó.</span></>,
   text1 = <>A <span className="text-primary">Carta</span> não foi feita pra te deixar <span className="text-foreground">"motivada".</span> Ela foi feita para te deixar <span className="text-foreground">lúcida, </span> de um jeito simples e direto.</>,
   boxHighlight = (
     <>
@@ -57,7 +57,7 @@ export default function SolutionCarta({
 
           {/* Coluna da Esquerda */}
           <div className="space-y-8 animate-in slide-in-from-left duration-700">
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed text-justify">
               {text1}
             </p>
 
@@ -65,12 +65,12 @@ export default function SolutionCarta({
             <div className="bg-card border border-primary/20 p-6 md:p-8 rounded-xl shadow-lg relative overflow-hidden group hover:border-primary/40 transition-colors">
               <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
               <div className="absolute -right-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all" />
-              <div className="relative z-10 text-muted-foreground leading-relaxed text-base md:text-lg">
+              <div className="relative z-10 text-muted-foreground leading-relaxed text-base md:text-lg text-justify">
                 {boxHighlight}
               </div>
             </div>
 
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed text-justify">
               {text2}
             </p>
 

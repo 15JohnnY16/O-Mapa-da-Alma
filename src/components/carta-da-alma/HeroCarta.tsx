@@ -37,7 +37,7 @@ export default function HeroCarta({
               {title}
             </h1>
 
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg mx-auto">
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg mx-auto text-justify">
               {subtitle}
             </p>
 

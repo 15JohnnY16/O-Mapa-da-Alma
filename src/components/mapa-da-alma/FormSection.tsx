@@ -79,7 +79,7 @@ type FormData = {
 };
 
 // --- COMPONENTE DE HORA (MANTIDO IGUAL) ---
-const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) => {
+const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef, disabled, tooltipText }: any) => {
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
   const [showHourTip, setShowHourTip] = useState(false);
@@ -186,15 +186,17 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
   return (
     <div className="flex items-center gap-2">
       <div className="relative flex-1">
-        {showHourTip && (
+        {showHourTip && !disabled && (
           <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-50 w-72 rounded-lg border-2 border-yellow-400 bg-yellow-50 px-4 py-3 shadow-lg text-sm text-yellow-900 text-center leading-snug animate-in fade-in slide-in-from-bottom-2">
-            <span className="font-semibold">A hora exata é o que torna seu Mapa irrepetível.</span> Ela revela seu Ascendente e suas casas. Vale conferir na sua certidão de nascimento.
+            {tooltipText}
           </div>
         )}
         <Input
           type="text"
+          inputMode="numeric"
           placeholder="08"
-          className="bg-background/50 border-border focus:border-primary text-center px-1"
+          disabled={disabled}
+          className={`bg-background/50 border-border focus:border-primary text-center px-1 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
           value={hours}
           onChange={handleHourChange}
           onBlur={(e) => { setShowHourTip(false); handleBlur(); }}
@@ -207,8 +209,10 @@ const BirthTimeInput = ({ value, onChange, hourRef, minuteRef, nextRef }: any) =
       <div className="relative flex-1">
         <Input
           type="text"
+          inputMode="numeric"
           placeholder="30"
-          className="bg-background/50 border-border focus:border-primary text-center px-1"
+          disabled={disabled}
+          className={`bg-background/50 border-border focus:border-primary text-center px-1 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
           value={minutes}
           onChange={handleMinuteChange}
           onBlur={handleBlur}
@@ -272,6 +276,9 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
       // }
     }
   }, [form.watch("birthDate")]);
+
+  // Tooltip da hora: na Carta (gratis) explica que dá pra seguir sem hora; no Mapa (venda) reforça a precisão.
+  const birthTimeTooltip = <span className="block text-justify font-semibold">A precisão da leitura depende dos seus dados estarem corretos. A hora exata define seu Ascendente e suas Casas. Com a hora errada, a leitura fica de outra pessoa. Se não tiver certeza, confira na sua certidão de nascimento antes de enviar.</span>;
 
   // Função auxiliar para renderizar os campos de data
   const renderDateFields = () => (
@@ -344,7 +351,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
           <FormItem>
             <FormLabel className="text-foreground">{t.birthDateLabel}</FormLabel>
             <div className="flex gap-2">
-              <Input placeholder="Dia" className="bg-background/50 border-border focus:border-primary w-[28%] text-center px-1" value={day}
+              <Input placeholder="Dia" inputMode="numeric" className="bg-background/50 border-border focus:border-primary w-[28%] text-center px-1" value={day}
                 onChange={(e) => {
                   let val = e.target.value.replace(/\D/g, '').slice(0, 2);
                   if (parseInt(val) > 31) val = "31";
@@ -357,6 +364,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
               <div className="flex-1 relative">
                 <Input
                   placeholder="Mês"
+                  inputMode="numeric"
                   className="bg-background/50 border-border focus:border-primary text-center px-1"
                   value={monthInput}
                   onChange={handleMonthChange}
@@ -365,7 +373,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
                   ref={monthRef}
                 />
               </div>
-              <Input placeholder="Ano" className="bg-background/50 border-border focus:border-primary w-[30%] text-center px-1" value={year}
+              <Input placeholder="Ano" inputMode="numeric" className="bg-background/50 border-border focus:border-primary w-[30%] text-center px-1" value={year}
                 onChange={(e) => {
                   let val = e.target.value.replace(/\D/g, '').slice(0, 4);
                   setYear(val);
@@ -385,7 +393,7 @@ export function FormSection({ tipo = 'venda', publico = 'adulto', titulo, compac
           <FormItem>
             <FormLabel className="text-foreground">{t.birthTimeLabel}</FormLabel>
             <FormControl>
-              <BirthTimeInput value={field.value} onChange={field.onChange} hourRef={hourRef} minuteRef={minuteRef} nextRef={cityRef as any} />
+              <BirthTimeInput value={field.value} onChange={field.onChange} hourRef={hourRef} minuteRef={minuteRef} nextRef={cityRef as any} tooltipText={birthTimeTooltip} />
             </FormControl>
             <FormMessage />
           </FormItem>

@@ -45,7 +45,7 @@ const defaultItems = [
 
 export default function ParaQuemE({ 
   scrollToForm, 
-  title = <>A Carta da Alma É <span className="text-primary">Para Você Que...</span></>,
+  title = <>A Carta da Alma é <span className="text-primary">para você que...</span></>,
   subtitle = <span className="whitespace-nowrap">Quer clareza sobre padrões que se repetem, sem rótulos, sem invenção e sem jargão.</span>,
   items = defaultItems
 }: ParaQuemEProps) {
@@ -82,7 +82,7 @@ export default function ParaQuemE({
               <h3 className="font-serif text-xl text-foreground mb-4 group-hover:text-primary transition-colors">
                 {item.title}
               </h3>
-              <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+              <p className="text-muted-foreground leading-relaxed text-sm md:text-base text-justify">
                 {item.desc}
               </p>
             </div>
@@ -96,7 +96,7 @@ export default function ParaQuemE({
           <Button 
             onClick={scrollToForm}
             size="lg"
-            className="relative group bg-gradient-to-r from-yellow-500 via-primary to-yellow-600 hover:from-yellow-400 hover:via-primary/90 hover:to-yellow-500 text-navy-dark font-bold h-14 px-12 rounded-full shadow-[0_0_20px_-5px_rgba(234,179,8,0.5)] hover:shadow-[0_0_30px_-5px_rgba(234,179,8,0.7)] transition-all duration-300 scale-100 hover:scale-105 w-full md:w-auto text-lg border-2 border-yellow-300/30 overflow-hidden"
+            className="relative group bg-gradient-to-r from-yellow-500 via-primary to-yellow-600 hover:from-yellow-400 hover:via-primary/90 hover:to-yellow-500 text-black font-bold h-14 px-12 rounded-full shadow-[0_0_20px_-5px_rgba(234,179,8,0.5)] hover:shadow-[0_0_30px_-5px_rgba(234,179,8,0.7)] transition-all duration-300 scale-100 hover:scale-105 w-full md:w-auto text-lg border-2 border-yellow-300/30 overflow-hidden"
           >
                Quero Minha Carta Grátis
             {/* Efeito de brilho passando */}

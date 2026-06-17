@@ -35,7 +35,7 @@ export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
 
         <div className="text-center mb-16">
           <h2 className="font-serif text-3xl md:text-5xl text-foreground">
-            O Que Você Recebe na <span className="text-primary">Carta da Alma?</span>
+            O que você recebe na <span className="text-primary">Carta da Alma?</span>
           </h2>
           <p className="text-muted-foreground mt-4 text-lg">
             Uma leitura curta e personalizada do seu mapa natal. <span className="text-foreground">Um ponto central, clareza e um próximo passo.</span> <br /> <span className="text-white">Sem horóscopo genérico e sem astrologuês.</span>
@@ -54,7 +54,7 @@ export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
                 <h3 className="font-serif text-xl text-foreground mb-3 group-hover:text-primary transition-colors">
                   {item.title}
                 </h3>
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed text-justify">
                   {item.desc}
                 </p>
               </div>
@@ -83,7 +83,7 @@ export default function OQueRecebeCarta({ scrollToForm }: OQueRecebeProps) {
               {/* Títulos com cor escura para contraste */}
               <div className="space-y-4">
                 <h3 className="font-serif text-3xl md:text-5xl font-bold text-navy-dark leading-tight">
-                  Pronta Para se Reconhecer Sem Desculpas?
+                  Pronta para se Reconhecer <br /> Sem Desculpas?
                 </h3>
                 <p className="text-muted-foreground max-w-3xl mx-auto text-lg leading-relaxed">
                   E se a <span className="text-primary">Carta</span> fizer sentido, o próximo passo é o <span className="text-primary">Mapa da Alma.</span> <br /> Porque aí você não vê só um ponto. <span className="text-foreground">Você se enxerga por inteiro.</span>
